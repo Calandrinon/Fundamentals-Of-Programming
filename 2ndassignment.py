@@ -121,18 +121,41 @@ def read_complex_num():
 
     return Complex(int(parts[0]), int(parts[-1]))
 
+### Reads the list of complex numbers as a string.
 def read_complex_num_list():
     numbers = str(input("Enter some complex numbers in the form of a+bi and separate them with a comma: "))
-    numbers = numbers.replace(" ", "")
-    numbers = numbers.split(",")
+    numbers = numbers.replace(" ", "") ### Replaces spaces in the string with
+                                       ### null strings.
+    numbers = numbers.split(",")       ### Splits the string with comma as a
+                                       ### delimitator and returns a list with
+                                       ### all the remaining elements
     numbers = [list(number.split("+")) for number in numbers]
+    ### For each number in the list "numbers" there will be generated a list
+    ### where the complex number in form of a string will be split in two parts
+    ### with + as a delimitator.
+
     for number in numbers:
-        if number[-1].find("i") != -1:
+        if number[-1].find("i") != -1:    ### This takes the last element in the
+                                          ### list "number"(which is usually
+                                          ### the imaginary part, if it exists)
+                                          ### and checks if the string "i" is
+                                          ### present in this last element.
             if number[0].find("i") != -1:
+                ### This if statement checks if the string "i" is present in
+                ### the first element, in order to see if the number has a
+                ### real part or not.
                 number.insert(0, "0")
+                ### Inserts a zero on the first position into the list "number"
+                ### in case the number has no real part.
             number[-1] = number[-1].replace("i", "")
+            ### Replaces each "i" in the last element of the list number with
+            ### a null string.
         else:
+            ### If the last element of the list "number" doesn't contain the
+            ### string "i", then we append a 0 to the end of the list which
+            ### will represent the null imaginary part.
             number.append("0")
+
     final_list = []
 
     for number in numbers:
