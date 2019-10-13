@@ -16,6 +16,14 @@ import math
           enters literals other than '+' and 'i'
     TODO: At function <main>: Test the cases where the user enters negative
           real and imaginary parts (for example: -2 - 5i)
+    TODO: At function <real_numbers_sequence>:
+          The function doesn't work for lists with only 1 real number
+          Repair unexpected results for exception cases like this:
+          >  [2 + i, 3 + i, 1]
+          >  [2, 5i, i, 2 + i, 2 + 2i, 3 + 2i, 1 + i]
+          >  [4i, i, 4, i, i]
+
+          The result: "There are no real numbers in the list!"
 """
 class Complex:
     ### This is the complex number being stored in a tuple with the first
@@ -159,19 +167,30 @@ def read_complex_num_list():
     final_list = []
 
     for number in numbers:
-        if len(number) == 2:
+        ### This takes each list "number" in the list "numbers" and
+        ### checks if it has at least 2 elements and if it does, then
+        ### it checks if the last element of the list "number" is a null string.
+        ### If it is, then it means the string "i" was deleted and we add a
+        ### "1" in the string form of the representation of the number.
+
+        ### If there are more than 2 elements in the list "number", they are
+        ### null strings which were included in the list as a result of the use
+        ### of the function "split()".
+        if len(number) >= 2:
             if number[-1] == "":
                 number[-1] = "1"      #case of 2+i or 1+i or 4+i
             final_list.append(Complex(int(number[0]), int(number[-1])))
 
     return final_list
 
+### Prints the options that can be chosen by the user.
 def print_options():
     print("1. Read a list of complex numbers (in a + bi form) from the console.")
     print("2. Display the entire list of numbers on the console.")
     print("3. Display on the console the longest sequence that observes a given property. Each student will receive 2 of the properties from the list provided below.")
     print("4. Exit the application.\n\n\n")
 
+### Prints the contents of a list from pos1 to pos2-1.
 def print_list(complex_num_list, pos1, pos2):
     print("[", end="")
     for i in range(pos1, pos2-1):
@@ -180,6 +199,9 @@ def print_list(complex_num_list, pos1, pos2):
     write_complex_num(complex_num_list[pos2-1])
     print("]\n\n")
 
+### Prints the longest sequence of numbers with increasing modulus.
+### The numbers are taken from the list of complex numbers being given as a
+### parameter.
 def increasing_modulus_sequence(complex_num_list):
     sequence_length = 0
     max_seq_length = 0
@@ -210,6 +232,9 @@ def increasing_modulus_sequence(complex_num_list):
     print("\n", "First position: ", first_pos, ";  Last position: ", last_pos - 1)
     print_list(complex_num_list, first_pos, last_pos)
 
+### Prints the longest sequence of real numbers.
+### The numbers are taken from the list of complex numbers being given as a
+### parameter.
 def real_numbers_sequence(complex_num_list):
     sequence_length = 0
     max_seq_length = 0
@@ -247,11 +272,13 @@ def real_numbers_sequence(complex_num_list):
     print("\n", "First position: ", first_pos, ";  Last position: ", last_pos - 1)
     print_list(complex_num_list, first_pos, last_pos)
 
+### The main function.
 def main():
     print_options()
-    functionalities = (read_complex_num_list, print_list)
     complex_num_list = []
 
+    ### An infinite loop which is broken when the user enters the number 4,
+    ### which corresponds to the 4th option, the exit option.
     while True:
         option = int(input("Enter an option: "))
         print("\n")
@@ -261,11 +288,15 @@ def main():
                 complex_num_list = read_complex_num_list()
             except ValueError as ve:
                 print(ve)
+            ### A try and catch statement which catches value errors caused
+            ### by faulty conversions from str to int in the
+            ### "read_complex_num_list()" function.
         elif option == 2:
             try:
                 print_list(complex_num_list, 0, len(complex_num_list))
             except IndexError as IE:
-                print(IE)
+                print(IE) ### Catches the exception IndexError in case the user
+                          ### doesn't enter a list.
                 print("The list is empty. You should enter some numbers by choosing the option 1.")
         elif option == 3:
             print("Choose one of these 2 options: ")
@@ -276,7 +307,6 @@ def main():
                 increasing_modulus_sequence(complex_num_list)
             elif suboption == 'B':
                 real_numbers_sequence(complex_num_list)
-                pass
             else:
                 print("I SAID ENTER A OR B!")
         elif option == 4:
@@ -286,55 +316,4 @@ def main():
             print("Type a number between 1 and 4...\n\n")
         print("\n\n")
 
-def test_write_complex_num(number):
-    write_complex_num(number)
-
-def test_read_complex_num():
-    num = read_complex_num()
-    write_complex_num(num)
-    print("\n")
-
-def test_read_complex_num_list():
-    l = read_complex_num_list()
-    print_list(l, 0, len(l))
-
-def test_print_list():
-    a_list = [Complex(0, 5), Complex(4, 0), Complex(-3, -2), Complex(0, 0), Complex(1, 0), Complex(2, 1)]
-    print_list(a_list, 0, len(a_list))
-
-def test_increasing_modulus_sequence():
-    numbers = [Complex(1, 5), Complex(1, 6), Complex(71, 7), Complex(1, 1), Complex(0, 2), Complex(15, 12), Complex(16, 19), Complex(27, 39), Complex(32, 77), Complex(1, 1), Complex(1, 2), Complex(1, 3), Complex(1, 4), Complex(1, 5)]
-    numbers2 = [Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(0, 0)]
-    numbers3 = [Complex(0, 1), Complex(1, 1), Complex(0, 2), Complex(1, 0)]
-    numbers4 = [Complex(0, 1)]
-    numbers5 = [Complex(0, 1), Complex(0, 50), Complex(0, 3), Complex(2, 6), Complex(1, 0)]
-    increasing_modulus_sequence(numbers)
-    increasing_modulus_sequence(numbers2)
-    increasing_modulus_sequence(numbers3)
-    increasing_modulus_sequence(numbers4)
-    increasing_modulus_sequence(numbers5)
-
-def test_real_numbers_sequence():
-    numbers = [Complex(1, 5), Complex(1, 6), Complex(71, 7), Complex(1, 1), Complex(0, 2), Complex(15, 12), Complex(16, 19), Complex(27, 39), Complex(32, 77), Complex(1, 1), Complex(1, 2), Complex(1, 3), Complex(1, 4), Complex(1, 5)]
-    numbers2 = [Complex(0, 0), Complex(0, 0), Complex(0, 0), Complex(0, 0)]
-    numbers3 = [Complex(0, 1), Complex(1, 1), Complex(0, 2), Complex(1, 0)]
-    numbers4 = [Complex(0, 1)]
-    numbers5 = [Complex(0, 1), Complex(0, 50), Complex(0, 3), Complex(2, 6), Complex(1, 0)]
-    real_numbers_sequence(numbers)
-    real_numbers_sequence(numbers2)
-    real_numbers_sequence(numbers3)
-    real_numbers_sequence(numbers4)
-    real_numbers_sequence(numbers5)
-
-def test():
-    #test_write_complex_num(Complex(5, 3))  #--> passed
-    #test_read_complex_num() #--> passed
-    #test_read_complex_num_list() #--> passed (but should be verified with more cases)
-    #print_options() #--> passed
-    #test_print_list() #--> passed
-    #test_increasing_modulus_sequence() #--> passed
-    #test_real_numbers_sequence() #--> NOT PASSED, SHOULD BE TESTED ONCE MORE!!!!!!!!
-    pass
-
-#test()
 main()
