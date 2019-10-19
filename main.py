@@ -1,8 +1,8 @@
 import datetime
 
 """
-    TODO: In case the user gives a negative value as a parameter to the
-          <ui_add> function, return an error message
+    TODO: Function <ui_add>: In case the user gives a wrong value to the
+          "type" parameter, raise an exception.
 """
 
 class Transaction:
