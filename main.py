@@ -3,8 +3,6 @@ import datetime
 """
     TODO: In function <ui_add>: Update the specification. Mention all the
           exceptions that could be raised.
-    TODO: In function <ui_print_specification_function_add>: Remove the
-          details about the first parameter.
     TODO: Clear screen after each input request.
 """
 
@@ -113,7 +111,7 @@ def ui_print_specification_function_add():
     """
         Prints the usage instructions of the function <ui_add>.
     """
-    usage_warning_message = "\n\nUsage:\nAdds to a transaction list a new transaction on the current day.\nInput:\n\t> transaction_list - The list of transactions. It contains 31\n\tpositions, each being associated to a list of\n\tthe transactions made on a specific day of the\n\tcurrent month.\n\t> value - A positive integer which represents the amount of\n\tmoney that was transferred\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t> description - A description of the transaction:\n\t\tE.g: 'add 100 out PIZZA'\n\n\n"
+    usage_warning_message = "\n\nUsage:\nAdds to a transaction list a new transaction on the current day.\nInput:\n\t> value - A positive integer which represents the amount of\n\tmoney that was transferred\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t> description - A description of the transaction:\n\t\tE.g: 'add 100 out PIZZA'\n\n\n"
     print(usage_warning_message)
 
 def test_split_command():
