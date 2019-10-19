@@ -1,8 +1,6 @@
 import datetime
 
 """
-    TODO: In function <ui_add>: Update the specification. Mention all the
-          exceptions that could be raised.
     TODO: Clear screen after each input request.
 """
 
