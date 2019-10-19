@@ -1,16 +1,13 @@
 import datetime
 
-"""
-    TODO: Change the transaction_list specification in the <ui_add>
-          function to indicate that the list contains 31 positions, each
-          representing the days in the current month.
-"""
-
 def ui_add(transaction_list, value, type, description):
     """
     Adds to a transaction list a new transaction on the current day.
     Input:
-        > transaction_list - The list of transactions
+        > transaction_list - The list of transactions. It contains 31
+                             positions, each being associated to a list of
+                             the transactions made on a specific day of the
+                             current month.
 
         > value - A positive integer which represents the amount of
                   money that was transferred
