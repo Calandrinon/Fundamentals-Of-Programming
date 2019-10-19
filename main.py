@@ -53,6 +53,7 @@ def ui_add(transaction_list, value, type, description):
         > description - A description of the transaction:
                         E.g: "add 100 out PIZZA"
     """
+    value = abs(value)
     current_date = datetime.datetime.today().day ### The current date when the
                                                  ### transaction is made.
 
@@ -81,6 +82,11 @@ def test_add():
 
     ### Test 2
     ui_add(account_transactions, 125, "in", "jacket")
+    correct_result.append(Transaction(today, 125, "in", "jacket"))
+    assert_last_transactions()
+
+    ### Test 3
+    ui_add(account_transactions, -125, "in", "jacket")
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
