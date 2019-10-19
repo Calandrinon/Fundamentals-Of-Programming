@@ -1,5 +1,10 @@
 import datetime
 
+"""
+    TODO: In function <ui_add>: Update the specification. Mention all the
+          exceptions that could be raised.
+"""
+
 class Transaction:
     def __init__(self, date, value, type, description):
         self.date = date
@@ -146,7 +151,28 @@ def run_all_tests():
     test_add()
     test_transaction_class()
 
-def main():
+def split_command(command):
+    """
+    Gets a string (in this case the command that is given as an input from
+    the keyboard by the user) and splits it in multiple tokens.
+    Input:
+        > string (command)
+
+    Output:
+        A list with all the tokens in the string "command".
+    """
     pass
+
+def main():
+    """
+    account_transactions = []
+
+    while True:
+        command = input("###: ")
+        parameters = split_command(command)
+
+        if command == "add":
+            ui_add(Transaction(...))
+    """
 
 run_all_tests()
