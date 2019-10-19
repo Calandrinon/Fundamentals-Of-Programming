@@ -82,6 +82,21 @@ def ui_add(transaction_list, value, type, description):
     new_transaction = Transaction(current_date, value, type, description)
     transaction_list.append(new_transaction)
 
+def split_command(command):
+    """
+    Gets a string (in this case the command that is given as an input from
+    the keyboard by the user) and splits it in multiple tokens.
+    Input:
+        > string (command)
+
+    Output:
+        A list with all the tokens in the string "command".
+    """
+    list_of_tokens = command.split(" ")
+    list_of_tokens.remove("") ### In case the user enters too many spaces
+                              ### between the arguments of the command.
+    return list_of_tokens
+
 def test_add():
     print("<ui_add> function test:")
     account_transactions = []
@@ -150,18 +165,6 @@ def run_all_tests():
     print("Tests:")
     test_add()
     test_transaction_class()
-
-def split_command(command):
-    """
-    Gets a string (in this case the command that is given as an input from
-    the keyboard by the user) and splits it in multiple tokens.
-    Input:
-        > string (command)
-
-    Output:
-        A list with all the tokens in the string "command".
-    """
-    pass
 
 def main():
     """
