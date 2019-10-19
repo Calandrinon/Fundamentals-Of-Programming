@@ -1,9 +1,16 @@
+from datetime import date
 
-def ui_add(transactions, value, type, description):
+"""
+    TODO: Change the transaction_list specification in the <ui_add>
+          function to indicate that the list contains 31 positions, each
+          representing the days in the current month.
+"""
+
+def ui_add(transaction_list, value, type, description):
     """
     Adds to a transaction list a new transaction on the current day.
     Input:
-        > transactions - The list of transactions
+        > transaction_list - The list of transactions
 
         > value - A positive integer which represents the amount of
                   money that was transferred
@@ -18,8 +25,10 @@ def ui_add(transactions, value, type, description):
         > description - A description of the transaction:
                         E.g: "add 100 out PIZZA"
     """
-
-    pass
+    current_date = date.today() ### The current date when the transaction
+                                ### is made.
+    new_transaction = (current_date, value, type, description)
+    transaction_list.append(new_transaction)
 
 def main():
     pass
