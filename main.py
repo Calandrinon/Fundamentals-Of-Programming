@@ -139,6 +139,14 @@ def ui_print_specification_function_add():
     usage_warning_message = "\n\nUsage:\nAdds to a transaction list a new transaction on the current day.\nInput:\n\t> value - A positive integer which represents the amount of\n\tmoney that was transferred\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t> description - A description of the transaction:\n\t\tE.g: 'add 100 out PIZZA'\n\n\n"
     print(usage_warning_message)
 
+def ui_print_specification_function_insert():
+    """
+        Prints the usage instructions of the function <ui_insert>.
+    """
+    usage_warning_message = "\n\nUsage:\nAdds to a transaction list a new transaction on the day specified in the parameter 'day'.\nInput:\n\t> day - The day when the transaction has been made.\n\t> value - A positive integer which represents the amount of\n\tmoney that was transferred\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t> description - A description of the transaction:\n\t\tE.g: 'add 100 out PIZZA'\n\n\n"
+    print(usage_warning_message)
+    pass
+
 def clear_screen():
     print("\n"*200)
 
@@ -265,7 +273,7 @@ def run_all_tests():
 
 def main():
     account_transactions = []
-    commands = ["quit", "exit", "add", "clear"]
+    commands = ["quit", "exit", "add", "clear", "insert"]
 
     while True:
         command = input("###: ")
@@ -291,6 +299,19 @@ def main():
             except Exception as e:
                 print(e)
                 ui_print_specification_function_add()
+            ui_print_transactions(account_transactions)
+        elif parameters[0] == "insert":
+            ### In case the user doesn't enter 4 parameters
+            if number_of_parameters != 5:
+                print("Invalid number of parameters!")
+                ui_print_specification_function_insert()
+                continue
+
+            try:
+                ui_insert(account_transactions, int(parameters[1]), int(parameters[2]), parameters[3], parameters[4])
+            except Exception as e:
+                print(e)
+                ui_print_specification_function_insert()
             ui_print_transactions(account_transactions)
         elif parameters[0] == "clear":
             clear_screen()
