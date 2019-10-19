@@ -36,6 +36,10 @@ class Transaction:
     def set_description(self, description):
         self.description = description
 
+    def print(self):
+        print("[{}, {}, {}, {}]".format(self.get_date(), self.get_value(), self.get_type(),
+        self.get_description()))
+
 def ui_add(transaction_list, value, type, description):
     """
     Adds to a transaction list a new transaction on the current day.
@@ -97,6 +101,10 @@ def split_command(command):
         list_of_tokens.remove("") ### In case the user enters too many spaces
                                   ### between the arguments of the command.
     return list_of_tokens
+
+def ui_print_transactions(transaction_list):
+    for transaction in transaction_list:
+        transaction.print()
 
 def test_split_command():
     print("\n\n<split_command> function test running...")
@@ -177,19 +185,17 @@ def run_all_tests():
     print("\n\n\n")
 
 def main():
-
     account_transactions = []
 
     while True:
         command = input("###: ")
         parameters = split_command(command)
 
-        if command == "quit" or command == "exit":
+        if parameters[0] == "quit" or parameters[0] == "exit":
             break
-        """
-        elif command == "add":
-            ui_add(Transaction(parameters[0], parameters[1], parameters[2],
-            parameters[3]))
-        """
+        elif parameters[0] == "add":
+            ui_add(account_transactions, int(parameters[1]), parameters[2], parameters[3])
+            ui_print_transactions(account_transactions)
+
 run_all_tests()
 main()
