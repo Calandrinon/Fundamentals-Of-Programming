@@ -174,17 +174,22 @@ def run_all_tests():
     test_add()
     test_transaction_class()
     test_split_command()
+    print("\n\n\n")
 
 def main():
-    """
+
     account_transactions = []
 
     while True:
         command = input("###: ")
         parameters = split_command(command)
 
-        if command == "add":
-            ui_add(Transaction(...))
-    """
-
+        if command == "quit" or command == "exit":
+            break
+        """
+        elif command == "add":
+            ui_add(Transaction(parameters[0], parameters[1], parameters[2],
+            parameters[3]))
+        """
 run_all_tests()
+main()
