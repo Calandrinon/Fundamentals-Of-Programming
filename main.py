@@ -1,10 +1,5 @@
 import datetime
 
-"""
-    TODO: Function <ui_add>: In case the user gives a wrong value to the
-          "type" parameter, raise an exception.
-"""
-
 class Transaction:
     def __init__(self, date, value, type, description):
         self.date = date
