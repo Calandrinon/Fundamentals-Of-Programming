@@ -201,6 +201,13 @@ def main():
         if parameters[0] == "quit" or parameters[0] == "exit":
             break
         elif parameters[0] == "add":
+            number_of_parameters = len(parameters)
+            ### In case the user doesn't enter 3 parameters
+            if number_of_parameters != 4:
+                print("Invalid number of parameters!")
+                ui_print_specification_function_add()
+                continue
+
             try:
                 ui_add(account_transactions, int(parameters[1]), parameters[2], parameters[3])
             except Exception as e:
