@@ -226,5 +226,6 @@ def main():
         elif parameters[0] not in commands:
             print("That command doesn't exist! This is the list of commands: ", commands)
 
+clear_screen()
 run_all_tests()
 main()
