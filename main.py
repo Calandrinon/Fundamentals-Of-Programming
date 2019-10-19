@@ -44,10 +44,7 @@ def ui_add(transaction_list, value, type, description):
     """
     Adds to a transaction list a new transaction on the current day.
     Input:
-        > transaction_list - The list of transactions. It contains 31
-                             positions, each being associated to a list of
-                             the transactions made on a specific day of the
-                             current month.
+        > transaction_list - The list of transactions.
 
         > value - A positive integer which represents the amount of
                   money that was transferred
@@ -91,10 +88,7 @@ def ui_insert(transaction_list, day, value, type, description):
     Adds to a transaction list a new transaction on the day specified in the
     parameter "day".
     Input:
-        > transaction_list - The list of transactions. It contains 31
-                             positions, each being associated to a list of
-                             the transactions made on a specific day of the
-                             current month.
+        > transaction_list - The list of transactions.
 
         > day - The day when the transaction has been made.
 
