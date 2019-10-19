@@ -1,7 +1,6 @@
 import datetime
 
 """
-    TODO: Add <insert> function and test it.
     TODO: Add <remove> function and test it.
 """
 
@@ -151,7 +150,7 @@ def clear_screen():
     print("\n"*200)
 
 def test_insert():
-    print("\n\n<ui_add> function test running...")
+    print("\n\n<ui_insert> function test running...")
     account_transactions = []
     correct_result = []
 
