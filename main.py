@@ -86,6 +86,33 @@ def ui_add(transaction_list, value, type, description):
     new_transaction = Transaction(current_date, value, type, description)
     transaction_list.append(new_transaction)
 
+def ui_insert(transaction_list, day, value, type, description):
+    """
+    Adds to a transaction list a new transaction on the day specified in the
+    parameter "day".
+    Input:
+        > transaction_list - The list of transactions. It contains 31
+                             positions, each being associated to a list of
+                             the transactions made on a specific day of the
+                             current month.
+
+        > day - The day when the transaction has been made.
+
+        > value - A positive integer which represents the amount of
+                  money that was transferred.
+
+        > type - A string which represents the type of the transaction.
+                 It can be one of the following:
+                        * in - a sum of money was transferred into the
+                               account
+                        * out - a sum of money was transferred from the
+                               account to somewhere else
+
+        > description - A description of the transaction:
+                        E.g: "insert 25 100 in SALARY"
+    """
+    pass
+
 def split_command(command):
     """
     Gets a string (in this case the command that is given as an input from
