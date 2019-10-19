@@ -1,7 +1,7 @@
 import datetime
 
 """
-    TODO: Clear screen after each input request.
+    
 """
 
 class Transaction:
