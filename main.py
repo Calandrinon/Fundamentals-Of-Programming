@@ -59,12 +59,12 @@ def ui_add(transaction_list, value, type, description):
                         E.g: "add 100 out PIZZA"
     """
     if value < 0:
-        print("You should have entered a positive integer as a value.")
-        print("The value will be automatically made positive.")
+        print("\nYou should have entered a positive integer as a value.")
+        print("The value will be automatically made positive.\n")
 
     if isinstance(value, float):
-        print("You should have entered an integer as a value, not a float.")
-        print("The value will be converted to an integer automatically.")
+        print("\nYou should have entered an integer as a value, not a float.")
+        print("The value will be converted to an integer automatically.\n")
 
     value = abs(int(value))
     current_date = datetime.datetime.today().day ### The current date when the
@@ -74,6 +74,7 @@ def ui_add(transaction_list, value, type, description):
     transaction_list.append(new_transaction)
 
 def test_add():
+    print("<ui_add> function test:")
     account_transactions = []
     correct_result = []
 
@@ -108,16 +109,20 @@ def test_add():
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
+    print("<ui_add> function test passed.")
+
 def test_transaction_class():
+    print("<Transaction> class test:")
     today = datetime.datetime.today().day
     transaction = Transaction(today, 100, "out", "pizza")
     assert(transaction.get_date() == today)
     assert(transaction.get_value() == 100)
     assert(transaction.get_type() == "out")
     assert(transaction.get_description() == "pizza")
-    pass
+    print("<Transaction> class test passed.")
 
 def run_all_tests():
+    print("Tests:")
     test_add()
     test_transaction_class()
 
