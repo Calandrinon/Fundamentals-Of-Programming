@@ -1,7 +1,8 @@
 import datetime
 
 """
-    
+    TODO: Add <insert> function and test it.
+    TODO: Add <remove> function and test it.
 """
 
 class Transaction:
