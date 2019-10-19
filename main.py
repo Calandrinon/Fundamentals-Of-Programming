@@ -53,6 +53,7 @@ def ui_add(transaction_list, value, type, description):
         > description - A description of the transaction:
                         E.g: "add 100 out PIZZA"
     """
+
     if value < 0:
         print("\nYou should have entered a positive integer as a value.")
         print("The value will be automatically made positive.\n")
@@ -63,6 +64,10 @@ def ui_add(transaction_list, value, type, description):
 
     if type not in ["in", "out"]:
         message = "The parameter 'type' should have one of the following values: 'in', 'out'."
+        raise Exception(message)
+
+    if not isinstance(description, str):
+        message = "The parameter 'description' should be a string."
         raise Exception(message)
 
     value = abs(int(value))
@@ -108,12 +113,21 @@ def test_add():
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
-    """
     ### Test 5
-    ui_add(account_transactions, 125.56, "blahblah", "jacket")
-    correct_result.append(Transaction(today, 125, "in", "jacket"))
-    assert_last_transactions()
-    """
+    try:
+        ui_add(account_transactions, 125, "blahblah", "jacket")
+        correct_result.append(Transaction(today, 125, "blahblah", "jacket"))
+        assert_last_transactions()
+    except Exception as e:
+        print(e)
+
+    ### Test 6
+    try:
+        ui_add(account_transactions, 125, "in", 123)
+        correct_result.append(Transaction(today, 125, "in", 123))
+        assert_last_transactions()
+    except Exception as e:
+        print(e)
 
     print("<ui_add> function test passed.")
 
