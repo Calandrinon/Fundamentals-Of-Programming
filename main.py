@@ -1,5 +1,10 @@
 import datetime
 
+"""
+    TODO: In case the user gives a negative value as a parameter to the
+          <ui_add> function, return an error message
+"""
+
 class Transaction:
     def __init__(self, date, value, type, description):
         self.date = date
@@ -53,7 +58,7 @@ def ui_add(transaction_list, value, type, description):
         > description - A description of the transaction:
                         E.g: "add 100 out PIZZA"
     """
-    value = abs(value)
+    value = abs(int(value))
     current_date = datetime.datetime.today().day ### The current date when the
                                                  ### transaction is made.
 
