@@ -31,7 +31,6 @@ class Transaction:
     def set_description(self, description):
         self.description = description
 
-
 def ui_add(transaction_list, value, type, description):
     """
     Adds to a transaction list a new transaction on the current day.
@@ -56,12 +55,14 @@ def ui_add(transaction_list, value, type, description):
     """
     current_date = datetime.datetime.today().day ### The current date when the
                                                  ### transaction is made.
-    new_transaction = (current_date, value, type, description)
-    transaction_list[current_date - 1].append(new_transaction)
+
+    new_transaction = Transaction(current_date, value, type, description)
+    transaction_list.append(new_transaction)
 
 def test_add():
-    account_transactions = [[] for i in range(31)]
-    correct_result = [[] for i in range(31)]
+    """------------------------Test 1-----------------------------"""
+    account_transactions = []
+    correct_result = []
 
     today = datetime.datetime.today().day
     test_value = 100
@@ -69,9 +70,12 @@ def test_add():
     test_description = "pizza"
 
     ui_add(account_transactions, test_value, test_type, test_description)
-    correct_result[today - 1].append((today, test_value, test_type, test_description))
+    correct_result.append(Transaction(today, test_value, test_type, test_description))
 
-    assert(account_transactions == correct_result)
+    assert(account_transactions[-1].get_date() == correct_result[-1].get_date())
+    assert(account_transactions[-1].get_value() == correct_result[-1].get_value())
+    assert(account_transactions[-1].get_type() == correct_result[-1].get_type())
+    assert(account_transactions[-1].get_description() == correct_result[-1].get_description())
 
 def test_transaction_class():
     today = datetime.datetime.today().day
