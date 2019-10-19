@@ -90,6 +90,11 @@ def test_add():
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
+    ### Test 4
+    ui_add(account_transactions, 125.56, "in", "jacket")
+    correct_result.append(Transaction(today, 125, "in", "jacket"))
+    assert_last_transactions()
+
 def test_transaction_class():
     today = datetime.datetime.today().day
     transaction = Transaction(today, 100, "out", "pizza")
