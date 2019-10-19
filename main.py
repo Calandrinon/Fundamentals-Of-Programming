@@ -3,6 +3,9 @@ import datetime
 """
     TODO: In function <ui_add>: Update the specification. Mention all the
           exceptions that could be raised.
+    TODO: In function <ui_print_specification_function_add>: Remove the
+          details about the first parameter.
+    TODO: Clear screen after each input request.
 """
 
 class Transaction:
@@ -193,15 +196,20 @@ def run_all_tests():
 
 def main():
     account_transactions = []
+    commands = ["quit", "exit", "add"]
 
     while True:
         command = input("###: ")
         parameters = split_command(command)
+        number_of_parameters = len(parameters)
+
+        if number_of_parameters == 0:
+            print("Please enter a command...")
+            continue
 
         if parameters[0] == "quit" or parameters[0] == "exit":
             break
         elif parameters[0] == "add":
-            number_of_parameters = len(parameters)
             ### In case the user doesn't enter 3 parameters
             if number_of_parameters != 4:
                 print("Invalid number of parameters!")
@@ -214,7 +222,8 @@ def main():
                 print(e)
                 ui_print_specification_function_add()
             ui_print_transactions(account_transactions)
-
+        elif parameters[0] not in commands:
+            print("That command doesn't exist! This is the list of commands: ", commands)
 
 run_all_tests()
 main()
