@@ -58,6 +58,14 @@ def ui_add(transaction_list, value, type, description):
         > description - A description of the transaction:
                         E.g: "add 100 out PIZZA"
     """
+    if value < 0:
+        print("You should have entered a positive integer as a value.")
+        print("The value will be automatically made positive.")
+
+    if isinstance(value, float):
+        print("You should have entered an integer as a value, not a float.")
+        print("The value will be converted to an integer automatically.")
+
     value = abs(int(value))
     current_date = datetime.datetime.today().day ### The current date when the
                                                  ### transaction is made.
