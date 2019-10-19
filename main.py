@@ -105,7 +105,12 @@ def ui_insert(transaction_list, day, value, type, description):
         > description - A description of the transaction:
                         E.g: "insert 25 100 in SALARY"
     """
-    pass
+    if day < 1 or day > 31 or isinstance(day, float):
+        message = "The day parameter should be an integer value between 1 and 31!"
+        raise Exception(message)
+
+    ui_add(transaction_list, value, type, description)
+    transaction_list[-1].set_date(day)
 
 def split_command(command):
     """
@@ -136,6 +141,48 @@ def ui_print_specification_function_add():
 
 def clear_screen():
     print("\n"*200)
+
+def test_insert():
+    print("\n\n<ui_add> function test running...")
+    account_transactions = []
+    correct_result = []
+
+    def assert_last_transactions():
+        assert(account_transactions[-1].get_date() == correct_result[-1].get_date())
+        assert(account_transactions[-1].get_value() == correct_result[-1].get_value())
+        assert(account_transactions[-1].get_type() == correct_result[-1].get_type())
+        assert(account_transactions[-1].get_description() == correct_result[-1].get_description())
+
+    ### Test 1
+    ui_insert(account_transactions, 24, 125, "in", "jacket")
+    correct_result.append(Transaction(24, 125, "in", "jacket"))
+    assert_last_transactions()
+
+    ### Test 2
+    try:
+        ui_insert(account_transactions, -24, 125, "in", "jacket")
+        correct_result.append(Transaction(24, 125, "in", "jacket"))
+        assert_last_transactions()
+    except Exception as e:
+        print(e)
+
+    ### Test 3
+    try:
+        ui_insert(account_transactions, 24.5, 125, "in", "jacket")
+        correct_result.append(Transaction(24, 125, "in", "jacket"))
+        assert_last_transactions()
+    except Exception as e:
+        print(e)
+
+    ### Test 4
+    try:
+        ui_insert(account_transactions, 52, 125, "in", "jacket")
+        correct_result.append(Transaction(24, 125, "in", "jacket"))
+        assert_last_transactions()
+    except Exception as e:
+        print(e)
+
+    print("<ui_insert> function test passed.\n\n")
 
 def test_split_command():
     print("\n\n<split_command> function test running...")
@@ -213,7 +260,8 @@ def run_all_tests():
     test_add()
     test_transaction_class()
     test_split_command()
-    print("\n\n\n")
+    test_insert()
+    print("\n\n\nTests are done!\n\n\n\n\n")
 
 def main():
     account_transactions = []
