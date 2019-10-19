@@ -109,6 +109,11 @@ def test_add():
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
+    ### Test 5
+    ui_add(account_transactions, 125.56, "blahblah", "jacket")
+    correct_result.append(Transaction(today, 125, "in", "jacket"))
+    assert_last_transactions()
+
     print("<ui_add> function test passed.")
 
 def test_transaction_class():
