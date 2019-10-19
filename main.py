@@ -66,6 +66,10 @@ def ui_add(transaction_list, value, type, description):
         print("\nYou should have entered an integer as a value, not a float.")
         print("The value will be converted to an integer automatically.\n")
 
+    if type not in ["in", "out"]:
+        message = "The parameter 'type' should have one of the following values: 'in', 'out'."
+        raise Exception(message)
+
     value = abs(int(value))
     current_date = datetime.datetime.today().day ### The current date when the
                                                  ### transaction is made.
@@ -109,10 +113,12 @@ def test_add():
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
+    """
     ### Test 5
     ui_add(account_transactions, 125.56, "blahblah", "jacket")
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
+    """
 
     print("<ui_add> function test passed.")
 
