@@ -60,22 +60,29 @@ def ui_add(transaction_list, value, type, description):
     transaction_list.append(new_transaction)
 
 def test_add():
-    """------------------------Test 1-----------------------------"""
     account_transactions = []
     correct_result = []
+
+    def assert_last_transactions():
+        assert(account_transactions[-1].get_date() == correct_result[-1].get_date())
+        assert(account_transactions[-1].get_value() == correct_result[-1].get_value())
+        assert(account_transactions[-1].get_type() == correct_result[-1].get_type())
+        assert(account_transactions[-1].get_description() == correct_result[-1].get_description())
 
     today = datetime.datetime.today().day
     test_value = 100
     test_type = "out"
     test_description = "pizza"
 
+    ### Test 1
     ui_add(account_transactions, test_value, test_type, test_description)
     correct_result.append(Transaction(today, test_value, test_type, test_description))
+    assert_last_transactions()
 
-    assert(account_transactions[-1].get_date() == correct_result[-1].get_date())
-    assert(account_transactions[-1].get_value() == correct_result[-1].get_value())
-    assert(account_transactions[-1].get_type() == correct_result[-1].get_type())
-    assert(account_transactions[-1].get_description() == correct_result[-1].get_description())
+    ### Test 2
+    ui_add(account_transactions, 125, "in", "jacket")
+    correct_result.append(Transaction(today, 125, "in", "jacket"))
+    assert_last_transactions()
 
 def test_transaction_class():
     today = datetime.datetime.today().day
