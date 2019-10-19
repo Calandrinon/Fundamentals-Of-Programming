@@ -194,8 +194,12 @@ def main():
         if parameters[0] == "quit" or parameters[0] == "exit":
             break
         elif parameters[0] == "add":
-            ui_add(account_transactions, int(parameters[1]), parameters[2], parameters[3])
+            try:
+                ui_add(account_transactions, int(parameters[1]), parameters[2], parameters[3])
+            except Exception as e:
+                print(e)
             ui_print_transactions(account_transactions)
+
 
 run_all_tests()
 main()
