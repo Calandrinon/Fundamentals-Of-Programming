@@ -1,5 +1,37 @@
 import datetime
 
+class Transaction:
+    def __init__(self, date, value, type, description):
+        self.date = date
+        self.value = value
+        self.type = type
+        self.description = description
+
+    def get_date(self):
+        return self.date
+
+    def get_value(self):
+        return self.value
+
+    def get_type(self):
+        return self.type
+
+    def get_description(self):
+        return self.description
+
+    def set_date(self, date):
+        self.date = date
+
+    def set_value(self, value):
+        self.value = value
+
+    def set_type(self, type):
+        self.type = type
+
+    def set_description(self, description):
+        self.description = description
+
+
 def ui_add(transaction_list, value, type, description):
     """
     Adds to a transaction list a new transaction on the current day.
@@ -41,8 +73,18 @@ def test_add():
 
     assert(account_transactions == correct_result)
 
+def test_transaction_class():
+    today = datetime.datetime.today().day
+    transaction = Transaction(today, 100, "out", "pizza")
+    assert(transaction.get_date() == today)
+    assert(transaction.get_value() == 100)
+    assert(transaction.get_type() == "out")
+    assert(transaction.get_description() == "pizza")
+    pass
+
 def run_all_tests():
     test_add()
+    test_transaction_class()
 
 def main():
     pass
