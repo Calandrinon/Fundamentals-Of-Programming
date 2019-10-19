@@ -112,6 +112,9 @@ def ui_print_specification_function_add():
     usage_warning_message = "\n\nUsage:\nAdds to a transaction list a new transaction on the current day.\nInput:\n\t> value - A positive integer which represents the amount of\n\tmoney that was transferred\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t> description - A description of the transaction:\n\t\tE.g: 'add 100 out PIZZA'\n\n\n"
     print(usage_warning_message)
 
+def clear_screen():
+    print("\n"*200)
+
 def test_split_command():
     print("\n\n<split_command> function test running...")
     assert(split_command("add 100 out pizza") == ["add", "100", "out", "pizza"])
@@ -198,6 +201,7 @@ def main():
         command = input("###: ")
         parameters = split_command(command)
         number_of_parameters = len(parameters)
+        clear_screen()
 
         if number_of_parameters == 0:
             print("Please enter a command...")
