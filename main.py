@@ -60,12 +60,12 @@ def ui_add(transaction_list, value, type, description):
     """
 
     if value < 0:
-        print("\nYou should have entered a positive integer as a value.")
-        print("The value will be automatically made positive.\n")
+        print("You should have entered a positive integer as a value.")
+        print("The value will be automatically made positive.")
 
     if isinstance(value, float):
-        print("\nYou should have entered an integer as a value, not a float.")
-        print("The value will be converted to an integer automatically.\n")
+        print("You should have entered an integer as a value, not a float.")
+        print("The value will be converted to an integer automatically.")
 
     if type not in ["in", "out"]:
         message = "The parameter 'type' should have one of the following values: 'in', 'out'."
@@ -93,12 +93,20 @@ def split_command(command):
         A list with all the tokens in the string "command".
     """
     list_of_tokens = command.split(" ")
-    list_of_tokens.remove("") ### In case the user enters too many spaces
-                              ### between the arguments of the command.
+    while "" in list_of_tokens:
+        list_of_tokens.remove("") ### In case the user enters too many spaces
+                                  ### between the arguments of the command.
     return list_of_tokens
 
+def test_split_command():
+    print("\n\n<split_command> function test running...")
+    assert(split_command("add 100 out pizza") == ["add", "100", "out", "pizza"])
+    assert(split_command("add     100      out   pizza") == ["add", "100", "out", "pizza"])
+    assert(split_command("insert    515 in   cool") == ["insert", "515", "in", "cool"])
+    print("<split_command> function test passed.\n\n")
+
 def test_add():
-    print("<ui_add> function test:")
+    print("\n\n<ui_add> function test running...")
     account_transactions = []
     correct_result = []
 
@@ -149,22 +157,23 @@ def test_add():
     except Exception as e:
         print(e)
 
-    print("<ui_add> function test passed.")
+    print("<ui_add> function test passed.\n\n")
 
 def test_transaction_class():
-    print("<Transaction> class test:")
+    print("\n\n<Transaction> class test running...")
     today = datetime.datetime.today().day
     transaction = Transaction(today, 100, "out", "pizza")
     assert(transaction.get_date() == today)
     assert(transaction.get_value() == 100)
     assert(transaction.get_type() == "out")
     assert(transaction.get_description() == "pizza")
-    print("<Transaction> class test passed.")
+    print("<Transaction> class test passed.\n\n")
 
 def run_all_tests():
     print("Tests:")
     test_add()
     test_transaction_class()
+    test_split_command()
 
 def main():
     """
