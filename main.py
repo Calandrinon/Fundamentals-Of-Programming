@@ -196,7 +196,7 @@ def run_all_tests():
 
 def main():
     account_transactions = []
-    commands = ["quit", "exit", "add"]
+    commands = ["quit", "exit", "add", "clear"]
 
     while True:
         command = input("###: ")
@@ -223,6 +223,8 @@ def main():
                 print(e)
                 ui_print_specification_function_add()
             ui_print_transactions(account_transactions)
+        elif parameters[0] == "clear":
+            clear_screen()
         elif parameters[0] not in commands:
             print("That command doesn't exist! This is the list of commands: ", commands)
 
