@@ -275,18 +275,20 @@ def clear_screen():
 
 ### The main function.
 def main():
-    print_options()
     complex_num_list = []
 
     ### An infinite loop which is broken when the user enters the number 4,
     ### which corresponds to the 4th option, the exit option.
     while True:
+        print_options()
         option = int(input("Enter an option: "))
-        print("\n")
+        clear_screen()
 
         if option == 1:
             try:
                 complex_num_list = read_complex_num_list()
+                clear_screen()
+                #1 + 2i, 2i, 3i, 4i, 5, 6, 1, 2, 2 , 6, 735, 12, 1,24
             except ValueError as ve:
                 print(ve)
             ### A try and catch statement which catches value errors caused
@@ -304,6 +306,7 @@ def main():
             print("       A. Get the longest sequence of complex numbers with increasing modulus from the list.")
             print("       B. Get the longest sequence of real numbers from the list.")
             suboption = input("Type A or B: ")
+            clear_screen()
             if suboption == 'A':
                 increasing_modulus_sequence(complex_num_list)
             elif suboption == 'B':
