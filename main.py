@@ -1,8 +1,6 @@
 import datetime
 
 """
-    TODO: Remove automatic transaction list printing in <main> once the list
-          function is created.
     TODO: Shorten the test functions.
     TODO: Check <ui_print_specification_function_remove> once again.
 """
@@ -114,7 +112,7 @@ def ui_insert(transaction_list, day, value, type, description):
     ui_add(transaction_list, value, type, description)
     transaction_list[-1].set_date(day)
 
-def ui_print_transactions(transaction_list):
+def ui_list(transaction_list):
     if len(transaction_list) == 0:
         print("The transaction list is empty!")
         return
@@ -652,7 +650,6 @@ def main():
             except Exception as e:
                 print(e)
                 ui_print_specification_function_add()
-            ui_print_transactions(account_transactions)
         elif parameters[0] == "insert":
             ### In case the user doesn't enter 4 parameters
             if number_of_parameters != 5:
@@ -665,7 +662,6 @@ def main():
             except Exception as e:
                 print(e)
                 ui_print_specification_function_insert()
-            ui_print_transactions(account_transactions)
         elif parameters[0] == "remove":
             ### In case the user doesn't enter 1 parameter or 3 parameters
             if not(number_of_parameters == 2 or number_of_parameters == 4):
@@ -695,7 +691,6 @@ def main():
                     ui_remove(account_transactions, int(parameters[1]), int(parameters[3]), ["in", "out"])
             except Exception as e:
                 print(e)
-            ui_print_transactions(account_transactions)
         elif parameters[0] == "replace":
             ### In case the user doesn't enter exactly 5 parameters
             if number_of_parameters != 6:
