@@ -1,6 +1,7 @@
 import math
 
 """
+    TODO: Rewrite method <print> from class <Complex>
     TODO: In method "print" from class "Complex": if the imaginary part is
           negative, print '-' instead of '+'  ---> DONE
     TODO: Functions <increasing_modulus_sequence> and <real_numbers_sequence>:
@@ -90,7 +91,7 @@ class Complex:
             ### "a + 1i".
             imaginary_part = ""
         elif imaginary_part < 0:
-            print("{} - {}i".format(real_part, abs(imaginary_part)), end="")
+            print("{} {}i".format(real_part, abs(imaginary_part)), end="")
 
         print("{} + {}i".format(real_part, imaginary_part), end="")
 
@@ -131,6 +132,7 @@ def expression_evaluator(expression):
     parts = []
     current_number = 0
     character_index = 0
+
     """
     -1-2i
     -1+2i
@@ -138,13 +140,13 @@ def expression_evaluator(expression):
     1+2i
     """
 
-
     for character in expression:
         if character >= '0' and character <= '9':
             current_number = current_number * 10 + int(character)
         else:
             if character_index > 0:
                 parts.append(current_number*sign)
+                current_number = 0
 
             if character == 'i':
                 break
@@ -154,11 +156,19 @@ def expression_evaluator(expression):
                 sign = 1
         character_index += 1
 
-    if parts < 2 or parts > 2:
+    if len(parts) > 2:
         message = "The complex number should have 2 parts."
         raise Exception(message)
 
-    print(parts)
+    if len(parts) < 2:
+        if expression.find('i'):
+            result.set_imaginary_part(parts[0])
+        else:
+            result.set_real_part(parts[0])
+    else:
+        result.set_real_part(parts[0])
+        result.set_imaginary_part(parts[1])
+    return result
 
 ### Reads the list of complex numbers as a string.
 def read_complex_num_list():
@@ -328,12 +338,38 @@ def real_numbers_sequence(complex_num_list):
 def clear_screen():
     print("\n" * 200)
 
+def test_expression_evaluator():
+    ### Test 1
+    expression = "1+2i"
+    result = expression_evaluator(expression)
+    assert(result.get_real_part(), 1)
+    assert(result.get_imaginary_part(), 2)
+
+    ### Test 2
+    expression = "1-2i"
+    result = expression_evaluator(expression)
+    assert(result.get_real_part(), 1)
+    assert(result.get_imaginary_part(), -2)
+
+    ### Test 3
+    expression = "-1+2i"
+    result = expression_evaluator(expression)
+    assert(result.get_real_part(), -1)
+    assert(result.get_imaginary_part(), 2)
+
+    ### Test 4
+    expression = "-1-2i"
+    result = expression_evaluator(expression)
+    assert(result.get_real_part(), -1)
+    assert(result.get_imaginary_part(), -2)
+
 def test_remove_occurences():
     test_list = ['a', 'b', 'c', 'a', 'c']
     test_list = remove_occurences(test_list, 'c')
     assert(test_list == ['a', 'b', 'a'])
 
 def run_all_tests():
+    test_expression_evaluator()
     test_remove_occurences()
 
 ### The main function.
@@ -383,5 +419,5 @@ def main():
             print("Type a number between 1 and 4...\n\n")
         print("\n\n")
 
-#run_all_tests()
-main()
+run_all_tests()
+#main()
