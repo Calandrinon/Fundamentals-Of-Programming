@@ -168,6 +168,112 @@ def ui_print_specification_function_insert():
 def clear_screen():
     print("\n"*200)
 
+def test_remove():
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+
+    def assert_transaction_lists():
+        assert(len(account_transactions) == len(correct_final_result))
+
+        for transaction in account_transactions:
+            assert(transaction.get_date() == correct_result.get_date())
+            assert(transaction.get_value() == correct_result.get_value())
+            assert(transaction.get_type() == correct_result.get_type())
+            assert(transaction.get_description() == correct_result.get_description())
+
+    ### Test 1
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 1, 31, ["in", "out"])
+    assert_transaction_lists()
+
+    ### Test 2
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 1, 20, ["in", "out"])
+    correct_final_result = []
+    assert_transaction_lists()
+
+    ### Test 3
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 1, 10, ["in", "out"])
+    assert_transaction_lists()
+
+    ### Test 4
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 1, 20, ["in"])
+    assert_transaction_lists()
+
+    ### Test 5
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 1, 31, ["out"])
+    assert_transaction_lists()
+
+    ### Test 6
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 1111, 25, ["in"])
+    assert_transaction_lists()
+
+    ### Test 7
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 1111.5, 25, ["out"])
+    assert_transaction_lists()
+
+    ### Test 8
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 2.5, 25, ["out"])
+    assert_transaction_lists()
+
+    ### Test 9
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, -2, 25, ["out"])
+    assert_transaction_lists()
+
+    ### Test 10
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 0, 31, ["in"])
+    assert_transaction_lists()
+
+    ### Test 11
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+    ui_remove(account_transactions, 0, 32, ["crap"])
+    assert_transaction_lists()
+
+
+
 def test_insert():
     print("\n\n<ui_insert> function test running...")
     account_transactions = []
@@ -283,6 +389,7 @@ def test_transaction_class():
 
 def run_all_tests():
     print("Tests:")
+    test_remove()
     test_add()
     test_transaction_class()
     test_split_command()
