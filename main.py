@@ -166,6 +166,31 @@ def ui_remove(transaction_list, start_day, end_day, types):
         else:
             changes_made = False
 
+def ui_replace(transaction_list, day, type, description, value):
+    """
+    This function edits the amount of money of a specific transaction made on
+    the mentioned day, based on the entered parameters.
+    Input:
+        > transaction_list - The list of transactions.
+
+        > day - The day when the transaction was made.
+
+        > type - A string which represents the type of the transaction.
+                 It can be one of the following:
+                        * in - a sum of money was transferred into the
+                               account
+                        * out - a sum of money was transferred from the
+                               account to somewhere else
+
+        > description - A description of the transaction:
+                        E.g: "insert 25 100 in SALARY"
+
+        > value - The amount of money involved in the transaction. In this
+                  case, "value" will be the new amount of money assigned
+                  to the transaction made on the day "day", with the type
+                  and the description mentioned in the parameters.
+    """
+
 def split_command(command):
     """
     Gets a string (in this case the command that is given as an input from
