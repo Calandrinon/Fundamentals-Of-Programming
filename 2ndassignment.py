@@ -4,6 +4,9 @@ import math
     TODO: Functions <increasing_modulus_sequence> and <real_numbers_sequence>:
           If there are multiple sequences of maximum length with the given
           property, print them all
+
+
+    1 +   2i , -1 - 3 i, +9-6i, -10   + 100i, i, 2i, 3i, 1, 9, 0, -1, +7 + i, -7  -  i, 7  - i, -7+i
 """
 class Complex:
     ### This is the complex number being stored in a tuple with the first
