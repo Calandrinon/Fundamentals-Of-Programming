@@ -635,7 +635,7 @@ def run_all_tests():
 
 def main():
     account_transactions = []
-    commands = ["quit", "exit", "add", "clear", "insert", "remove"]
+    commands = ["quit", "exit", "add", "clear", "insert", "remove", "replace", "list"]
 
     while True:
         command = input("###: ")
@@ -715,6 +715,9 @@ def main():
                 continue
 
             ui_replace(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
+        elif parameters[0] == "list":
+            clear_screen()
+            ui_list(account_transactions)
         elif parameters[0] == "clear":
             clear_screen()
         elif parameters[0] not in commands:
