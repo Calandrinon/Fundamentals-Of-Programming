@@ -5,6 +5,9 @@ import datetime
           try-catch statements in each of the small tests.
     TODO: Shorten the test functions.
     TODO: Check <ui_print_specification_function_remove> once again.
+    TODO: Print specifications for list functions if the user enters Invalid
+          parameters.
+    TODO: Check for invalid inputs in <main> again and add exception handling.
 """
 
 class Transaction:
@@ -115,12 +118,92 @@ def ui_insert(transaction_list, day, value, type, description):
     transaction_list[-1].set_date(day)
 
 def ui_list(transaction_list):
+    """
+    Lists all the transactions made on the account.
+    """
     if len(transaction_list) == 0:
         print("The transaction list is empty!")
         return
 
     for transaction in transaction_list:
         transaction.print()
+
+def ui_list_by_type(transaction_list, type):
+    """
+    Lists all the transactions with the specified type (in, out).
+    Input:
+        > type - The type of the transaction.
+    """
+    if len(transaction_list) == 0:
+        print("The transaction list is empty!")
+        return
+
+    for transaction in transaction_list:
+        if transaction.get_type() == type:
+            transaction.print()
+    pass
+
+def ui_list_by_value_size(transaction_list, condition, value):
+    """
+    Lists all the transactions with respect to the condition given as a
+    parameter.
+    E.g: list > 100
+         - lists all transactions with the value greater than 100
+    Input:
+        > condition - The condition used for filtering the list.
+
+        > value - The value which is compared with the values of the filtered
+                  transactions.
+    """
+    if len(transaction_list) == 0:
+        print("The transaction list is empty!")
+        return
+
+    if condition not in ["<", ">", "<=", ">=", "="]:
+        message = "The condition parameter should contain one of the following operands: <, >, =."
+        raise Exception(message)
+
+    for transaction in transaction_list:
+        if condition == "<":
+            if transaction.get_value() < value:
+                transaction.print()
+        elif condition == "<=":
+            if transaction.get_value() <= value:
+                transaction.print()
+        elif condition == ">=":
+            if transaction.get_value() >= value:
+                transaction.print()
+        elif condition == ">":
+            if transaction.get_value() > value:
+                transaction.print()
+        else:
+            if transaction.get_value() == value:
+                transaction.print()
+
+def ui_list_balance(transaction_list, day):
+    """
+    Computes the account’s balance on the day specified in the parameter.
+    Input:
+        > day
+    """
+    if len(transaction_list) == 0:
+        print("The transaction list is empty!")
+        return
+
+    if not isinstance(day, int):
+        message = "The day parameter needs to be a positive integer between 1 and 31."
+        raise Exception(message)
+
+    in_transactions_sum = 0
+    out_transactions_sum = 0
+
+    for transaction in transaction_list:
+        if transaction.get_date() <= day:
+            if transaction.get_type() == "in":
+                in_transactions_sum += transaction.get_value()
+            else:
+                out_transactions_sum += transaction.get_value()
+    print(in_transactions_sum - out_transactions_sum)
 
 def ui_remove(transaction_list, start_day, end_day, types):
     """
@@ -717,7 +800,21 @@ def main():
             ui_replace(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
         elif parameters[0] == "list":
             clear_screen()
-            ui_list(account_transactions)
+            if number_of_parameters == 1:
+                ui_list(account_transactions)
+            elif number_of_parameters == 2:
+                ui_list_by_type(account_transactions, parameters[1])
+            elif number_of_parameters == 3:
+                if parameters[1] != "balance":
+                    try:
+                        ui_list_by_value_size(account_transactions, parameters[1], int(parameters[2]))
+                    except Exception as e:
+                        print(e)
+                else:
+                    try:
+                        ui_list_balance(account_transactions, int(parameters[2]))
+                    except Exception as e:
+                        print(e)
         elif parameters[0] == "clear":
             clear_screen()
         elif parameters[0] not in commands:
