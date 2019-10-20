@@ -1,6 +1,8 @@
 import datetime
 
 """
+    TODO: Add a transaction saving system with files. Create transaction
+          loading and saving functions.
     TODO: Write a big try-catch statement in <run_all_tests> and delete the
           try-catch statements in each of the small tests.
     TODO: Shorten the test functions.
@@ -8,6 +10,7 @@ import datetime
     TODO: Print specifications for list functions if the user enters Invalid
           parameters.
     TODO: Check for invalid inputs in <main> again and add exception handling.
+    TODO: Check <ui_remove> function once again.
 """
 
 class Transaction:
@@ -42,7 +45,7 @@ class Transaction:
         self.description = description
 
     def print(self):
-        print("[{}, {}, {}, {}]".format(self.get_date(), self.get_value(), self.get_type(),
+        print("[Day: {}, Sum: {}, Type of transaction: {}, Description: {}]".format(self.get_date(), self.get_value(), self.get_type(),
         self.get_description()))
 
 def ui_add(transaction_list, value, type, description):
@@ -203,7 +206,7 @@ def ui_list_balance(transaction_list, day):
                 in_transactions_sum += transaction.get_value()
             else:
                 out_transactions_sum += transaction.get_value()
-    print(in_transactions_sum - out_transactions_sum)
+    print("The balance is: ", in_transactions_sum - out_transactions_sum)
 
 def ui_remove(transaction_list, start_day, end_day, types):
     """
