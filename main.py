@@ -1,7 +1,8 @@
 import datetime
 
 """
-    TODO: Add <remove> function and test it.
+    TODO: Remove automatic transaction list printing in <main> once the list
+          function is created.
 """
 
 class Transaction:
@@ -132,8 +133,8 @@ def ui_remove(transaction_list, start_day, end_day, types):
                                transactions made in this interval of days will
                                be deleted from the list.
 
-                             - The "types" parameter is a list with all the
-                               types of transactions that will be deleted.
+        > The "types" parameter is a list with all the
+          types of transactions that will be deleted.
     """
 
     if start_day < 1 or start_day > 31 or end_day < 1 or end_day > 31 or start_day > end_day or isinstance(start_day, float) or isinstance(end_day, float):
@@ -194,7 +195,13 @@ def ui_print_specification_function_insert():
     """
     usage_warning_message = "\n\nUsage:\nAdds to a transaction list a new transaction on the day specified in the parameter 'day'.\nInput:\n\t> day - The day when the transaction has been made.\n\t> value - A positive integer which represents the amount of\n\tmoney that was transferred\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t> description - A description of the transaction:\n\t\tE.g: 'add 100 out PIZZA'\n\n\n"
     print(usage_warning_message)
-    pass
+
+def ui_print_specification_function_remove():
+    """
+        Prints the usage instructions of the function <ui_remove>.
+    """
+    usage_warning_message = "\n\nUsage:\nThis function removes transactions from the transaction list, based on the\nentered parameters.\nInput:\n\t> start_day, end_day - These are the parameters which represent the\n\ttransactions made in the interval of days with\n\tthe boundaries [start_day, end_day]. All the\n\ttransactions made in this interval of days will\n\tbe deleted from the list.\n\t> The 'types' parameter is a list with all the\n\ttypes of transactions that will be deleted.\n\t"
+    print(usage_warning_message)
 
 def clear_screen():
     print("\n"*200)
@@ -475,7 +482,7 @@ def run_all_tests():
 
 def main():
     account_transactions = []
-    commands = ["quit", "exit", "add", "clear", "insert"]
+    commands = ["quit", "exit", "add", "clear", "insert", "remove"]
 
     while True:
         command = input("###: ")
@@ -514,6 +521,36 @@ def main():
             except Exception as e:
                 print(e)
                 ui_print_specification_function_insert()
+            ui_print_transactions(account_transactions)
+        elif parameters[0] == "remove":
+            ### In case the user doesn't enter 1 parameter or 3 parameters
+            if not(number_of_parameters == 2 or number_of_parameters == 4):
+                print("Invalid number of parameters!")
+                ui_print_specification_function_remove()
+                continue
+            try:
+                if number_of_parameters == 2:
+                    is_parameter_1_int = True
+                    try:
+                        int(parameters[1])
+                    except ValueError:
+                        is_parameter_1_int = False
+
+                    if is_parameter_1_int:
+                        ui_remove(account_transactions, int(parameters[1]), int(parameters[1]), ["in", "out"])
+                    else:
+                        if parameters[1] not in ["in", "out"]:
+                            clear_screen()
+                            print("You should enter one of the following values in the 'type' parameter: 'in', 'out'")
+                        else:
+                            ui_remove(account_transactions, 1, 31, [parameters[1]])
+                elif number_of_parameters == 4:
+                    if parameters[2] != "to":
+                        ui_print_specification_function_remove()
+                        continue
+                    ui_remove(account_transactions, int(parameters[1]), int(parameters[3]), ["in", "out"])
+            except Exception as e:
+                print(e)
             ui_print_transactions(account_transactions)
         elif parameters[0] == "clear":
             clear_screen()
