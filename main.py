@@ -111,6 +111,25 @@ def ui_insert(transaction_list, day, value, type, description):
     ui_add(transaction_list, value, type, description)
     transaction_list[-1].set_date(day)
 
+def ui_remove(transaction_list, start_day, end_day, types):
+    """
+    This function removes transactions from the transaction list, based on the
+    entered parameters.
+    Input:
+        > transaction_list - The list of transactions.
+
+        > start_day, end_day - These are the parameters which represent the
+                               transactions made in the interval of days with
+                               the boundaries [start_day, end_day]. All the
+                               transactions made in this interval of days will
+                               be deleted from the list.
+
+                             - The "types" parameter is a list with all the
+                               types of transactions that will be deleted.
+    """
+
+    pass
+
 def split_command(command):
     """
     Gets a string (in this case the command that is given as an input from
