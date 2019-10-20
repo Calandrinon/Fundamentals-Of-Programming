@@ -2,8 +2,7 @@ import math
 
 """
     TODO: In method "print" from class "Complex": if the imaginary part is
-          negative, print '-' instead of '+'
-    TODO: Check lines 109 and 110 and comment them properly
+          negative, print '-' instead of '+'  ---> DONE
     TODO: Functions <increasing_modulus_sequence> and <real_numbers_sequence>:
           If there are multiple sequences of maximum length with the given
           property, print them all
@@ -90,6 +89,8 @@ class Complex:
             ### 1 in order to not print the number as "a + i" instead of
             ### "a + 1i".
             imaginary_part = ""
+        elif imaginary_part < 0:
+            print("{} - {}i".format(real_part, abs(imaginary_part)), end="")
 
         print("{} + {}i".format(real_part, imaginary_part), end="")
 
@@ -101,31 +102,6 @@ class Complex:
 ### "print" from the class "Complex".
 def write_complex_num(complex_num):
     complex_num.print()
-
-### Reads a single complex number and returns it as an instance of the
-### class "Complex".
-def read_complex_num():
-    number = str(input("Enter the complex number: "))### Reads the number as a
-                                                     ### string.
-    number = number.replace(" ", "") ### Replaces each space in the entered
-                                     ### string with a null string if the
-                                     ### user enters more than one space
-                                     ### between each token of the expression.
-
-    parts = number.split("+")        ### Splits the string in 2 parts, real and
-                                     ### imaginary (or more parts if the user
-                                     ### entered multiple "+" characters).
-                                     ### The split method returns a list with
-                                     ### the 2 parts.
-
-    parts[-1] = parts[-1].replace("i", "") ### Replaces each i in the imaginary
-                                           ### part (which is stored in the
-                                           ### last element of the list) with
-                                           ### a null string.
-    if parts[-1] == "":
-        parts[-1] = "1"
-
-    return Complex(int(parts[0]), int(parts[-1]))
 
 ### Reads the list of complex numbers as a string.
 def read_complex_num_list():
