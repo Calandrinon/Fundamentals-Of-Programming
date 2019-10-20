@@ -4,9 +4,6 @@ import math
     TODO: Functions <increasing_modulus_sequence> and <real_numbers_sequence>:
           If there are multiple sequences of maximum length with the given
           property, print them all
-    TODO: At function <main>: Make a function for each option and a map which
-          associates the option numbers with the functions
-
 """
 class Complex:
     ### This is the complex number being stored in a tuple with the first
