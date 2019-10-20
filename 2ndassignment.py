@@ -3,9 +3,8 @@ import math
 """
     TODO: In method "print" from class "Complex": if the imaginary part is
           negative, print '-' instead of '+'
-    TODO: Check the comments in class "Complex" once again
     TODO: Check lines 109 and 110 and comment them properly
-    TODO: Functions <increasing_modulus_sequence> and <real_numbers_sequence>
+    TODO: Functions <increasing_modulus_sequence> and <real_numbers_sequence>:
           If there are multiple sequences of maximum length with the given
           property, print them all
     TODO: Test the function <real_numbers_sequence> once more
@@ -15,14 +14,13 @@ import math
     TODO: At function <main>: Check for exceptions at line 238 when the user
           enters literals other than '+' and 'i'
     TODO: At function <main>: Test the cases where the user enters negative
-          real and imaginary parts (for example: -2 - 5i)
+          imaginary parts (for example: 2 - 5i)
     TODO: At function <real_numbers_sequence>:
           The function doesn't work for lists with only 1 real number
           Repair unexpected results for exception cases like this:
           >  [2 + i, 3 + i, 1]
           >  [2, 5i, i, 2 + i, 2 + 2i, 3 + 2i, 1 + i]
           >  [4i, i, 4, i, i]
-
           The result: "There are no real numbers in the list!"
 """
 class Complex:
@@ -271,6 +269,9 @@ def real_numbers_sequence(complex_num_list):
 
     print("\n", "First position: ", first_pos, ";  Last position: ", last_pos - 1)
     print_list(complex_num_list, first_pos, last_pos)
+
+def clear_screen():
+    print("\n" * 200)
 
 ### The main function.
 def main():
