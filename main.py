@@ -111,6 +111,14 @@ def ui_insert(transaction_list, day, value, type, description):
     ui_add(transaction_list, value, type, description)
     transaction_list[-1].set_date(day)
 
+def ui_print_transactions(transaction_list):
+    if len(transaction_list) == 0:
+        print("The transaction list is empty!")
+        return
+
+    for transaction in transaction_list:
+        transaction.print()
+
 def ui_remove(transaction_list, start_day, end_day, types):
     """
     This function removes transactions from the transaction list, based on the
@@ -128,7 +136,34 @@ def ui_remove(transaction_list, start_day, end_day, types):
                                types of transactions that will be deleted.
     """
 
-    pass
+    if start_day < 1 or start_day > 31 or end_day < 1 or end_day > 31 or start_day > end_day or isinstance(start_day, float) or isinstance(end_day, float):
+        message = "The days should be positive integers between 1 and 31.\nThe starting day should be smaller or equal to the end day."
+        raise Exception(message)
+
+    if not("in" in types or "out" in types):
+        message = "The types of the transactions are 'in' and 'out'."
+        raise Exception(message)
+
+    blank_transaction = Transaction(0, 0, "none", "deleted")
+    for transaction_index in range(0, len(transaction_list)):
+        transaction_day = transaction_list[transaction_index].get_date()
+        transaction_type = transaction_list[transaction_index].get_type()
+        if transaction_day >= start_day and transaction_day <= end_day and transaction_type in types:
+            transaction_list[transaction_index] = blank_transaction
+
+    changes_made = True
+    while len(transaction_list) > 0 and changes_made:
+        initial_length_of_list = len(transaction_list)
+        try:
+            transaction_list.remove(blank_transaction)
+        except ValueError:
+            break
+        final_length_of_list = len(transaction_list)
+
+        if final_length_of_list < initial_length_of_list:
+            changes_made = True
+        else:
+            changes_made = False
 
 def split_command(command):
     """
@@ -145,10 +180,6 @@ def split_command(command):
         list_of_tokens.remove("") ### In case the user enters too many spaces
                                   ### between the arguments of the command.
     return list_of_tokens
-
-def ui_print_transactions(transaction_list):
-    for transaction in transaction_list:
-        transaction.print()
 
 def ui_print_specification_function_add():
     """
@@ -169,6 +200,7 @@ def clear_screen():
     print("\n"*200)
 
 def test_remove():
+    print("\n\n<ui_remove> function test running...")
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
@@ -177,11 +209,11 @@ def test_remove():
     def assert_transaction_lists():
         assert(len(account_transactions) == len(correct_final_result))
 
-        for transaction in account_transactions:
-            assert(transaction.get_date() == correct_result.get_date())
-            assert(transaction.get_value() == correct_result.get_value())
-            assert(transaction.get_type() == correct_result.get_type())
-            assert(transaction.get_description() == correct_result.get_description())
+        for transaction_index in range(0, len(correct_final_result)):
+            assert(account_transactions[transaction_index].get_date() == correct_final_result[transaction_index].get_date())
+            assert(account_transactions[transaction_index].get_value() == correct_final_result[transaction_index].get_value())
+            assert(account_transactions[transaction_index].get_type() == correct_final_result[transaction_index].get_type())
+            assert(account_transactions[transaction_index].get_description() == correct_final_result[transaction_index].get_description())
 
     ### Test 1
     account_transactions = [Transaction(19, 100, "out", "pizza"),
@@ -195,16 +227,17 @@ def test_remove():
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
+    correct_final_result = [Transaction(25, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     ui_remove(account_transactions, 1, 20, ["in", "out"])
-    correct_final_result = []
     assert_transaction_lists()
 
     ### Test 3
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     ui_remove(account_transactions, 1, 10, ["in", "out"])
     assert_transaction_lists()
 
@@ -212,7 +245,9 @@ def test_remove():
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     ui_remove(account_transactions, 1, 20, ["in"])
     assert_transaction_lists()
 
@@ -220,7 +255,7 @@ def test_remove():
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
+    correct_final_result = [Transaction(21, 100, "in", "gift")]
     ui_remove(account_transactions, 1, 31, ["out"])
     assert_transaction_lists()
 
@@ -228,51 +263,93 @@ def test_remove():
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
-    ui_remove(account_transactions, 1111, 25, ["in"])
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_remove(account_transactions, 1111, 25, ["in"])
+    except Exception as e:
+        print(e)
     assert_transaction_lists()
 
     ### Test 7
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
-    ui_remove(account_transactions, 1111.5, 25, ["out"])
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_remove(account_transactions, 1111.5, 25, ["out"])
+    except Exception as e:
+        print(e)
     assert_transaction_lists()
 
     ### Test 8
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
-    ui_remove(account_transactions, 2.5, 25, ["out"])
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_remove(account_transactions, 2.5, 25, ["out"])
+    except Exception as e:
+        print(e)
     assert_transaction_lists()
 
     ### Test 9
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
-    ui_remove(account_transactions, -2, 25, ["out"])
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_remove(account_transactions, -2, 25, ["out"])
+    except Exception as e:
+        print(e)
     assert_transaction_lists()
 
     ### Test 10
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
-    ui_remove(account_transactions, 0, 31, ["in"])
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_remove(account_transactions, 0, 31, ["in"])
+    except Exception as e:
+        print(e)
     assert_transaction_lists()
 
     ### Test 11
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    correct_final_result = []
-    ui_remove(account_transactions, 0, 32, ["crap"])
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_remove(account_transactions, 0, 32, ["crap"])
+    except Exception as e:
+        print(e)
+
+    ### Test 11
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_remove(account_transactions, 1, 5, ["crap"])
+    except Exception as e:
+        print(e)
     assert_transaction_lists()
 
-
+    print("<ui_remove> function test passed.\n\n")
 
 def test_insert():
     print("\n\n<ui_insert> function test running...")
