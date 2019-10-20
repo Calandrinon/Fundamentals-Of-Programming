@@ -1,6 +1,8 @@
 import datetime
 
 """
+    TODO: Write a big try-catch statement in <run_all_tests> and delete the
+          try-catch statements in each of the small tests.
     TODO: Shorten the test functions.
     TODO: Check <ui_print_specification_function_remove> once again.
 """
@@ -253,6 +255,14 @@ def ui_print_specification_function_replace():
 
 def clear_screen():
     print("\n"*200)
+
+def test_list():
+    print("\n\n<ui_list> function test running...")
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    ui_list(account_transactions)
+    print("<ui_list> function test passed.\n\n")
 
 def test_replace():
     print("\n\n<ui_replace> function test running...")
@@ -614,6 +624,7 @@ def test_transaction_class():
 
 def run_all_tests():
     print("Tests:")
+    test_list()
     test_replace()
     test_remove()
     test_add()
