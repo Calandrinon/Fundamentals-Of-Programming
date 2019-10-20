@@ -4,6 +4,7 @@ import datetime
     TODO: Remove automatic transaction list printing in <main> once the list
           function is created.
     TODO: Shorten the test functions.
+    TODO: Check <ui_print_specification_function_remove> once again.
 """
 
 class Transaction:
@@ -243,6 +244,13 @@ def ui_print_specification_function_remove():
         Prints the usage instructions of the function <ui_remove>.
     """
     usage_warning_message = "\n\nUsage:\nThis function removes transactions from the transaction list, based on the\nentered parameters.\nInput:\n\t> start_day, end_day - These are the parameters which represent the\n\ttransactions made in the interval of days with\n\tthe boundaries [start_day, end_day]. All the\n\ttransactions made in this interval of days will\n\tbe deleted from the list.\n\t> The 'types' parameter is a list with all the\n\ttypes of transactions that will be deleted.\n\t"
+    print(usage_warning_message)
+
+def ui_print_specification_function_replace():
+    """
+        Prints the usage instructions of the function <ui_replace>.
+    """
+    usage_warning_message = "\n\nUsage:\nThis function edits the amount of money of a specific transaction made on\nthe mentioned day, based on the entered parameters.\nInput:\n\t> day - The day when the transaction was made.\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t\t> description - A description of the transaction:\n\tE.g: 'insert 25 100 in SALARY'\n\t>description - A string which represents the description associated with the transaction.\n\t> value - The amount of money involved in the transaction. In this\n\tcase, 'value' will be the new amount of money assigned\n\tto the transaction made on the day 'day', with the type\n\tand the description mentioned in the parameters.\n\t"
     print(usage_warning_message)
 
 def clear_screen():
@@ -688,6 +696,19 @@ def main():
             except Exception as e:
                 print(e)
             ui_print_transactions(account_transactions)
+        elif parameters[0] == "replace":
+            ### In case the user doesn't enter exactly 5 parameters
+            if number_of_parameters != 6:
+                print("Invalid number of parameters!")
+                ui_print_specification_function_replace()
+                continue
+
+            if parameters[4] != "with":
+                print("Wrong usage!")
+                ui_print_specification_function_replace()
+                continue
+
+            ui_replace(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
         elif parameters[0] == "clear":
             clear_screen()
         elif parameters[0] not in commands:
