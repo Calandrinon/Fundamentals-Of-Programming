@@ -3,6 +3,7 @@ import datetime
 """
     TODO: Remove automatic transaction list printing in <main> once the list
           function is created.
+    TODO: Shorten the test functions.
 """
 
 class Transaction:
@@ -191,6 +192,22 @@ def ui_replace(transaction_list, day, type, description, value):
                   and the description mentioned in the parameters.
     """
 
+    if day < 1 or day > 31 or not isinstance(day, int):
+        message = "The day parameter should be a positive integer between 1 and 31!"
+        raise Exception(message)
+
+    if not isinstance(value, int) or value <= 0:
+        message = "The value parameter should be a positive integer!"
+        raise Exception(message)
+
+    if type not in ["in", "out"]:
+        message = "The type parameter should have one of the following values: 'in', 'out'."
+        raise Exception(message)
+
+    for transaction in transaction_list:
+        if transaction.get_date() == day and transaction.get_type() == type and transaction.get_description() == description:
+            transaction.set_value(value)
+
 def split_command(command):
     """
     Gets a string (in this case the command that is given as an input from
@@ -230,6 +247,99 @@ def ui_print_specification_function_remove():
 
 def clear_screen():
     print("\n"*200)
+
+def test_replace():
+    print("\n\n<ui_replace> function test running...")
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = []
+
+    def assert_transaction_lists():
+        assert(len(account_transactions) == len(correct_final_result))
+
+        for transaction_index in range(0, len(correct_final_result)):
+            assert(account_transactions[transaction_index].get_date() == correct_final_result[transaction_index].get_date())
+            assert(account_transactions[transaction_index].get_value() == correct_final_result[transaction_index].get_value())
+            assert(account_transactions[transaction_index].get_type() == correct_final_result[transaction_index].get_type())
+            assert(account_transactions[transaction_index].get_description() == correct_final_result[transaction_index].get_description())
+
+    ### Test 1
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = [Transaction(19, 55, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    ui_replace(account_transactions, 19, "out", "pizza", 55)
+    assert_transaction_lists()
+
+    ### Test 2
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_replace(account_transactions, -19, "out", "pizza", 55)
+    except Exception as e:
+        print(e)
+    assert_transaction_lists()
+
+    ### Test 3
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_replace(account_transactions, 5.5, "out", "pizza", 55)
+    except Exception as e:
+        print(e)
+    assert_transaction_lists()
+
+    ### Test 4
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_replace(account_transactions, 5, "abcdef", "pizza", 55)
+    except Exception as e:
+        print(e)
+    assert_transaction_lists()
+
+    ### Test 5
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_replace(account_transactions, 19, "out", "pizza", -12)
+    except Exception as e:
+        print(e)
+    assert_transaction_lists()
+
+    ### Test 6
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    correct_final_result = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_replace(account_transactions, 19, "out", "pizza", 12.5)
+    except Exception as e:
+        print(e)
+    assert_transaction_lists()
+
+    print("<ui_replace> function test passed.\n\n")
 
 def test_remove():
     print("\n\n<ui_remove> function test running...")
@@ -498,6 +608,7 @@ def test_transaction_class():
 
 def run_all_tests():
     print("Tests:")
+    test_replace()
     test_remove()
     test_add()
     test_transaction_class()
