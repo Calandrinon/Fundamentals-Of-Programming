@@ -4,21 +4,9 @@ import math
     TODO: Functions <increasing_modulus_sequence> and <real_numbers_sequence>:
           If there are multiple sequences of maximum length with the given
           property, print them all
-    TODO: Test the function <real_numbers_sequence> once more
-    TODO: At function <main> in the while loop: Clear screen after each input
     TODO: At function <main>: Make a function for each option and a map which
           associates the option numbers with the functions
-    TODO: At function <main>: Check for exceptions at line 238 when the user
-          enters literals other than '+' and 'i'
-    TODO: At function <main>: Test the cases where the user enters negative
-          imaginary parts (for example: 2 - 5i)  ---> IN PROGRESS
-    TODO: At function <real_numbers_sequence>:
-          The function doesn't work for lists with only 1 real number
-          Repair unexpected results for exception cases like this:
-          >  [2 + i, 3 + i, 1]
-          >  [2, 5i, i, 2 + i, 2 + 2i, 3 + 2i, 1 + i]
-          >  [4i, i, 4, i, i]
-          The result: "There are no real numbers in the list!"
+
 """
 class Complex:
     ### This is the complex number being stored in a tuple with the first
@@ -261,6 +249,7 @@ def increasing_modulus_sequence(complex_num_list):
         last_pos = pos
         first_pos = last_pos - sequence_length
 
+    print("The longest sequence of complex numbers with increasing modulus: ")
     print("\n", "First position: {}, Last position: {}".format(first_pos, last_pos - 1))
     print_list(complex_num_list, first_pos, last_pos)
 
@@ -270,7 +259,7 @@ def increasing_modulus_sequence(complex_num_list):
 def real_numbers_sequence(complex_num_list):
     sequence_length = 0
     max_seq_length = 0
-    previous_imaginary_part = -1
+    previous_imaginary_part = 0
     pos = 0
     first_pos = -1
     last_pos = -1
@@ -279,7 +268,7 @@ def real_numbers_sequence(complex_num_list):
                              ### it doesn't
 
     for number in complex_num_list:
-        if number.get_imaginary_part() == 0 and previous_imaginary_part == 0:
+        if number.get_imaginary_part() == 0:
             sequence_length += 1
             has_real_numbers = True
         else:
@@ -287,8 +276,7 @@ def real_numbers_sequence(complex_num_list):
                 max_seq_length = sequence_length
                 last_pos = pos
                 first_pos = last_pos - sequence_length
-            sequence_length = 1
-        previous_imaginary_part = number.get_imaginary_part()
+            sequence_length = 0
         pos += 1
 
     #In case the list has no real numbers we stop the function
@@ -301,6 +289,7 @@ def real_numbers_sequence(complex_num_list):
         last_pos = pos
         first_pos = last_pos - sequence_length
 
+    print("The longest sequence of real numbers: ")
     print("\n", "First position: ", first_pos, ";  Last position: ", last_pos - 1)
     print_list(complex_num_list, first_pos, last_pos)
 
