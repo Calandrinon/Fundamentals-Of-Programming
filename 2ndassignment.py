@@ -13,7 +13,7 @@ import math
     TODO: At function <main>: Check for exceptions at line 238 when the user
           enters literals other than '+' and 'i'
     TODO: At function <main>: Test the cases where the user enters negative
-          imaginary parts (for example: 2 - 5i)
+          imaginary parts (for example: 2 - 5i)  ---> IN PROGRESS
     TODO: At function <real_numbers_sequence>:
           The function doesn't work for lists with only 1 real number
           Repair unexpected results for exception cases like this:
@@ -103,6 +103,24 @@ class Complex:
 def write_complex_num(complex_num):
     complex_num.print()
 
+def remove_occurences(list_of_elements, element_del):
+    """
+    Removes all the occurences of an element in a list.
+    Input:
+        > list_of_elements - The list that is going to be edited.
+
+        > element_del - The element that will be deleted from the list.
+
+    Output:
+        Returns the new list without the occurences of element_del.
+    """
+    new_list = []
+    for element in list_of_elements:
+        if element != element_del:
+            new_list.append(element)
+
+    return new_list
+
 ### Reads the list of complex numbers as a string.
 def read_complex_num_list():
     numbers = str(input("Enter some complex numbers in the form of a+bi and separate them with a comma: "))
@@ -115,6 +133,8 @@ def read_complex_num_list():
     ### For each number in the list "numbers" there will be generated a list
     ### where the complex number in form of a string will be split in two parts
     ### with + as a delimitator.
+
+    print(numbers)
 
     for number in numbers:
         if number[-1].find("i") != -1:    ### This takes the last element in the
@@ -249,6 +269,14 @@ def real_numbers_sequence(complex_num_list):
 def clear_screen():
     print("\n" * 200)
 
+def test_remove_occurences():
+    test_list = ['a', 'b', 'c', 'a', 'c']
+    test_list = remove_occurences(test_list, 'c')
+    assert(test_list == ['a', 'b', 'a'])
+
+def run_all_tests():
+    test_remove_occurences()
+
 ### The main function.
 def main():
     complex_num_list = []
@@ -263,7 +291,7 @@ def main():
         if option == 1:
             try:
                 complex_num_list = read_complex_num_list()
-                clear_screen()
+                ###clear_screen()
                 #1 + 2i, 2i, 3i, 4i, 5, 6, 1, 2, 2 , 6, 735, 12, 1,24
             except ValueError as ve:
                 print(ve)
@@ -296,4 +324,5 @@ def main():
             print("Type a number between 1 and 4...\n\n")
         print("\n\n")
 
-main()
+#main()
+run_all_tests()
