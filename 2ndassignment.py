@@ -121,21 +121,80 @@ def remove_occurences(list_of_elements, element_del):
 
     return new_list
 
+def expression_evaluator(expression):
+    """
+    Evaluates an expression of the form "a+bi" of a complex number and returns
+    the real and imaginary part of the number as a Complex class instance.
+    """
+    result = Complex(0, 0)
+    sign = 1
+    parts = []
+    current_number = 0
+    character_index = 0
+    """
+    -1-2i
+    -1+2i
+    1-2i
+    1+2i
+    """
+
+
+    for character in expression:
+        if character >= '0' and character <= '9':
+            current_number = current_number * 10 + int(character)
+        else:
+            if character_index > 0:
+                parts.append(current_number*sign)
+
+            if character == 'i':
+                break
+            elif character == '-':
+                sign = -1
+            elif character == '+':
+                sign = 1
+        character_index += 1
+
+    if parts < 2 or parts > 2:
+        message = "The complex number should have 2 parts."
+        raise Exception(message)
+
+    print(parts)
+
 ### Reads the list of complex numbers as a string.
 def read_complex_num_list():
-    numbers = str(input("Enter some complex numbers in the form of a+bi and separate them with a comma: "))
-    numbers = numbers.replace(" ", "") ### Replaces spaces in the string with
+    numbers_as_strings = str(input("Enter some complex numbers in the form of a+bi and separate them with a comma: "))
+    numbers_as_strings = numbers_as_strings.replace(" ", "") ### Replaces spaces in the string with
                                        ### null strings.
-    numbers = numbers.split(",")       ### Splits the string with comma as a
+    numbers_as_strings = numbers_as_strings.split(",")       ### Splits the string with comma as a
                                        ### delimitator and returns a list with
                                        ### all the remaining elements
-    numbers = [list(number.split("+")) for number in numbers]
     ### For each number in the list "numbers" there will be generated a list
     ### where the complex number in form of a string will be split in two parts
     ### with + as a delimitator.
+    print(numbers_as_strings)
 
-    print(numbers)
+    for number_as_string in numbers_as_strings:
+        pluses = number_as_string.count('+')
+        minuses = number_as_string.count('-')
+        i_occurrences = number_as_string.count('i')
 
+        if pluses > 2:
+            message = "The expression should have maximum 2 pluses."
+            raise Exception(message)
+
+        if minuses > 2:
+            message = "The expression should have maximum 2 minuses."
+            raise Exception(message)
+
+        if i_occurrences > 1:
+            message = "The expression should have only one 'i'."
+            raise Exception(message)
+
+        for character in number_as_string:
+            if character not in ['+','-','i'] and (character < '0' or character > '9'):
+                 message = "The expression should only contain digits, pluses, minuses and the number 'i'."
+                 raise Exception(message)
+    """
     for number in numbers:
         if number[-1].find("i") != -1:    ### This takes the last element in the
                                           ### list "number"(which is usually
@@ -174,8 +233,8 @@ def read_complex_num_list():
             if number[-1] == "":
                 number[-1] = "1"      #case of 2+i or 1+i or 4+i
             final_list.append(Complex(int(number[0]), int(number[-1])))
-
     return final_list
+    """
 
 ### Prints the options that can be chosen by the user.
 def print_options():
@@ -324,5 +383,5 @@ def main():
             print("Type a number between 1 and 4...\n\n")
         print("\n\n")
 
-#main()
-run_all_tests()
+#run_all_tests()
+main()
