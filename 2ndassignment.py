@@ -1,9 +1,6 @@
 import math
 
 """
-    TODO: Rewrite method <print> from class <Complex>
-    TODO: In method "print" from class "Complex": if the imaginary part is
-          negative, print '-' instead of '+'  ---> DONE
     TODO: Functions <increasing_modulus_sequence> and <real_numbers_sequence>:
           If there are multiple sequences of maximum length with the given
           property, print them all
@@ -91,7 +88,8 @@ class Complex:
             ### "a + 1i".
             imaginary_part = ""
         elif imaginary_part < 0:
-            print("{} {}i".format(real_part, abs(imaginary_part)), end="")
+            print("{} - {}i".format(real_part, abs(imaginary_part)), end="")
+            return
 
         print("{} + {}i".format(real_part, imaginary_part), end="")
 
@@ -126,19 +124,16 @@ def expression_evaluator(expression):
     """
     Evaluates an expression of the form "a+bi" of a complex number and returns
     the real and imaginary part of the number as a Complex class instance.
+
+
+    1 +   2i , -1 - 3 i, +9-6i, -10   + 100i, i, 2i, 3i, 1, 9, 0, -1, +7 + i, -7  -  i, 7  - i, -7+i
     """
     result = Complex(0, 0)
     sign = 1
     parts = []
     current_number = 0
     character_index = 0
-
-    """
-    -1-2i
-    -1+2i
-    1-2i
-    1+2i
-    """
+    expression += '|'
 
     for character in expression:
         if character >= '0' and character <= '9':
@@ -161,17 +156,26 @@ def expression_evaluator(expression):
         raise Exception(message)
 
     if len(parts) < 2:
-        if expression.find('i'):
-            result.set_imaginary_part(parts[0])
+        if expression.find('i') != -1:
+            if len(parts) == 0:
+                result.set_imaginary_part(1)
+                return result
+            else:
+                result.set_imaginary_part(parts[0])
         else:
             result.set_real_part(parts[0])
     else:
+        if expression.find('i') != -1 and parts[1] == 0:
+            parts[1] = sign
         result.set_real_part(parts[0])
         result.set_imaginary_part(parts[1])
     return result
 
 ### Reads the list of complex numbers as a string.
 def read_complex_num_list():
+    """
+    Reads a list of complex numbers as strings.
+    """
     numbers_as_strings = str(input("Enter some complex numbers in the form of a+bi and separate them with a comma: "))
     numbers_as_strings = numbers_as_strings.replace(" ", "") ### Replaces spaces in the string with
                                        ### null strings.
@@ -181,7 +185,8 @@ def read_complex_num_list():
     ### For each number in the list "numbers" there will be generated a list
     ### where the complex number in form of a string will be split in two parts
     ### with + as a delimitator.
-    print(numbers_as_strings)
+
+    numbers = []
 
     for number_as_string in numbers_as_strings:
         pluses = number_as_string.count('+')
@@ -204,47 +209,10 @@ def read_complex_num_list():
             if character not in ['+','-','i'] and (character < '0' or character > '9'):
                  message = "The expression should only contain digits, pluses, minuses and the number 'i'."
                  raise Exception(message)
-    """
-    for number in numbers:
-        if number[-1].find("i") != -1:    ### This takes the last element in the
-                                          ### list "number"(which is usually
-                                          ### the imaginary part, if it exists)
-                                          ### and checks if the string "i" is
-                                          ### present in this last element.
-            if number[0].find("i") != -1:
-                ### This if statement checks if the string "i" is present in
-                ### the first element, in order to see if the number has a
-                ### real part or not.
-                number.insert(0, "0")
-                ### Inserts a zero on the first position into the list "number"
-                ### in case the number has no real part.
-            number[-1] = number[-1].replace("i", "")
-            ### Replaces each "i" in the last element of the list number with
-            ### a null string.
-        else:
-            ### If the last element of the list "number" doesn't contain the
-            ### string "i", then we append a 0 to the end of the list which
-            ### will represent the null imaginary part.
-            number.append("0")
 
-    final_list = []
+        numbers.append(expression_evaluator(number_as_string))
 
-    for number in numbers:
-        ### This takes each list "number" in the list "numbers" and
-        ### checks if it has at least 2 elements and if it does, then
-        ### it checks if the last element of the list "number" is a null string.
-        ### If it is, then it means the string "i" was deleted and we add a
-        ### "1" in the string form of the representation of the number.
-
-        ### If there are more than 2 elements in the list "number", they are
-        ### null strings which were included in the list as a result of the use
-        ### of the function "split()".
-        if len(number) >= 2:
-            if number[-1] == "":
-                number[-1] = "1"      #case of 2+i or 1+i or 4+i
-            final_list.append(Complex(int(number[0]), int(number[-1])))
-    return final_list
-    """
+    return numbers
 
 ### Prints the options that can be chosen by the user.
 def print_options():
@@ -338,6 +306,10 @@ def real_numbers_sequence(complex_num_list):
 def clear_screen():
     print("\n" * 200)
 
+def test_read_complex_num_list():
+    complex_num_list = read_complex_num_list()
+    print_list(complex_num_list, 0, len(complex_num_list))
+
 def test_expression_evaluator():
     ### Test 1
     expression = "1+2i"
@@ -369,6 +341,7 @@ def test_remove_occurences():
     assert(test_list == ['a', 'b', 'a'])
 
 def run_all_tests():
+    test_read_complex_num_list()
     test_expression_evaluator()
     test_remove_occurences()
 
