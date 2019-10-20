@@ -243,7 +243,8 @@ def increasing_modulus_sequence(complex_num_list):
 
     print("The modulus of each complex number in the list: ")
     for number in complex_num_list:
-        print(number.modulus())
+        number.print()
+        print(": ", number.modulus())
         if number.modulus() > previous_modulus:
             sequence_length += 1
         else:
@@ -260,7 +261,7 @@ def increasing_modulus_sequence(complex_num_list):
         last_pos = pos
         first_pos = last_pos - sequence_length
 
-    print("\n", "First position: ", first_pos, ";  Last position: ", last_pos - 1)
+    print("\n", "First position: {}, Last position: {}".format(first_pos, last_pos - 1))
     print_list(complex_num_list, first_pos, last_pos)
 
 ### Prints the longest sequence of real numbers.
@@ -392,5 +393,5 @@ def main():
             print("Type a number between 1 and 4...\n\n")
         print("\n\n")
 
-run_all_tests()
-#main()
+#run_all_tests()
+main()
