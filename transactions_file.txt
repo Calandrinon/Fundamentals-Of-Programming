@@ -1,0 +1,9 @@
+[20, 100, out, pizza]
+[20, 100, out, pizza]
+[20, 100, out, pizza]
+[20, 100, in, gift]
+[25, 100, in, another_gift]
+[20, 200, in, phew]
+[20, 1000, out, damage]
+[20, 1, in, gift]
+

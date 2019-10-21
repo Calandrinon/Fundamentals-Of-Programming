@@ -311,6 +311,33 @@ def split_command(command):
                                   ### between the arguments of the command.
     return list_of_tokens
 
+def read_transactions_file():
+    """
+    Reads the file with the transactions that were saved.
+    """
+    file = open('transactions_file.txt', 'r')
+    transaction_strings_list = file.readlines()
+    transaction_objects = []
+
+    for transaction in transaction_strings_list:
+        transaction = transaction.replace("[", "")  ### Deletes the first square bracket of the transaction
+        transaction = transaction.replace("]", "")  ### Deletes the last square bracket
+        transaction = transaction.replace(",", "")  ### Deletes the commas
+        transaction = transaction.replace("\n", "")  ### Removes newline \n
+        transaction = split_command(transaction)
+        ### Takes the string and converts it into a list of strings of details
+        ### about the transaction.
+
+        if len(transaction) == 4:
+            day = int(transaction[0])
+            value = int(transaction[1])
+            type = transaction[2]
+            description = transaction[3]
+            transaction_objects.append(Transaction(day, value, type, description))
+
+    return transaction_objects
+    file.close()
+
 def ui_print_specification_function_add():
     """
         Prints the usage instructions of the function <ui_add>.
@@ -341,6 +368,13 @@ def ui_print_specification_function_replace():
 
 def clear_screen():
     print("\n"*200)
+
+def test_read_transactions_file():
+    print("\n\n<read_transactions_file> function test running...")
+    transactions = read_transactions_file()
+    for transaction in transactions:
+        transaction.print()
+    print("<read_transactions_file> function test passed.\n\n")
 
 def test_list():
     print("\n\n<ui_list> function test running...")
@@ -710,6 +744,7 @@ def test_transaction_class():
 
 def run_all_tests():
     print("Tests:")
+    test_read_transactions_file()
     test_list()
     test_replace()
     test_remove()
@@ -825,4 +860,4 @@ def main():
 
 clear_screen()
 run_all_tests()
-main()
+#main()
