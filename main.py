@@ -2,8 +2,6 @@ import datetime
 
 """
     TODO: Create separate data validation functions.
-    TODO: In each function specification, the exceptions that could be possibly
-          raised have to be mentioned.
     TODO: Organize in modules.
     TODO: Add "help" function.
 """
