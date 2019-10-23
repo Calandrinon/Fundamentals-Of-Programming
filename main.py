@@ -923,6 +923,20 @@ def run_all_tests():
     test_insert_transaction()
     print("\n\n\nTests are done!\n\n\n\n\n")
 
+def ui_add(account_transactions, parameters):
+    number_of_parameters = len(parameters)
+    ### In case the user doesn't enter 3 parameters
+    if number_of_parameters != 4:
+        print("Invalid number of parameters!")
+        ui_print_specification_function_add()
+        return
+
+    try:
+        add_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3])
+    except Exception as e:
+        print(e)
+        ui_print_specification_function_add()
+
 def main():
     account_transactions = read_transactions_file()
     commands = ["quit", "exit", "add", "clear", "insert", "remove", "replace", "list"]
@@ -940,17 +954,7 @@ def main():
         if parameters[0] == "quit" or parameters[0] == "exit":
             break
         elif parameters[0] == "add":
-            ### In case the user doesn't enter 3 parameters
-            if number_of_parameters != 4:
-                print("Invalid number of parameters!")
-                ui_print_specification_function_add()
-                continue
-
-            try:
-                add_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3])
-            except Exception as e:
-                print(e)
-                ui_print_specification_function_add()
+            ui_add(account_transactions, parameters)
         elif parameters[0] == "insert":
             ### In case the user doesn't enter 4 parameters
             if number_of_parameters != 5:
