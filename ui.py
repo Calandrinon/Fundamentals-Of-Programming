@@ -78,7 +78,11 @@ def ui_replace(account_transactions, parameters):
         ui_print_specification_function_replace()
         return
 
-    edit_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
+    try:
+        edit_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
+    except Exception as e:
+        print(e)
+        ui_print_specification_function_replace()
 
 def ui_list(account_transactions, parameters):
     number_of_parameters = len(parameters)

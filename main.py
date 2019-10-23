@@ -51,5 +51,5 @@ def main():
     write_transactions_file(account_transactions)
 
 clear_screen()
-run_all_tests()
+#run_all_tests()
 main()
