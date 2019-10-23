@@ -985,6 +985,21 @@ def ui_remove(account_transactions, parameters):
     except Exception as e:
         print(e)
 
+def ui_replace(account_transactions, parameters):
+    number_of_parameters = len(parameters)
+    ### In case the user doesn't enter exactly 5 parameters
+    if number_of_parameters != 6:
+        print("Invalid number of parameters!")
+        ui_print_specification_function_replace()
+        return
+
+    if parameters[4] != "with":
+        print("Wrong usage!")
+        ui_print_specification_function_replace()
+        return
+
+    edit_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
+
 def main():
     account_transactions = read_transactions_file()
     commands = ["quit", "exit", "add", "clear", "insert", "remove", "replace", "list"]
@@ -1008,18 +1023,7 @@ def main():
         elif parameters[0] == "remove":
             ui_remove(account_transactions, parameters)
         elif parameters[0] == "replace":
-            ### In case the user doesn't enter exactly 5 parameters
-            if number_of_parameters != 6:
-                print("Invalid number of parameters!")
-                ui_print_specification_function_replace()
-                continue
-
-            if parameters[4] != "with":
-                print("Wrong usage!")
-                ui_print_specification_function_replace()
-                continue
-
-            edit_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
+            ui_replace(account_transactions, parameters)
         elif parameters[0] == "list":
             clear_screen()
             if number_of_parameters == 1:
