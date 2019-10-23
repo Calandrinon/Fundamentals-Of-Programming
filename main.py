@@ -953,6 +953,38 @@ def ui_insert(account_transactions, parameters):
         print(e)
         ui_print_specification_function_insert()
 
+def ui_remove(account_transactions, parameters):
+    number_of_parameters = len(parameters)
+    ### In case the user doesn't enter 1 parameter or 3 parameters
+    if not(number_of_parameters == 2 or number_of_parameters == 4):
+        print("Invalid number of parameters!")
+        ui_print_specification_function_remove()
+        return
+
+    try:
+        if number_of_parameters == 2:
+            is_parameter_1_int = True
+            try:
+                int(parameters[1])
+            except ValueError:
+                is_parameter_1_int = False
+
+            if is_parameter_1_int:
+                remove_transaction(account_transactions, int(parameters[1]), int(parameters[1]), ["in", "out"])
+            else:
+                if parameters[1] not in ["in", "out"]:
+                    clear_screen()
+                    print("You should enter one of the following values in the 'type' parameter: 'in', 'out'")
+                else:
+                    remove_transaction(account_transactions, 1, 31, [parameters[1]])
+        elif number_of_parameters == 4:
+            if parameters[2] != "to":
+                ui_print_specification_function_remove()
+                return
+            remove_transaction(account_transactions, int(parameters[1]), int(parameters[3]), ["in", "out"])
+    except Exception as e:
+        print(e)
+
 def main():
     account_transactions = read_transactions_file()
     commands = ["quit", "exit", "add", "clear", "insert", "remove", "replace", "list"]
@@ -974,34 +1006,7 @@ def main():
         elif parameters[0] == "insert":
             ui_insert(account_transactions, parameters)
         elif parameters[0] == "remove":
-            ### In case the user doesn't enter 1 parameter or 3 parameters
-            if not(number_of_parameters == 2 or number_of_parameters == 4):
-                print("Invalid number of parameters!")
-                ui_print_specification_function_remove()
-                continue
-            try:
-                if number_of_parameters == 2:
-                    is_parameter_1_int = True
-                    try:
-                        int(parameters[1])
-                    except ValueError:
-                        is_parameter_1_int = False
-
-                    if is_parameter_1_int:
-                        remove_transaction(account_transactions, int(parameters[1]), int(parameters[1]), ["in", "out"])
-                    else:
-                        if parameters[1] not in ["in", "out"]:
-                            clear_screen()
-                            print("You should enter one of the following values in the 'type' parameter: 'in', 'out'")
-                        else:
-                            remove_transaction(account_transactions, 1, 31, [parameters[1]])
-                elif number_of_parameters == 4:
-                    if parameters[2] != "to":
-                        ui_print_specification_function_remove()
-                        continue
-                    remove_transaction(account_transactions, int(parameters[1]), int(parameters[3]), ["in", "out"])
-            except Exception as e:
-                print(e)
+            ui_remove(account_transactions, parameters)
         elif parameters[0] == "replace":
             ### In case the user doesn't enter exactly 5 parameters
             if number_of_parameters != 6:
