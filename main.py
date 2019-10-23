@@ -3,10 +3,10 @@ import datetime
 """
     TODO: Check for invalid inputs in <main> again and add exception handling.
     TODO: Check if the user uses the right command syntax.
-    TODO: Organize in modules.
     TODO: Create separate data validation functions.
     TODO: In each function specification, the exceptions that could be possibly
           raised have to be mentioned.
+    TODO: Organize in modules.
 """
 
 class Transaction:
@@ -44,7 +44,7 @@ class Transaction:
         print("[Day: {}, Sum: {}, Type of transaction: {}, Description: {}]".format(self.get_date(), self.get_value(), self.get_type(),
         self.get_description()))
 
-def ui_add(transaction_list, value, type, description):
+def add_transaction(transaction_list, value, type, description):
     """
     Adds to a transaction list a new transaction on the current day.
     Input:
@@ -113,7 +113,7 @@ def ui_insert(transaction_list, day, value, type, description):
         message = "The day parameter should be an integer value between 1 and 31!"
         raise Exception(message)
 
-    ui_add(transaction_list, value, type, description)
+    add_transaction(transaction_list, value, type, description)
     transaction_list[-1].set_date(day)
 
 def ui_list(transaction_list):
@@ -374,7 +374,7 @@ def write_transactions_file(account_transactions):
 
 def ui_print_specification_function_add():
     """
-        Prints the usage instructions of the function <ui_add>.
+        Prints the usage instructions of the function <add_transaction>.
     """
     usage_warning_message = "\n\nUsage:\nadd <value> <type> <description>\n\nAdds to a transaction list a new transaction on the current day.\n\n"
     print(usage_warning_message)
@@ -843,8 +843,8 @@ def test_split_command():
     assert(split_command("insert    515 in   cool") == ["insert", "515", "in", "cool"])
     print("<split_command> function test passed.\n\n")
 
-def test_add():
-    print("\n\n<ui_add> function test running...")
+def test_add_transaction():
+    print("\n\n<add_transaction> function test running...")
     account_transactions = []
     correct_result = []
 
@@ -860,28 +860,28 @@ def test_add():
     test_description = "pizza"
 
     ### Test 1
-    ui_add(account_transactions, test_value, test_type, test_description)
+    add_transaction(account_transactions, test_value, test_type, test_description)
     correct_result.append(Transaction(today, test_value, test_type, test_description))
     assert_last_transactions()
 
     ### Test 2
-    ui_add(account_transactions, 125, "in", "jacket")
+    add_transaction(account_transactions, 125, "in", "jacket")
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
     ### Test 3
-    ui_add(account_transactions, -125, "in", "jacket")
+    add_transaction(account_transactions, -125, "in", "jacket")
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
     ### Test 4
-    ui_add(account_transactions, 125.56, "in", "jacket")
+    add_transaction(account_transactions, 125.56, "in", "jacket")
     correct_result.append(Transaction(today, 125, "in", "jacket"))
     assert_last_transactions()
 
     ### Test 5
     try:
-        ui_add(account_transactions, 125, "blahblah", "jacket")
+        add_transaction(account_transactions, 125, "blahblah", "jacket")
         correct_result.append(Transaction(today, 125, "blahblah", "jacket"))
         assert_last_transactions()
     except Exception as e:
@@ -889,13 +889,13 @@ def test_add():
 
     ### Test 6
     try:
-        ui_add(account_transactions, 125, "in", 123)
+        add_transaction(account_transactions, 125, "in", 123)
         correct_result.append(Transaction(today, 125, "in", 123))
         assert_last_transactions()
     except Exception as e:
         print(e)
 
-    print("<ui_add> function test passed.\n\n")
+    print("<add_transaction> function test passed.\n\n")
 
 def test_transaction_class():
     print("\n\n<Transaction> class test running...")
@@ -917,7 +917,7 @@ def run_all_tests():
     test_list()
     test_replace()
     test_remove()
-    test_add()
+    test_add_transaction()
     test_transaction_class()
     test_split_command()
     test_insert()
@@ -947,7 +947,7 @@ def main():
                 continue
 
             try:
-                ui_add(account_transactions, int(parameters[1]), parameters[2], parameters[3])
+                add_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3])
             except Exception as e:
                 print(e)
                 ui_print_specification_function_add()
