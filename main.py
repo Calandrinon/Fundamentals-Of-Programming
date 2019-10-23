@@ -227,7 +227,7 @@ def list_balance(transaction_list, day):
                 out_transactions_sum += transaction.get_value()
     print("The balance is: ", in_transactions_sum - out_transactions_sum)
 
-def ui_remove(transaction_list, start_day, end_day, types):
+def remove_transaction(transaction_list, start_day, end_day, types):
     """
     This function removes transactions from the transaction list, based on the
     entered parameters.
@@ -388,7 +388,7 @@ def ui_print_specification_function_insert():
 
 def ui_print_specification_function_remove():
     """
-        Prints the usage instructions of the function <ui_remove>.
+        Prints the usage instructions of the function <remove_transaction>.
     """
     usage_warning_message = "\n\nUsage:\nremove <day>\nremove <start day> to <end day>\nremove <type>\n\nThis function removes transactions from the transaction list, based on the\nentered parameters.\n\n"
     print(usage_warning_message)
@@ -641,8 +641,8 @@ def test_replace():
 
     print("<ui_replace> function test passed.\n\n")
 
-def test_remove():
-    print("\n\n<ui_remove> function test running...")
+def test_remove_transaction():
+    print("\n\n<remove_transaction> function test running...")
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
@@ -662,7 +662,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     correct_final_result = []
-    ui_remove(account_transactions, 1, 31, ["in", "out"])
+    remove_transaction(account_transactions, 1, 31, ["in", "out"])
     assert_transaction_lists()
 
     ### Test 2
@@ -670,7 +670,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     correct_final_result = [Transaction(25, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    ui_remove(account_transactions, 1, 20, ["in", "out"])
+    remove_transaction(account_transactions, 1, 20, ["in", "out"])
     assert_transaction_lists()
 
     ### Test 3
@@ -680,7 +680,7 @@ def test_remove():
     correct_final_result = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    ui_remove(account_transactions, 1, 10, ["in", "out"])
+    remove_transaction(account_transactions, 1, 10, ["in", "out"])
     assert_transaction_lists()
 
     ### Test 4
@@ -690,7 +690,7 @@ def test_remove():
     correct_final_result = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    ui_remove(account_transactions, 1, 20, ["in"])
+    remove_transaction(account_transactions, 1, 20, ["in"])
     assert_transaction_lists()
 
     ### Test 5
@@ -698,7 +698,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     correct_final_result = [Transaction(21, 100, "in", "gift")]
-    ui_remove(account_transactions, 1, 31, ["out"])
+    remove_transaction(account_transactions, 1, 31, ["out"])
     assert_transaction_lists()
 
     ### Test 6
@@ -709,7 +709,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_remove(account_transactions, 1111, 25, ["in"])
+        remove_transaction(account_transactions, 1111, 25, ["in"])
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -722,7 +722,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_remove(account_transactions, 1111.5, 25, ["out"])
+        remove_transaction(account_transactions, 1111.5, 25, ["out"])
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -735,7 +735,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_remove(account_transactions, 2.5, 25, ["out"])
+        remove_transaction(account_transactions, 2.5, 25, ["out"])
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -748,7 +748,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_remove(account_transactions, -2, 25, ["out"])
+        remove_transaction(account_transactions, -2, 25, ["out"])
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -761,7 +761,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_remove(account_transactions, 0, 31, ["in"])
+        remove_transaction(account_transactions, 0, 31, ["in"])
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -774,7 +774,7 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_remove(account_transactions, 0, 32, ["crap"])
+        remove_transaction(account_transactions, 0, 32, ["crap"])
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -787,12 +787,12 @@ def test_remove():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_remove(account_transactions, 1, 5, ["crap"])
+        remove_transaction(account_transactions, 1, 5, ["crap"])
     except Exception as e:
         print(e)
     assert_transaction_lists()
 
-    print("<ui_remove> function test passed.\n\n")
+    print("<remove_transaction> function test passed.\n\n")
 
 def test_insert_transaction():
     print("\n\n<insert_transaction> function test running...")
@@ -916,7 +916,7 @@ def run_all_tests():
     test_read_transactions_file()
     test_list_transaction()
     test_replace()
-    test_remove()
+    test_remove_transaction()
     test_add_transaction()
     test_transaction_class()
     test_split_command()
@@ -978,18 +978,18 @@ def main():
                         is_parameter_1_int = False
 
                     if is_parameter_1_int:
-                        ui_remove(account_transactions, int(parameters[1]), int(parameters[1]), ["in", "out"])
+                        remove_transaction(account_transactions, int(parameters[1]), int(parameters[1]), ["in", "out"])
                     else:
                         if parameters[1] not in ["in", "out"]:
                             clear_screen()
                             print("You should enter one of the following values in the 'type' parameter: 'in', 'out'")
                         else:
-                            ui_remove(account_transactions, 1, 31, [parameters[1]])
+                            remove_transaction(account_transactions, 1, 31, [parameters[1]])
                 elif number_of_parameters == 4:
                     if parameters[2] != "to":
                         ui_print_specification_function_remove()
                         continue
-                    ui_remove(account_transactions, int(parameters[1]), int(parameters[3]), ["in", "out"])
+                    remove_transaction(account_transactions, int(parameters[1]), int(parameters[3]), ["in", "out"])
             except Exception as e:
                 print(e)
         elif parameters[0] == "replace":
