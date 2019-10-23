@@ -87,7 +87,7 @@ def add_transaction(transaction_list, value, type, description):
     new_transaction = Transaction(current_date, value, type, description)
     transaction_list.append(new_transaction)
 
-def ui_insert(transaction_list, day, value, type, description):
+def insert_transaction(transaction_list, day, value, type, description):
     """
     Adds to a transaction list a new transaction on the day specified in the
     parameter "day".
@@ -381,7 +381,7 @@ def ui_print_specification_function_add():
 
 def ui_print_specification_function_insert():
     """
-        Prints the usage instructions of the function <ui_insert>.
+        Prints the usage instructions of the function <insert_transaction>.
     """
     usage_warning_message = "\n\nUsage:\ninsert <day> <value> <type> <description>\n\nAdds to a transaction list a new transaction on the day specified in the parameter 'day'.\n\n"
     print(usage_warning_message)
@@ -795,7 +795,7 @@ def test_remove():
     print("<ui_remove> function test passed.\n\n")
 
 def test_insert():
-    print("\n\n<ui_insert> function test running...")
+    print("\n\n<insert_transaction> function test running...")
     account_transactions = []
     correct_result = []
 
@@ -806,13 +806,13 @@ def test_insert():
         assert(account_transactions[-1].get_description() == correct_result[-1].get_description())
 
     ### Test 1
-    ui_insert(account_transactions, 24, 125, "in", "jacket")
+    insert_transaction(account_transactions, 24, 125, "in", "jacket")
     correct_result.append(Transaction(24, 125, "in", "jacket"))
     assert_last_transactions()
 
     ### Test 2
     try:
-        ui_insert(account_transactions, -24, 125, "in", "jacket")
+        insert_transaction(account_transactions, -24, 125, "in", "jacket")
         correct_result.append(Transaction(24, 125, "in", "jacket"))
         assert_last_transactions()
     except Exception as e:
@@ -820,7 +820,7 @@ def test_insert():
 
     ### Test 3
     try:
-        ui_insert(account_transactions, 24.5, 125, "in", "jacket")
+        insert_transaction(account_transactions, 24.5, 125, "in", "jacket")
         correct_result.append(Transaction(24, 125, "in", "jacket"))
         assert_last_transactions()
     except Exception as e:
@@ -828,13 +828,13 @@ def test_insert():
 
     ### Test 4
     try:
-        ui_insert(account_transactions, 52, 125, "in", "jacket")
+        insert_transaction(account_transactions, 52, 125, "in", "jacket")
         correct_result.append(Transaction(24, 125, "in", "jacket"))
         assert_last_transactions()
     except Exception as e:
         print(e)
 
-    print("<ui_insert> function test passed.\n\n")
+    print("<insert_transaction> function test passed.\n\n")
 
 def test_split_command():
     print("\n\n<split_command> function test running...")
@@ -959,7 +959,7 @@ def main():
                 continue
 
             try:
-                ui_insert(account_transactions, int(parameters[1]), int(parameters[2]), parameters[3], parameters[4])
+                insert_transaction(account_transactions, int(parameters[1]), int(parameters[2]), parameters[3], parameters[4])
             except Exception as e:
                 print(e)
                 ui_print_specification_function_insert()
