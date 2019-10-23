@@ -1,8 +1,6 @@
 import datetime
 
 """
-    TODO: Shorten the test functions.
-    TODO: Check <ui_print_specification_function_remove> once again.
     TODO: Print specifications for list functions if the user enters Invalid
           parameters. Raise exceptions.
     TODO: Check for invalid inputs in <main> again and add exception handling.
@@ -11,6 +9,8 @@ import datetime
           account transactions.
     TODO: Check if the user uses the right command syntax.
     TODO: Organize in modules.
+    TODO: Repair error message which is printed in case the user enters a
+          wrong relation operator in the function <ui_list>
 """
 
 class Transaction:
@@ -357,28 +357,28 @@ def ui_print_specification_function_add():
     """
         Prints the usage instructions of the function <ui_add>.
     """
-    usage_warning_message = "\n\nUsage:\nAdds to a transaction list a new transaction on the current day.\nInput:\n\t> value - A positive integer which represents the amount of\n\tmoney that was transferred\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t> description - A description of the transaction:\n\t\tE.g: 'add 100 out PIZZA'\n\n\n"
+    usage_warning_message = "\n\nUsage:\nadd <value> <type> <description>\n\nAdds to a transaction list a new transaction on the current day.\n\n"
     print(usage_warning_message)
 
 def ui_print_specification_function_insert():
     """
         Prints the usage instructions of the function <ui_insert>.
     """
-    usage_warning_message = "\n\nUsage:\nAdds to a transaction list a new transaction on the day specified in the parameter 'day'.\nInput:\n\t> day - The day when the transaction has been made.\n\t> value - A positive integer which represents the amount of\n\tmoney that was transferred\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t> description - A description of the transaction:\n\t\tE.g: 'add 100 out PIZZA'\n\n\n"
+    usage_warning_message = "\n\nUsage:\ninsert <day> <value> <type> <description>\n\nAdds to a transaction list a new transaction on the day specified in the parameter 'day'.\n\n"
     print(usage_warning_message)
 
 def ui_print_specification_function_remove():
     """
         Prints the usage instructions of the function <ui_remove>.
     """
-    usage_warning_message = "\n\nUsage:\nThis function removes transactions from the transaction list, based on the\nentered parameters.\nInput:\n\t> start_day, end_day - These are the parameters which represent the\n\ttransactions made in the interval of days with\n\tthe boundaries [start_day, end_day]. All the\n\ttransactions made in this interval of days will\n\tbe deleted from the list.\n\t> The 'types' parameter is a list with all the\n\ttypes of transactions that will be deleted.\n\t"
+    usage_warning_message = "\n\nUsage:\nremove <day>\nremove <start day> to <end day>\nremove <type>\n\nThis function removes transactions from the transaction list, based on the\nentered parameters.\n\n"
     print(usage_warning_message)
 
 def ui_print_specification_function_replace():
     """
         Prints the usage instructions of the function <ui_replace>.
     """
-    usage_warning_message = "\n\nUsage:\nThis function edits the amount of money of a specific transaction made on\nthe mentioned day, based on the entered parameters.\nInput:\n\t> day - The day when the transaction was made.\n\t> type - A string which represents the type of the transaction.\n\tIt can be one of the following:\n\t* in - a sum of money was transferred into the\n\t\taccount\n\t\t* out - a sum of money was transferred from the\n\t\taccount to somewhere else\n\t\t> description - A description of the transaction:\n\tE.g: 'insert 25 100 in SALARY'\n\t>description - A string which represents the description associated with the transaction.\n\t> value - The amount of money involved in the transaction. In this\n\tcase, 'value' will be the new amount of money assigned\n\tto the transaction made on the day 'day', with the type\n\tand the description mentioned in the parameters.\n\t"
+    usage_warning_message = "\n\nUsage:\nreplace <day> <type> <description> with <value>\n\nThis function edits the amount of money of a specific transaction made on\nthe mentioned day, based on the entered parameters.\n\n"
     print(usage_warning_message)
 
 def clear_screen():
