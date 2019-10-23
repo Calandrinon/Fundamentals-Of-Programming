@@ -1,10 +1,6 @@
 import datetime
 
 """
-    TODO: Add a transaction saving system with files. Create transaction
-          loading and saving functions.
-    TODO: Write a big try-catch statement in <run_all_tests> and delete the
-          try-catch statements in each of the small tests.
     TODO: Shorten the test functions.
     TODO: Check <ui_print_specification_function_remove> once again.
     TODO: Print specifications for list functions if the user enters Invalid
@@ -14,6 +10,7 @@ import datetime
     TODO: Check in <ui_replace> if the parameter is valid and exists in the
           account transactions.
     TODO: Check if the user uses the right command syntax.
+    TODO: Organize in modules.
 """
 
 class Transaction:
