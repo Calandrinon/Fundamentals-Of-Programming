@@ -1,4 +1,3 @@
-import validation
 from non_ui import clear_screen
 from operations import *
 from transaction import Transaction

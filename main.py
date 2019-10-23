@@ -3,7 +3,6 @@ from non_ui import *
 from tests import *
 
 """
-    TODO: Create separate data validation functions.
     TODO: Add "help" function.
 """
 
