@@ -5,6 +5,7 @@ import datetime
     TODO: In each function specification, the exceptions that could be possibly
           raised have to be mentioned.
     TODO: Organize in modules.
+    TODO: Add "help" function.
 """
 
 class Transaction:
@@ -1042,7 +1043,8 @@ def ui_clear(account_transactions, parameters):
 
 def main():
     account_transactions = read_transactions_file()
-    commands = ["quit", "exit", "add", "clear", "insert", "remove", "replace", "list"]
+    commands = {"add":ui_add, "insert":ui_insert, "remove":ui_remove,
+    "replace":ui_replace, "list":ui_list, "clear":ui_clear}
 
     while True:
         command = input("###: ")
@@ -1056,20 +1058,12 @@ def main():
 
         if parameters[0] == "quit" or parameters[0] == "exit":
             break
-        elif parameters[0] == "add":
-            ui_add(account_transactions, parameters)
-        elif parameters[0] == "insert":
-            ui_insert(account_transactions, parameters)
-        elif parameters[0] == "remove":
-            ui_remove(account_transactions, parameters)
-        elif parameters[0] == "replace":
-            ui_replace(account_transactions, parameters)
-        elif parameters[0] == "list":
-            ui_list(account_transactions, parameters)
-        elif parameters[0] == "clear":
-            ui_clear(account_transactions, parameters)
-        elif parameters[0] not in commands:
-            print("That command doesn't exist! This is the list of commands: ", commands)
+
+        try:
+            commands[parameters[0]](account_transactions, parameters)
+        except KeyError:
+            print("That command doesn't exist! This is the list of commands: ")
+            #ui_help()
 
     write_transactions_file(account_transactions)
 
