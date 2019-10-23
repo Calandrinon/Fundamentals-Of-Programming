@@ -116,7 +116,7 @@ def insert_transaction(transaction_list, day, value, type, description):
     add_transaction(transaction_list, value, type, description)
     transaction_list[-1].set_date(day)
 
-def ui_list(transaction_list):
+def list_transaction(transaction_list):
     """
     Lists all the transactions made on the account.
     """
@@ -130,7 +130,7 @@ def ui_list(transaction_list):
             raise Exception(message)
         transaction.print()
 
-def ui_list_by_type(transaction_list, type):
+def list_transaction_by_type(transaction_list, type):
     """
     Lists all the transactions with the specified type (in, out).
     Input:
@@ -152,7 +152,7 @@ def ui_list_by_type(transaction_list, type):
         if transaction.get_type() == type:
             transaction.print()
 
-def ui_list_by_value_size(transaction_list, condition, value):
+def list_transaction_by_value_size(transaction_list, condition, value):
     """
     Lists all the transactions with respect to the condition given as a
     parameter.
@@ -197,7 +197,7 @@ def ui_list_by_value_size(transaction_list, condition, value):
             if transaction.get_value() == value:
                 transaction.print()
 
-def ui_list_balance(transaction_list, day):
+def list_balance(transaction_list, day):
     """
     Computes the account’s balance on the day specified in the parameter.
     Input:
@@ -402,7 +402,7 @@ def ui_print_specification_function_replace():
 
 def ui_print_specification_function_list():
     """
-        Prints the usage instructions of the function <ui_list>.
+        Prints the usage instructions of the function <list_transaction>.
     """
     usage_warning_message = "\n\nUsage:\nlist\nlist <type>\nlist [ < | = | > | <= | >= ] <value>\nlist balance <day>\n\nThis function lists the transactions specified by the user in the parameters.\n\n"
     print(usage_warning_message)
@@ -423,41 +423,41 @@ def test_write_transactions_file():
     write_transactions_file(transactions)
     print("<write_transactions_file> function test passed.\n\n")
 
-def test_list():
-    print("\n\n<ui_list> function test running...")
+def test_list_transaction():
+    print("\n\n<list_transaction> function test running...")
 
     ### Test 1
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    ui_list(account_transactions)
+    list_transaction(account_transactions)
 
     ### Test 2
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), 5]
     try:
-        ui_list(account_transactions)
+        list_transaction(account_transactions)
     except Exception as e:
         print(e)
 
-    print("<ui_list> function test passed.\n\n")
+    print("<list_transaction> function test passed.\n\n")
 
-def test_list_by_type():
-    print("\n\n<ui_list_by_type> function test running...")
+def test_list_transaction_by_type():
+    print("\n\n<list_transaction_by_type> function test running...")
 
     ### Test 1
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    ui_list_by_type(account_transactions, "in")
+    list_transaction_by_type(account_transactions, "in")
 
     ### Test 2
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(20, 100, "in", "some_stuff"), 5]
     try:
-        ui_list_by_type(account_transactions, "in")
+        list_transaction_by_type(account_transactions, "in")
     except Exception as e:
         print(e)
 
@@ -466,27 +466,27 @@ def test_list_by_type():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(20, 100, "in", "some_stuff"), 5]
     try:
-        ui_list_by_type(account_transactions, "abc")
+        list_transaction_by_type(account_transactions, "abc")
     except Exception as e:
         print(e)
 
-    print("<ui_list_by_type> function test passed.\n\n")
+    print("<list_transaction_by_type> function test passed.\n\n")
 
-def test_list_by_value_size():
-    print("\n\n<ui_list_by_value_size> function test running...")
+def test_list_transaction_by_value_size():
+    print("\n\n<list_transaction_by_value_size> function test running...")
 
     ### Test 1
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 50, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    ui_list_by_value_size(account_transactions, ">", 75)
+    list_transaction_by_value_size(account_transactions, ">", 75)
 
     ### Test 2
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_list_by_value_size(account_transactions, "<", -13)
+        list_transaction_by_value_size(account_transactions, "<", -13)
     except Exception as e:
         print(e)
 
@@ -495,7 +495,7 @@ def test_list_by_value_size():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_list_by_value_size(account_transactions, "<", 13.5)
+        list_transaction_by_value_size(account_transactions, "<", 13.5)
     except Exception as e:
         print(e)
 
@@ -504,27 +504,27 @@ def test_list_by_value_size():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(20, 100, "in", "some_stuff"), 5]
     try:
-        ui_list_by_type(account_transactions, "in")
+        list_transaction_by_type(account_transactions, "in")
     except Exception as e:
         print(e)
 
-    print("<ui_list_by_value_size> function test passed.\n\n")
+    print("<list_transaction_by_value_size> function test passed.\n\n")
 
 def test_list_balance():
-    print("\n\n<ui_list_balance> function test running...")
+    print("\n\n<list_balance> function test running...")
 
     ### Test 1
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 50, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    ui_list_balance(account_transactions, 20)
+    list_balance(account_transactions, 20)
 
     ### Test 2
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_list_balance(account_transactions, 3.5)
+        list_balance(account_transactions, 3.5)
     except Exception as e:
         print(e)
 
@@ -533,7 +533,7 @@ def test_list_balance():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_list_balance(account_transactions, -3)
+        list_balance(account_transactions, -3)
     except Exception as e:
         print(e)
 
@@ -542,11 +542,11 @@ def test_list_balance():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), 5, Transaction(21, 100, "in", "gift")]
     try:
-        ui_list_balance(account_transactions, 3)
+        list_balance(account_transactions, 3)
     except Exception as e:
         print(e)
 
-    print("<ui_list_balance> function test passed.\n\n")
+    print("<list_balance> function test passed.\n\n")
 
 def test_replace():
     print("\n\n<ui_replace> function test running...")
@@ -794,7 +794,7 @@ def test_remove():
 
     print("<ui_remove> function test passed.\n\n")
 
-def test_insert():
+def test_insert_transaction():
     print("\n\n<insert_transaction> function test running...")
     account_transactions = []
     correct_result = []
@@ -910,17 +910,17 @@ def test_transaction_class():
 def run_all_tests():
     print("Tests:")
     test_list_balance()
-    test_list_by_value_size()
-    test_list_by_type()
+    test_list_transaction_by_value_size()
+    test_list_transaction_by_type()
     test_write_transactions_file()
     test_read_transactions_file()
-    test_list()
+    test_list_transaction()
     test_replace()
     test_remove()
     test_add_transaction()
     test_transaction_class()
     test_split_command()
-    test_insert()
+    test_insert_transaction()
     print("\n\n\nTests are done!\n\n\n\n\n")
 
 def main():
@@ -1008,23 +1008,23 @@ def main():
         elif parameters[0] == "list":
             clear_screen()
             if number_of_parameters == 1:
-                ui_list(account_transactions)
+                list_transaction(account_transactions)
             elif number_of_parameters == 2:
                 try:
-                    ui_list_by_type(account_transactions, parameters[1])
+                    list_transaction_by_type(account_transactions, parameters[1])
                 except Exception as e:
                     print(e)
                     ui_print_specification_function_list()
             elif number_of_parameters == 3:
                 if parameters[1] != "balance":
                     try:
-                        ui_list_by_value_size(account_transactions, parameters[1], int(parameters[2]))
+                        list_transaction_by_value_size(account_transactions, parameters[1], int(parameters[2]))
                     except Exception as e:
                         print(e)
                         ui_print_specification_function_list()
                 else:
                     try:
-                        ui_list_balance(account_transactions, int(parameters[2]))
+                        list_balance(account_transactions, int(parameters[2]))
                     except Exception as e:
                         print(e)
                         ui_print_specification_function_list()
