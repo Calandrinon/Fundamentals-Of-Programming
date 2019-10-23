@@ -8,6 +8,7 @@ from tests import *
 
 def run_all_tests():
     print("Tests:")
+    test_sum_of_transactions_by_type()
     test_list_balance()
     test_list_transaction_by_value_size()
     test_list_transaction_by_type()
@@ -49,5 +50,5 @@ def main():
     write_transactions_file(account_transactions)
 
 clear_screen()
-#run_all_tests()
+run_all_tests()
 main()

@@ -270,3 +270,27 @@ def edit_transaction(transaction_list, day, type, description, value):
     for transaction in transaction_list:
         if transaction.get_date() == day and transaction.get_type() == type and transaction.get_description() == description:
             transaction.set_value(value)
+
+def sum_of_transactions_by_type(transaction_list, type):
+    """
+    Returns the sum of transactions of type "type"("in" or "out")
+    """
+
+    if len(transaction_list) == 0:
+        print("The transaction list is empty!")
+        return
+
+    if type not in ["in", "out"]:
+        message = "The type parameter should be either 'in' or 'out'."
+        raise Exception(message)
+
+    sum = 0
+    for transaction in transaction_list:
+        if not isinstance(transaction, Transaction):
+            message = "The list parameter is not a list of Transaction objects!"
+            raise Exception(message)
+
+        if transaction.get_type() == type:
+            sum += transaction.get_value()
+
+    return sum
