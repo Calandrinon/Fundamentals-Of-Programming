@@ -932,10 +932,26 @@ def ui_add(account_transactions, parameters):
         return
 
     try:
+        #validate_add_command_parameters()
         add_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3])
     except Exception as e:
         print(e)
         ui_print_specification_function_add()
+
+def ui_insert(account_transactions, parameters):
+    number_of_parameters = len(parameters)
+    ### In case the user doesn't enter 4 parameters
+    if number_of_parameters != 5:
+        print("Invalid number of parameters!")
+        ui_print_specification_function_insert()
+        return
+
+    try:
+        #validate_insert_command_parameters()
+        insert_transaction(account_transactions, int(parameters[1]), int(parameters[2]), parameters[3], parameters[4])
+    except Exception as e:
+        print(e)
+        ui_print_specification_function_insert()
 
 def main():
     account_transactions = read_transactions_file()
@@ -956,17 +972,7 @@ def main():
         elif parameters[0] == "add":
             ui_add(account_transactions, parameters)
         elif parameters[0] == "insert":
-            ### In case the user doesn't enter 4 parameters
-            if number_of_parameters != 5:
-                print("Invalid number of parameters!")
-                ui_print_specification_function_insert()
-                continue
-
-            try:
-                insert_transaction(account_transactions, int(parameters[1]), int(parameters[2]), parameters[3], parameters[4])
-            except Exception as e:
-                print(e)
-                ui_print_specification_function_insert()
+            ui_insert(account_transactions, parameters)
         elif parameters[0] == "remove":
             ### In case the user doesn't enter 1 parameter or 3 parameters
             if not(number_of_parameters == 2 or number_of_parameters == 4):
