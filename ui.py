@@ -125,6 +125,20 @@ def ui_clear(account_transactions, parameters):
 
     clear_screen()
 
+def ui_sum(account_transactions, parameters):
+    number_of_parameters = len(parameters)
+    ### In case the user doesn't enter exactly 1 parameter
+    if number_of_parameters != 2:
+        print("The command 'sum' takes 1 parameter")
+        ui_print_specification_function_sum()
+        return
+
+    try:
+        print("The sum of all '{}' transactions of this month is: {}".format(parameters[1], sum_of_transactions_by_type(account_transactions, parameters[1])))
+    except Exception as e:
+        print(e)
+        ui_print_specification_function_sum()
+
 def ui_print_specification_function_add():
     """
         Prints the usage instructions of the function <add>.
@@ -158,4 +172,11 @@ def ui_print_specification_function_list():
         Prints the usage instructions of the function <list>.
     """
     usage_warning_message = "\n\nUsage:\nlist\nlist <type>\nlist [ < | = | > | <= | >= ] <value>\nlist balance <day>\n\nThis function lists the transactions specified by the user in the parameters.\n\n"
+    print(usage_warning_message)
+
+def ui_print_specification_function_sum():
+    """
+        Prints the usage instructions of the function <sum>.
+    """
+    usage_warning_message = "\n\nUsage:\nsum <type>\n\nThis function lists the transactions specified by the user in the parameters.\n\n"
     print(usage_warning_message)
