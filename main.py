@@ -8,9 +8,12 @@ import datetime
     TODO: Shorten the test functions.
     TODO: Check <ui_print_specification_function_remove> once again.
     TODO: Print specifications for list functions if the user enters Invalid
-          parameters.
+          parameters. Raise exceptions.
     TODO: Check for invalid inputs in <main> again and add exception handling.
     TODO: Check <ui_remove> function once again.
+    TODO: Check in <ui_replace> if the parameter is valid and exists in the
+          account transactions.
+    TODO: Check if the user uses the right command syntax.
 """
 
 class Transaction:
@@ -777,7 +780,7 @@ def run_all_tests():
     print("\n\n\nTests are done!\n\n\n\n\n")
 
 def main():
-    account_transactions = []
+    account_transactions = read_transactions_file()
     commands = ["quit", "exit", "add", "clear", "insert", "remove", "replace", "list"]
 
     while True:
@@ -880,6 +883,8 @@ def main():
         elif parameters[0] not in commands:
             print("That command doesn't exist! This is the list of commands: ", commands)
 
+    write_transactions_file(account_transactions)
+
 clear_screen()
-run_all_tests()
-#main()
+#run_all_tests()
+main()
