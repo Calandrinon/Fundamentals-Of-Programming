@@ -273,7 +273,7 @@ def remove_transaction(transaction_list, start_day, end_day, types):
         else:
             changes_made = False
 
-def ui_replace(transaction_list, day, type, description, value):
+def edit_transaction(transaction_list, day, type, description, value):
     """
     This function edits the amount of money of a specific transaction made on
     the mentioned day, based on the entered parameters.
@@ -374,35 +374,35 @@ def write_transactions_file(account_transactions):
 
 def ui_print_specification_function_add():
     """
-        Prints the usage instructions of the function <add_transaction>.
+        Prints the usage instructions of the function <add>.
     """
     usage_warning_message = "\n\nUsage:\nadd <value> <type> <description>\n\nAdds to a transaction list a new transaction on the current day.\n\n"
     print(usage_warning_message)
 
 def ui_print_specification_function_insert():
     """
-        Prints the usage instructions of the function <insert_transaction>.
+        Prints the usage instructions of the function <insert>.
     """
     usage_warning_message = "\n\nUsage:\ninsert <day> <value> <type> <description>\n\nAdds to a transaction list a new transaction on the day specified in the parameter 'day'.\n\n"
     print(usage_warning_message)
 
 def ui_print_specification_function_remove():
     """
-        Prints the usage instructions of the function <remove_transaction>.
+        Prints the usage instructions of the function <remove>.
     """
     usage_warning_message = "\n\nUsage:\nremove <day>\nremove <start day> to <end day>\nremove <type>\n\nThis function removes transactions from the transaction list, based on the\nentered parameters.\n\n"
     print(usage_warning_message)
 
 def ui_print_specification_function_replace():
     """
-        Prints the usage instructions of the function <ui_replace>.
+        Prints the usage instructions of the function <replace>.
     """
     usage_warning_message = "\n\nUsage:\nreplace <day> <type> <description> with <value>\n\nThis function edits the amount of money of a specific transaction made on\nthe mentioned day, based on the entered parameters.\n\n"
     print(usage_warning_message)
 
 def ui_print_specification_function_list():
     """
-        Prints the usage instructions of the function <list_transaction>.
+        Prints the usage instructions of the function <list>.
     """
     usage_warning_message = "\n\nUsage:\nlist\nlist <type>\nlist [ < | = | > | <= | >= ] <value>\nlist balance <day>\n\nThis function lists the transactions specified by the user in the parameters.\n\n"
     print(usage_warning_message)
@@ -548,8 +548,8 @@ def test_list_balance():
 
     print("<list_balance> function test passed.\n\n")
 
-def test_replace():
-    print("\n\n<ui_replace> function test running...")
+def test_edit_transaction():
+    print("\n\n<edit_transaction> function test running...")
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
@@ -571,7 +571,7 @@ def test_replace():
     correct_final_result = [Transaction(19, 55, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
-    ui_replace(account_transactions, 19, "out", "pizza", 55)
+    edit_transaction(account_transactions, 19, "out", "pizza", 55)
     assert_transaction_lists()
 
     ### Test 2
@@ -582,7 +582,7 @@ def test_replace():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_replace(account_transactions, -19, "out", "pizza", 55)
+        edit_transaction(account_transactions, -19, "out", "pizza", 55)
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -595,7 +595,7 @@ def test_replace():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_replace(account_transactions, 5.5, "out", "pizza", 55)
+        edit_transaction(account_transactions, 5.5, "out", "pizza", 55)
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -608,7 +608,7 @@ def test_replace():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_replace(account_transactions, 5, "abcdef", "pizza", 55)
+        edit_transaction(account_transactions, 5, "abcdef", "pizza", 55)
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -621,7 +621,7 @@ def test_replace():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_replace(account_transactions, 19, "out", "pizza", -12)
+        edit_transaction(account_transactions, 19, "out", "pizza", -12)
     except Exception as e:
         print(e)
     assert_transaction_lists()
@@ -634,12 +634,12 @@ def test_replace():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     try:
-        ui_replace(account_transactions, 19, "out", "pizza", 12.5)
+        edit_transaction(account_transactions, 19, "out", "pizza", 12.5)
     except Exception as e:
         print(e)
     assert_transaction_lists()
 
-    print("<ui_replace> function test passed.\n\n")
+    print("<edit_transaction> function test passed.\n\n")
 
 def test_remove_transaction():
     print("\n\n<remove_transaction> function test running...")
@@ -915,7 +915,7 @@ def run_all_tests():
     test_write_transactions_file()
     test_read_transactions_file()
     test_list_transaction()
-    test_replace()
+    test_edit_transaction()
     test_remove_transaction()
     test_add_transaction()
     test_transaction_class()
@@ -1004,7 +1004,7 @@ def main():
                 ui_print_specification_function_replace()
                 continue
 
-            ui_replace(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
+            edit_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
         elif parameters[0] == "list":
             clear_screen()
             if number_of_parameters == 1:
