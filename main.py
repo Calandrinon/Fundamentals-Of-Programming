@@ -45,7 +45,7 @@ def main():
         try:
             commands[parameters[0]](account_transactions, parameters)
         except KeyError:
-            print("That command doesn't exist! This is the list of commands: ")
+            print("That command doesn't exist! This is the list of commands: add, insert, remove, replace, list, clear")
             #ui_help()
 
     write_transactions_file(account_transactions)
