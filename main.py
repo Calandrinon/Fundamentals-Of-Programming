@@ -208,7 +208,7 @@ def ui_list_balance(transaction_list, day):
         print("The transaction list is empty!")
         return
 
-    if not isinstance(day, int) or day < 1:
+    if not isinstance(day, int) or day < 1 or day > 31:
         message = "The day parameter needs to be a positive integer between 1 and 31."
         raise Exception(message)
 

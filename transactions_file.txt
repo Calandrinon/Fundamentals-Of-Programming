@@ -1,3 +1,2 @@
-[25, 10, in, gift]
-[10, 5000, in, bonus]
-[5, 10000, in, salary]
+[2, 5500, in, salary]
+[23, 535, out, car_fix]
