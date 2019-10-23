@@ -2,12 +2,8 @@ import datetime
 
 """
     TODO: Check for invalid inputs in <main> again and add exception handling.
-    TODO: Check in <ui_replace> if the parameter is valid and exists in the
-          account transactions.
     TODO: Check if the user uses the right command syntax.
     TODO: Organize in modules.
-    TODO: Repair error message which is printed in case the user enters a
-          wrong relation operator in the function <ui_list>
     TODO: Create separate data validation functions.
     TODO: In each function specification, the exceptions that could be possibly
           raised have to be mentioned.
@@ -402,6 +398,13 @@ def ui_print_specification_function_replace():
         Prints the usage instructions of the function <ui_replace>.
     """
     usage_warning_message = "\n\nUsage:\nreplace <day> <type> <description> with <value>\n\nThis function edits the amount of money of a specific transaction made on\nthe mentioned day, based on the entered parameters.\n\n"
+    print(usage_warning_message)
+
+def ui_print_specification_function_list():
+    """
+        Prints the usage instructions of the function <ui_list>.
+    """
+    usage_warning_message = "\n\nUsage:\nlist\nlist <type>\nlist [ < | = | > | <= | >= ] <value>\nlist balance <day>\n\nThis function lists the transactions specified by the user in the parameters.\n\n"
     print(usage_warning_message)
 
 def clear_screen():
@@ -1007,18 +1010,27 @@ def main():
             if number_of_parameters == 1:
                 ui_list(account_transactions)
             elif number_of_parameters == 2:
-                ui_list_by_type(account_transactions, parameters[1])
+                try:
+                    ui_list_by_type(account_transactions, parameters[1])
+                except Exception as e:
+                    print(e)
+                    ui_print_specification_function_list()
             elif number_of_parameters == 3:
                 if parameters[1] != "balance":
                     try:
                         ui_list_by_value_size(account_transactions, parameters[1], int(parameters[2]))
                     except Exception as e:
                         print(e)
+                        ui_print_specification_function_list()
                 else:
                     try:
                         ui_list_balance(account_transactions, int(parameters[2]))
                     except Exception as e:
                         print(e)
+                        ui_print_specification_function_list()
+            else:
+                print("Wrong number of parameters!")
+                ui_print_specification_function_list()
         elif parameters[0] == "clear":
             clear_screen()
         elif parameters[0] not in commands:
@@ -1027,5 +1039,5 @@ def main():
     write_transactions_file(account_transactions)
 
 clear_screen()
-run_all_tests()
-#main()
+#run_all_tests()
+main()
