@@ -2,7 +2,6 @@ import datetime
 
 """
     TODO: Check for invalid inputs in <main> again and add exception handling.
-    TODO: Check <ui_remove> function once again.
     TODO: Check in <ui_replace> if the parameter is valid and exists in the
           account transactions.
     TODO: Check if the user uses the right command syntax.
@@ -775,6 +774,7 @@ def test_remove():
         ui_remove(account_transactions, 0, 32, ["crap"])
     except Exception as e:
         print(e)
+    assert_transaction_lists()
 
     ### Test 11
     account_transactions = [Transaction(19, 100, "out", "pizza"),
