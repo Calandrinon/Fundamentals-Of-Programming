@@ -338,6 +338,21 @@ def read_transactions_file():
     return transaction_objects
     file.close()
 
+def write_transactions_file(account_transactions):
+    """
+    Writes the account transactions in the transaction file.
+    Input:
+        > account_transactions - A list with all transactions
+    """
+
+    file = open('transactions_file.txt', 'w')
+
+    for transaction in account_transactions:
+        file.write("[{}, {}, {}, {}]\n".format(transaction.get_date(),
+        transaction.get_value(), transaction.get_type(), transaction.get_description()))
+
+    file.close()
+
 def ui_print_specification_function_add():
     """
         Prints the usage instructions of the function <ui_add>.
@@ -375,6 +390,12 @@ def test_read_transactions_file():
     for transaction in transactions:
         transaction.print()
     print("<read_transactions_file> function test passed.\n\n")
+
+def test_write_transactions_file():
+    print("\n\n<write_transactions_file> function test running...")
+    transactions = [Transaction(25, 10, "in", "gift"), Transaction(10, 5000, "in", "bonus"), Transaction(5, 10000, "in", "salary")]
+    write_transactions_file(transactions)
+    print("<write_transactions_file> function test passed.\n\n")
 
 def test_list():
     print("\n\n<ui_list> function test running...")
@@ -744,6 +765,7 @@ def test_transaction_class():
 
 def run_all_tests():
     print("Tests:")
+    test_write_transactions_file()
     test_read_transactions_file()
     test_list()
     test_replace()
