@@ -1,8 +1,6 @@
 import datetime
 
 """
-    TODO: Print specifications for list functions if the user enters Invalid
-          parameters. Raise exceptions.
     TODO: Check for invalid inputs in <main> again and add exception handling.
     TODO: Check <ui_remove> function once again.
     TODO: Check in <ui_replace> if the parameter is valid and exists in the
@@ -11,6 +9,9 @@ import datetime
     TODO: Organize in modules.
     TODO: Repair error message which is printed in case the user enters a
           wrong relation operator in the function <ui_list>
+    TODO: Create separate data validation functions.
+    TODO: In each function specification, the exceptions that could be possibly
+          raised have to be mentioned.
 """
 
 class Transaction:
@@ -129,6 +130,9 @@ def ui_list(transaction_list):
         return
 
     for transaction in transaction_list:
+        if not isinstance(transaction, Transaction):
+            message = "The list parameter is not a list of Transaction objects!"
+            raise Exception(message)
         transaction.print()
 
 def ui_list_by_type(transaction_list, type):
@@ -141,10 +145,17 @@ def ui_list_by_type(transaction_list, type):
         print("The transaction list is empty!")
         return
 
+    if type not in ["in", "out"]:
+        message = "The type parameter should be either 'in' or 'out'."
+        raise Exception(message)
+
     for transaction in transaction_list:
+        if not isinstance(transaction, Transaction):
+            message = "The list parameter is not a list of Transaction objects!"
+            raise Exception(message)
+
         if transaction.get_type() == type:
             transaction.print()
-    pass
 
 def ui_list_by_value_size(transaction_list, condition, value):
     """
@@ -163,10 +174,18 @@ def ui_list_by_value_size(transaction_list, condition, value):
         return
 
     if condition not in ["<", ">", "<=", ">=", "="]:
-        message = "The condition parameter should contain one of the following operands: <, >, =."
+        message = "The condition parameter should contain one of the following operands: <, >, =. <=, >="
+        raise Exception(message)
+
+    if not isinstance(value, int) or value < 0:
+        message = "The value parameter should be a positive integer."
         raise Exception(message)
 
     for transaction in transaction_list:
+        if not isinstance(transaction, Transaction):
+            message = "The list parameter is not a list of Transaction objects!"
+            raise Exception(message)
+
         if condition == "<":
             if transaction.get_value() < value:
                 transaction.print()
@@ -187,13 +206,14 @@ def ui_list_balance(transaction_list, day):
     """
     Computes the account’s balance on the day specified in the parameter.
     Input:
-        > day
+        > day - integer which represents the day of the month when the user had
+                the computed balance.
     """
     if len(transaction_list) == 0:
         print("The transaction list is empty!")
         return
 
-    if not isinstance(day, int):
+    if not isinstance(day, int) or day < 1:
         message = "The day parameter needs to be a positive integer between 1 and 31."
         raise Exception(message)
 
@@ -201,6 +221,10 @@ def ui_list_balance(transaction_list, day):
     out_transactions_sum = 0
 
     for transaction in transaction_list:
+        if not isinstance(transaction, Transaction):
+            message = "The list parameter is not a list of Transaction objects!"
+            raise Exception(message)
+
         if transaction.get_date() <= day:
             if transaction.get_type() == "in":
                 in_transactions_sum += transaction.get_value()
@@ -399,11 +423,128 @@ def test_write_transactions_file():
 
 def test_list():
     print("\n\n<ui_list> function test running...")
+
+    ### Test 1
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     ui_list(account_transactions)
+
+    ### Test 2
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), 5]
+    try:
+        ui_list(account_transactions)
+    except Exception as e:
+        print(e)
+
     print("<ui_list> function test passed.\n\n")
+
+def test_list_by_type():
+    print("\n\n<ui_list_by_type> function test running...")
+
+    ### Test 1
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    ui_list_by_type(account_transactions, "in")
+
+    ### Test 2
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(20, 100, "in", "some_stuff"), 5]
+    try:
+        ui_list_by_type(account_transactions, "in")
+    except Exception as e:
+        print(e)
+
+    ### Test 3
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(20, 100, "in", "some_stuff"), 5]
+    try:
+        ui_list_by_type(account_transactions, "abc")
+    except Exception as e:
+        print(e)
+
+    print("<ui_list_by_type> function test passed.\n\n")
+
+def test_list_by_value_size():
+    print("\n\n<ui_list_by_value_size> function test running...")
+
+    ### Test 1
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 50, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    ui_list_by_value_size(account_transactions, ">", 75)
+
+    ### Test 2
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_list_by_value_size(account_transactions, "<", -13)
+    except Exception as e:
+        print(e)
+
+    ### Test 3
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_list_by_value_size(account_transactions, "<", 13.5)
+    except Exception as e:
+        print(e)
+
+    ### Test 4
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(20, 100, "in", "some_stuff"), 5]
+    try:
+        ui_list_by_type(account_transactions, "in")
+    except Exception as e:
+        print(e)
+
+    print("<ui_list_by_value_size> function test passed.\n\n")
+
+def test_list_balance():
+    print("\n\n<ui_list_balance> function test running...")
+
+    ### Test 1
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 50, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    ui_list_balance(account_transactions, 20)
+
+    ### Test 2
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_list_balance(account_transactions, 3.5)
+    except Exception as e:
+        print(e)
+
+    ### Test 3
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
+    try:
+        ui_list_balance(account_transactions, -3)
+    except Exception as e:
+        print(e)
+
+    ### Test 4
+    account_transactions = [Transaction(19, 100, "out", "pizza"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 100, "out", "stuff"),
+    Transaction(20, 100, "out", "pizza"), 5, Transaction(21, 100, "in", "gift")]
+    try:
+        ui_list_balance(account_transactions, 3)
+    except Exception as e:
+        print(e)
+
+    print("<ui_list_balance> function test passed.\n\n")
 
 def test_replace():
     print("\n\n<ui_replace> function test running...")
@@ -765,6 +906,9 @@ def test_transaction_class():
 
 def run_all_tests():
     print("Tests:")
+    test_list_balance()
+    test_list_by_value_size()
+    test_list_by_type()
     test_write_transactions_file()
     test_read_transactions_file()
     test_list()
@@ -883,5 +1027,5 @@ def main():
     write_transactions_file(account_transactions)
 
 clear_screen()
-#run_all_tests()
-main()
+run_all_tests()
+#main()
