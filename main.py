@@ -1,8 +1,6 @@
 import datetime
 
 """
-    TODO: Check for invalid inputs in <main> again and add exception handling.
-    TODO: Check if the user uses the right command syntax.
     TODO: Create separate data validation functions.
     TODO: In each function specification, the exceptions that could be possibly
           raised have to be mentioned.
@@ -1000,6 +998,35 @@ def ui_replace(account_transactions, parameters):
 
     edit_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
 
+def ui_list(account_transactions, parameters):
+    number_of_parameters = len(parameters)
+    clear_screen()
+
+    if number_of_parameters == 1:
+        list_transaction(account_transactions)
+    elif number_of_parameters == 2:
+        try:
+            list_transaction_by_type(account_transactions, parameters[1])
+        except Exception as e:
+            print(e)
+            ui_print_specification_function_list()
+    elif number_of_parameters == 3:
+        if parameters[1] != "balance":
+            try:
+                list_transaction_by_value_size(account_transactions, parameters[1], int(parameters[2]))
+            except Exception as e:
+                print(e)
+                ui_print_specification_function_list()
+        else:
+            try:
+                list_balance(account_transactions, int(parameters[2]))
+            except Exception as e:
+                print(e)
+                ui_print_specification_function_list()
+    else:
+        print("Wrong number of parameters!")
+        ui_print_specification_function_list()
+
 def main():
     account_transactions = read_transactions_file()
     commands = ["quit", "exit", "add", "clear", "insert", "remove", "replace", "list"]
@@ -1025,31 +1052,7 @@ def main():
         elif parameters[0] == "replace":
             ui_replace(account_transactions, parameters)
         elif parameters[0] == "list":
-            clear_screen()
-            if number_of_parameters == 1:
-                list_transaction(account_transactions)
-            elif number_of_parameters == 2:
-                try:
-                    list_transaction_by_type(account_transactions, parameters[1])
-                except Exception as e:
-                    print(e)
-                    ui_print_specification_function_list()
-            elif number_of_parameters == 3:
-                if parameters[1] != "balance":
-                    try:
-                        list_transaction_by_value_size(account_transactions, parameters[1], int(parameters[2]))
-                    except Exception as e:
-                        print(e)
-                        ui_print_specification_function_list()
-                else:
-                    try:
-                        list_balance(account_transactions, int(parameters[2]))
-                    except Exception as e:
-                        print(e)
-                        ui_print_specification_function_list()
-            else:
-                print("Wrong number of parameters!")
-                ui_print_specification_function_list()
+            ui_list(account_transactions, parameters)
         elif parameters[0] == "clear":
             clear_screen()
         elif parameters[0] not in commands:
