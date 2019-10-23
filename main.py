@@ -1027,6 +1027,19 @@ def ui_list(account_transactions, parameters):
         print("Wrong number of parameters!")
         ui_print_specification_function_list()
 
+def ui_clear(account_transactions, parameters):
+    ### The account_transactions parameter is not useful in this function
+    ### but we create this in order to be able to insert this function into a
+    ### dictionary which will associate the function with the command entered
+    ### by the user as input.
+    number_of_parameters = len(parameters)
+
+    if number_of_parameters > 1:
+        print("The command 'clear' takes no parameters!")
+        return
+
+    clear_screen()
+
 def main():
     account_transactions = read_transactions_file()
     commands = ["quit", "exit", "add", "clear", "insert", "remove", "replace", "list"]
@@ -1054,7 +1067,7 @@ def main():
         elif parameters[0] == "list":
             ui_list(account_transactions, parameters)
         elif parameters[0] == "clear":
-            clear_screen()
+            ui_clear(account_transactions, parameters)
         elif parameters[0] not in commands:
             print("That command doesn't exist! This is the list of commands: ", commands)
 
