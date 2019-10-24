@@ -320,9 +320,13 @@ def maximum_transferred_value(transaction_list, type, day):
             message = "The list parameter is not a list of Transaction objects!"
             raise Exception(message)
 
-        if transaction.get_type() == type:
+        if transaction.get_type() == type and transaction.get_date() == day:
             if transaction.get_value() > maximum_value:
                 maximum_value = transaction.get_value()
                 maximum_transaction = transaction
+
+    if not isinstance(maximum_transaction, Transaction):
+        message = "There were no '{}' transactions made on day {}".format(type, day)
+        raise Exception(message)
 
     return maximum_transaction

@@ -1,6 +1,6 @@
 from non_ui import clear_screen
 from operations import *
-from transaction import Transaction
+from transaction import *
 
 def ui_add(account_transactions, parameters):
     number_of_parameters = len(parameters)
@@ -139,6 +139,22 @@ def ui_sum(account_transactions, parameters):
         print(e)
         ui_print_specification_function_sum()
 
+def ui_max(account_transactions, parameters):
+    number_of_parameters = len(parameters)
+    ### In case the user doesn't enter exactly 2 parameters
+    if number_of_parameters != 3:
+        print("The command 'max' takes 2 parameters.")
+        ui_print_specification_function_max()
+        return
+
+    try:
+        maximum_transaction = maximum_transferred_value(account_transactions, parameters[1], int(parameters[2]))
+        print("The transaction of type '{}' made on day {} has the maximum value of {}.".format(parameters[1], parameters[2], maximum_transaction.get_value()))
+        maximum_transaction.print()
+    except Exception as e:
+        print(e)
+        ui_print_specification_function_max()
+
 def ui_print_specification_function_add():
     """
         Prints the usage instructions of the function <add>.
@@ -179,4 +195,11 @@ def ui_print_specification_function_sum():
         Prints the usage instructions of the function <sum>.
     """
     usage_warning_message = "\n\nUsage:\nsum <type>\n\nThis function lists the transactions specified by the user in the parameters.\n\n"
+    print(usage_warning_message)
+
+def ui_print_specification_function_max():
+    """
+        Prints the usage instructions of the function <max>.
+    """
+    usage_warning_message = "\n\nUsage:\nmax <type> <day>\n\nThis function lists the transaction of type <type> made on day <day> with\nthe maximum transferred value.\n\n"
     print(usage_warning_message)

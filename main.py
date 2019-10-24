@@ -27,7 +27,8 @@ def run_all_tests():
 def main():
     account_transactions = read_transactions_file()
     commands = {"add":ui_add, "insert":ui_insert, "remove":ui_remove,
-    "replace":ui_replace, "list":ui_list, "clear":ui_clear, "sum":ui_sum}
+    "replace":ui_replace, "list":ui_list, "clear":ui_clear, "sum":ui_sum,
+    "max":ui_max}
 
     while True:
         command = input("###: ")
@@ -45,7 +46,7 @@ def main():
         try:
             commands[parameters[0]](account_transactions, parameters)
         except KeyError:
-            print("That command doesn't exist! This is the list of commands: \nadd, insert, remove, replace, list, clear, sum")
+            print("That command doesn't exist! This is the list of commands: \nadd, insert, remove, replace, list, clear, sum, max")
             #ui_help()
 
     write_transactions_file(account_transactions)

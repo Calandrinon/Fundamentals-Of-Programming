@@ -11,7 +11,7 @@ def test_maximum_transferred_value():
     account_transactions = [Transaction(19, 100, "out", "pizza"), max,
     Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
     Transaction(21, 100, "in", "gift")]
-    assert(maximum_transferred_value(account_transactions, "out", 19) == max)
+    assert(max.get_value() == maximum_transferred_value(account_transactions, "out", 19).get_value())
 
     print("<maximum_transferred_value> function test passed.\n\n")
 
