@@ -294,3 +294,35 @@ def sum_of_transactions_by_type(transaction_list, type):
             sum += transaction.get_value()
 
     return sum
+
+def maximum_transferred_value(transaction_list, type, day):
+    """
+    Returns the transaction of type "type" on day "day" with the maximum value.
+    """
+
+    if len(transaction_list) == 0:
+        print("The transaction list is empty!")
+        return
+
+    if type not in ["in", "out"]:
+        message = "The type parameter should be either 'in' or 'out'."
+        raise Exception(message)
+
+    if not isinstance(day, int) or day < 1 or day > 31:
+        message = "The day parameter needs to be a positive integer between 1 and 31."
+        raise Exception(message)
+
+    maximum_value = 0
+    maximum_transaction = 0
+
+    for transaction in transaction_list:
+        if not isinstance(transaction, Transaction):
+            message = "The list parameter is not a list of Transaction objects!"
+            raise Exception(message)
+
+        if transaction.get_type() == type:
+            if transaction.get_value() > maximum_value:
+                maximum_value = transaction.get_value()
+                maximum_transaction = transaction
+
+    return maximum_transaction

@@ -3,13 +3,28 @@ from transaction import Transaction
 from operations import *
 from non_ui import split_command, read_transactions_file, write_transactions_file
 
+def test_maximum_transferred_value():
+    print("\n\n<maximum_transferred_value> function test running...")
+
+    ### Test 1
+    max = Transaction(19, 500, "out", "stuff")
+    account_transactions = [Transaction(19, 100, "out", "pizza"), max,
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
+    Transaction(21, 100, "in", "gift")]
+    assert(maximum_transferred_value(account_transactions, "out", 19) == max)
+
+    print("<maximum_transferred_value> function test passed.\n\n")
+
 def test_sum_of_transactions_by_type():
     print("\n\n<sum_of_transactions_by_type> function test running...")
+
+    ### Test 1
     account_transactions = [Transaction(19, 100, "out", "pizza"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 50, "out", "stuff"),
     Transaction(20, 100, "out", "pizza"), Transaction(21, 100, "in", "gift")]
     assert(sum_of_transactions_by_type(account_transactions, "out") == 350)
     assert(sum_of_transactions_by_type(account_transactions, "in") == 100)
+
     print("<sum_of_transactions_by_type> function test passed.\n\n")
 
 def test_read_transactions_file():
