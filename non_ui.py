@@ -19,11 +19,11 @@ def split_command(command):
                                   ### between the arguments of the command.
     return list_of_tokens
 
-def read_transactions_file():
+def read_transactions_file(filename):
     """
     Reads the file with the transactions that were saved.
     """
-    file = open('transactions_file.txt', 'r')
+    file = open(filename, 'r')
     transaction_strings_list = file.readlines()
     transaction_objects = []
 
@@ -46,14 +46,15 @@ def read_transactions_file():
     return transaction_objects
     file.close()
 
-def write_transactions_file(account_transactions):
+def write_transactions_file(account_transactions, filename):
     """
     Writes the account transactions in the transaction file.
     Input:
         > account_transactions - A list with all transactions
+        > filename - The name of the file
     """
 
-    file = open('transactions_file.txt', 'w')
+    file = open(filename, 'w')
 
     for transaction in account_transactions:
         file.write("[{}, {}, {}, {}]\n".format(transaction.get_date(),

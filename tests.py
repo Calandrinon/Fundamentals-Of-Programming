@@ -99,7 +99,7 @@ def test_sum_of_transactions_by_type():
 
 def test_read_transactions_file():
     print("\n\n<read_transactions_file> function test running...")
-    transactions = read_transactions_file()
+    transactions = read_transactions_file("transactions_file.txt")
     for transaction in transactions:
         transaction.print()
     print("<read_transactions_file> function test passed.\n\n")
@@ -107,7 +107,7 @@ def test_read_transactions_file():
 def test_write_transactions_file():
     print("\n\n<write_transactions_file> function test running...")
     transactions = [Transaction(25, 10, "in", "gift"), Transaction(10, 5000, "in", "bonus"), Transaction(5, 10000, "in", "salary")]
-    write_transactions_file(transactions)
+    write_transactions_file(transactions, "transactions_file.txt")
     print("<write_transactions_file> function test passed.\n\n")
 
 def test_list_transaction():

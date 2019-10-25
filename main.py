@@ -26,7 +26,7 @@ def run_all_tests():
     print("\n\n\nTests are done!\n\n\n\n\n")
 
 def main():
-    account_transactions = read_transactions_file()
+    account_transactions = read_transactions_file("transactions_file.txt")
     commands = {"add":ui_add, "insert":ui_insert, "remove":ui_remove,
     "replace":ui_replace, "list":ui_list, "clear":ui_clear, "sum":ui_sum,
     "max":ui_max, "filter":ui_filter}
@@ -50,7 +50,7 @@ def main():
             print("That command doesn't exist! This is the list of commands: \nadd, insert, remove, replace, list, clear, sum, max, filter")
             #ui_help()
 
-    write_transactions_file(account_transactions)
+    write_transactions_file(account_transactions, "transactions_file.txt")
 
 clear_screen()
 run_all_tests()
