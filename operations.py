@@ -358,7 +358,18 @@ def filter_transactions(transaction_list, type, value):
         else:
             removed_type = "out"
 
-        remove_transaction(transaction_list, 1, 31, [removed_type])
+        no_type_to_filter = True
+        for transaction in transaction_list:
+            if transaction.get_type() == type:
+                no_type_to_filter = False
+                break
+
+        if no_type_to_filter == False:
+            remove_transaction(transaction_list, 1, 31, [removed_type])
+        else:
+            message = "There is no '{}' transaction in the transaction list!".format(type)
+            raise Exception(message)
+
         return
 
     blank_transaction = Transaction(0, 0, "none", "deleted")

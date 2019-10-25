@@ -155,6 +155,20 @@ def ui_max(account_transactions, parameters):
         print(e)
         ui_print_specification_function_max()
 
+def ui_filter(account_transactions, parameters):
+    number_of_parameters = len(parameters)
+    try:
+        if number_of_parameters == 2:
+            filter_transactions(account_transactions, parameters[1], 0)
+        elif number_of_parameters == 3:
+            filter_transactions(account_transactions, parameters[1], int(parameters[2]))
+        else:
+            print("Wrong usage!")
+            ui_print_specification_function_filter()
+    except Exception as e:
+        print(e)
+        ui_print_specification_function_filter()
+
 def ui_print_specification_function_add():
     """
         Prints the usage instructions of the function <add>.
@@ -202,4 +216,11 @@ def ui_print_specification_function_max():
         Prints the usage instructions of the function <max>.
     """
     usage_warning_message = "\n\nUsage:\nmax <type> <day>\n\nThis function lists the transaction of type <type> made on day <day> with\nthe maximum transferred value.\n\n"
+    print(usage_warning_message)
+
+def ui_print_specification_function_filter():
+    """
+        Prints the usage instructions of the function <max>.
+    """
+    usage_warning_message = "\n\nUsage:\nfilter <type>\nfilter <type> <value>\n\nThis function filters the transactions of the month based on the entered parameters.\n If the user enters 2 parameters, the remaining transactions after the filtering\nwill be those with the value less that the entered parameter <value>.\n\n"
     print(usage_warning_message)
