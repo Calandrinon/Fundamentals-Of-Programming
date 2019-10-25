@@ -8,12 +8,13 @@ from tests import *
 
 def run_all_tests():
     print("Tests:")
+    test_filter_transactions()
     test_maximum_transferred_value()
     test_sum_of_transactions_by_type()
     test_list_balance()
     test_list_transaction_by_value_size()
     test_list_transaction_by_type()
-    test_write_transactions_file()
+    #test_write_transactions_file()
     test_read_transactions_file()
     test_list_transaction()
     test_edit_transaction()

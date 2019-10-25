@@ -3,6 +3,76 @@ from transaction import Transaction
 from operations import *
 from non_ui import split_command, read_transactions_file, write_transactions_file
 
+def test_filter_transactions():
+    print("\n\n<filter_transactions> function test running...")
+    account_transactions = []
+    correct_result = []
+
+    ### Test 1
+    account_transactions = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
+    Transaction(21, 100, "in", "gift")]
+    correct_result = [Transaction(21, 100, "in", "gift")]
+    filter_transactions(account_transactions, "in", 0)
+    assert(len(account_transactions) == len(correct_result))
+    account_transactions[0].print()
+
+    ### Test 2
+    account_transactions = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
+    Transaction(21, 100, "in", "gift")]
+    correct_result = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza")]
+    filter_transactions(account_transactions, "out", 0)
+    for transaction in account_transactions:
+        transaction.print()
+    assert(len(account_transactions) == len(correct_result))
+
+    ### Test 3
+    account_transactions = []
+    filter_transactions(account_transactions, "in", 0)
+
+    ### Test 4
+    account_transactions = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
+    Transaction(21, 100, "in", "gift")]
+    try:
+        filter_transactions(account_transactions, "abc", 0)
+    except Exception as e:
+        print(e)
+
+    ### Test 5
+    account_transactions = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
+    Transaction(21, 100, "in", "gift")]
+    try:
+        filter_transactions(account_transactions, "in", 5.6)
+    except Exception as e:
+        print(e)
+
+    ### Test 6
+    account_transactions = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
+    Transaction(21, 100, "in", "gift")]
+    try:
+        filter_transactions(account_transactions, "in", -300)
+    except Exception as e:
+        print(e)
+
+    ### Test 7
+    account_transactions = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),
+    Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
+    Transaction(21, 100, "in", "gift")]
+    correct_result = [Transaction(19, 100, "out", "pizza"), Transaction(25, 100, "out", "pizza"),
+     Transaction(19, 35, "out", "pizza")]
+
+    filter_transactions(account_transactions, "out", 150)
+    for transaction in account_transactions:
+        transaction.print()
+    assert(len(account_transactions) == len(correct_result))
+
+    print("<filter_transactions> function test passed.\n\n")
+
 def test_maximum_transferred_value():
     print("\n\n<maximum_transferred_value> function test running...")
 

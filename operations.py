@@ -330,3 +330,56 @@ def maximum_transferred_value(transaction_list, type, day):
         raise Exception(message)
 
     return maximum_transaction
+
+def filter_transactions(transaction_list, type, value):
+    """
+    Filters the transactions based on their type or both type and value.
+    In case the user enters a value as a second parameter, the transactions that
+    will remain after filtering the list will be those with the value smaller than
+    the "value" parameter.
+    """
+
+    if len(transaction_list) == 0:
+        print("The transaction list is empty!")
+        return
+
+    if type not in ["in", "out"]:
+        message = "The type parameter should be either 'in' or 'out'."
+        raise Exception(message)
+
+    if not isinstance(value, int) or value < 0:
+        message = "The value parameter should be a positive integer!"
+        raise Exception(message)
+
+    if value == 0:
+        removed_type = ""
+        if type == "out":
+            removed_type = "in"
+        else:
+            removed_type = "out"
+
+        remove_transaction(transaction_list, 1, 31, [removed_type])
+        return
+
+    blank_transaction = Transaction(0, 0, "none", "deleted")
+    for transaction_index in range(0, len(transaction_list)):
+        if not isinstance(transaction_list[transaction_index], Transaction):
+            message = "The list parameter is not a list of Transaction objects!"
+            raise Exception(message)
+
+        if transaction_list[transaction_index].get_type() != type or transaction_list[transaction_index].get_value() >= value:
+            transaction_list[transaction_index] = blank_transaction
+
+    changes_made = True
+    while len(transaction_list) > 0 and changes_made:
+        initial_length_of_list = len(transaction_list)
+        try:
+            transaction_list.remove(blank_transaction)
+        except ValueError:    ### in case the value is not found
+            break
+        final_length_of_list = len(transaction_list)
+
+        if final_length_of_list < initial_length_of_list:
+            changes_made = True
+        else:
+            changes_made = False
