@@ -88,7 +88,10 @@ def ui_list(account_transactions, parameters):
     clear_screen()
 
     if number_of_parameters == 1:
-        list_transaction(account_transactions)
+        try:
+            list_transaction(account_transactions)
+        except Exception as e:
+            print(e)
     elif number_of_parameters == 2:
         try:
             list_transaction_by_type(account_transactions, parameters[1])

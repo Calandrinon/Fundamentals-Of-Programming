@@ -13,7 +13,10 @@ def test_filter_transactions():
     Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza"),
     Transaction(21, 100, "in", "gift")]
     correct_result = [Transaction(21, 100, "in", "gift")]
-    filter_transactions(account_transactions, "in", 0)
+    try:
+        filter_transactions(account_transactions, "in", 0)
+    except Exception as e:
+        print(e)
     assert(len(account_transactions) == len(correct_result))
     account_transactions[0].print()
 
@@ -23,14 +26,20 @@ def test_filter_transactions():
     Transaction(21, 100, "in", "gift")]
     correct_result = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),
     Transaction(25, 100, "out", "pizza"), Transaction(19, 35, "out", "pizza")]
-    filter_transactions(account_transactions, "out", 0)
+    try:
+        filter_transactions(account_transactions, "out", 0)
+    except Exception as e:
+        print(e)
     for transaction in account_transactions:
         transaction.print()
     assert(len(account_transactions) == len(correct_result))
 
     ### Test 3
     account_transactions = []
-    filter_transactions(account_transactions, "in", 0)
+    try:
+        filter_transactions(account_transactions, "in", 0)
+    except Exception as e:
+        print(e)
 
     ### Test 4
     account_transactions = [Transaction(19, 100, "out", "pizza"),  Transaction(19, 500, "out", "stuff"),

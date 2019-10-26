@@ -79,8 +79,8 @@ def list_transaction(transaction_list):
     Lists all the transactions made on the account.
     """
     if len(transaction_list) == 0:
-        print("The transaction list is empty!")
-        return
+        message = "The transaction list is empty!"
+        raise Exception(message)
 
     for transaction in transaction_list:
         if not isinstance(transaction, Transaction):
@@ -95,8 +95,8 @@ def list_transaction_by_type(transaction_list, type):
         > type - The type of the transaction.
     """
     if len(transaction_list) == 0:
-        print("The transaction list is empty!")
-        return
+        message = "The transaction list is empty!"
+        raise Exception(message)
 
     if type not in ["in", "out"]:
         message = "The type parameter should be either 'in' or 'out'."
@@ -123,8 +123,8 @@ def list_transaction_by_value_size(transaction_list, condition, value):
                   transactions.
     """
     if len(transaction_list) == 0:
-        print("The transaction list is empty!")
-        return
+        message = "The transaction list is empty!"
+        raise Exception(message)
 
     if condition not in ["<", ">", "<=", ">=", "="]:
         message = "The condition parameter should contain one of the following operands: <, >, =. <=, >="
@@ -163,8 +163,8 @@ def list_balance(transaction_list, day):
                 the computed balance.
     """
     if len(transaction_list) == 0:
-        print("The transaction list is empty!")
-        return
+        message = "The transaction list is empty!"
+        raise Exception(message)
 
     if not isinstance(day, int) or day < 1 or day > 31:
         message = "The day parameter needs to be a positive integer between 1 and 31."
@@ -278,8 +278,8 @@ def sum_of_transactions_by_type(transaction_list, type):
     """
 
     if len(transaction_list) == 0:
-        print("The transaction list is empty!")
-        return
+        message = "The transaction list is empty!"
+        raise Exception(message)
 
     if type not in ["in", "out"]:
         message = "The type parameter should be either 'in' or 'out'."
@@ -302,8 +302,8 @@ def maximum_transferred_value(transaction_list, type, day):
     """
 
     if len(transaction_list) == 0:
-        print("The transaction list is empty!")
-        return
+        message = "The transaction list is empty!"
+        raise Exception(message)
 
     if type not in ["in", "out"]:
         message = "The type parameter should be either 'in' or 'out'."
@@ -341,8 +341,8 @@ def filter_transactions(transaction_list, type, value):
     """
 
     if len(transaction_list) == 0:
-        print("The transaction list is empty!")
-        return
+        message = "The transaction list is empty!"
+        raise Exception(message)
 
     if type not in ["in", "out"]:
         message = "The type parameter should be either 'in' or 'out'."
