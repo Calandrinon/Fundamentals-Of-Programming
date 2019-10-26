@@ -1,5 +1,6 @@
 import datetime
 from transaction import Transaction
+from non_ui import save_last_operation_number, get_last_operation_number, read_transactions_file
 
 def add_transaction(transaction_list, value, type, description):
     """
@@ -394,3 +395,13 @@ def filter_transactions(transaction_list, type, value):
             changes_made = True
         else:
             changes_made = False
+
+def undo_last_operation(transaction_list):
+    last_operation_number = get_last_operation_number()
+
+    if last_operation_number == 0:
+        return
+
+    save_last_operation_number(last_operation_number - 1)
+
+    transaction_list[:] = read_transactions_file("operation_" + str(last_operation_number - 1) + ".txt")

@@ -169,6 +169,9 @@ def ui_filter(account_transactions, parameters):
         print(e)
         ui_print_specification_function_filter()
 
+def ui_undo(account_transactions, parameters):
+    undo_last_operation(account_transactions)
+
 def ui_print_specification_function_add():
     """
         Prints the usage instructions of the function <add>.

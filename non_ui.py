@@ -1,4 +1,5 @@
 from transaction import Transaction
+import os
 
 def clear_screen():
     print("\n"*200)
@@ -61,3 +62,26 @@ def write_transactions_file(account_transactions, filename):
         transaction.get_value(), transaction.get_type(), transaction.get_description()))
 
     file.close()
+
+def save_last_operation_number(last_operation_number):
+    """
+    Saves the number of the last operation that has been made.
+    This function is used for the "undo" feature.
+    """
+    file = open("last_operation_number.txt", 'w')
+    file.write(str(last_operation_number))
+    file.close()
+
+def get_last_operation_number():
+    """
+    Gets the number of the last operation that has been made.
+    This function is used for the "undo" feature.
+    """
+    file = open("last_operation_number.txt", 'r')
+    number = file.read()
+    file.close()
+    return int(number)
+
+def delete_operation_files(number_of_files):
+    for file in range(0, number_of_files + 1):
+        os.remove("operation_"+str(file)+".txt")
