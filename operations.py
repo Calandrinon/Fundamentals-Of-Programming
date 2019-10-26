@@ -23,12 +23,12 @@ def add_transaction(transaction_list, value, type, description):
     """
 
     if value < 0:
-        print("You should have entered a positive integer as a value.")
-        print("The value will be automatically made positive.")
+        message = "You should have entered a positive integer as a value."
+        raise Exception(message)
 
     if isinstance(value, float):
-        print("You should have entered an integer as a value, not a float.")
-        print("The value will be converted to an integer automatically.")
+        message = "You should have entered an integer as a value, not a float."
+        raise Exception(message)
 
     if type not in ["in", "out"]:
         message = "The parameter 'type' should have one of the following values: 'in', 'out'."
@@ -352,6 +352,12 @@ def filter_transactions(transaction_list, type, value):
         message = "The value parameter should be a positive integer!"
         raise Exception(message)
 
+    no_type_to_filter = True
+    for transaction in transaction_list:
+        if transaction.get_type() == type:
+            no_type_to_filter = False
+            break
+
     if value == 0:
         removed_type = ""
         if type == "out":
@@ -359,19 +365,16 @@ def filter_transactions(transaction_list, type, value):
         else:
             removed_type = "out"
 
-        no_type_to_filter = True
-        for transaction in transaction_list:
-            if transaction.get_type() == type:
-                no_type_to_filter = False
-                break
-
         if no_type_to_filter == False:
             remove_transaction(transaction_list, 1, 31, [removed_type])
         else:
             message = "There is no '{}' transaction in the transaction list!".format(type)
             raise Exception(message)
-
         return
+
+    if no_type_to_filter == True:
+        message = "There is no '{}' transaction in the transaction list!".format(type)
+        raise Exception(message)
 
     blank_transaction = Transaction(0, 0, "none", "deleted")
     for transaction_index in range(0, len(transaction_list)):

@@ -65,6 +65,7 @@ def main():
             print("That command doesn't exist! This is the list of commands: \nadd, insert, remove, replace, list, clear, sum, max, filter")
             #ui_help()
 
+
     write_transactions_file(account_transactions, "transactions_file.txt")
     delete_operation_files(number_of_executed_operations)
 
