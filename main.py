@@ -3,8 +3,7 @@ from non_ui import *
 from tests import *
 
 """
-    TODO: Implement "undo" function.
-    TODO: Replace print statements from UI functions with raised exceptions.
+    TODO: Replace print statements from non-UI functions with raised exceptions.
     TODO: Add "help" function.
     TODO: Replace obscure element deletion lines in <remove_transaction> and
           <filter_transactions> with the slice syntax for the whole array [:]
