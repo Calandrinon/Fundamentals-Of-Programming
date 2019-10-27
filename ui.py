@@ -207,6 +207,7 @@ def ui_help(account_transactions, parameters):
     """
     number_of_parameters = len(parameters)
     if number_of_parameters == 1:
+        ui_print_specification_function_help()
         print("This is the list of commands: \nquit, exit, help, add, insert, remove, replace, list, clear, sum, max, filter, undo")
     elif number_of_parameters == 2:
         specifications = {"add":ui_print_specification_function_add,
