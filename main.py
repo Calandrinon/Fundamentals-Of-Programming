@@ -36,7 +36,7 @@ def main():
     save_last_operation_number(last_operation_number)
     commands = {"add":ui_add, "insert":ui_insert, "remove":ui_remove,
     "replace":ui_replace, "list":ui_list, "clear":ui_clear, "sum":ui_sum,
-    "max":ui_max, "filter":ui_filter, "undo":ui_undo}
+    "max":ui_max, "filter":ui_filter, "undo":ui_undo, "help":ui_help}
 
     while True:
         command = input("###: ")
@@ -55,15 +55,16 @@ def main():
             last_operation_number = get_last_operation_number()
             commands[parameters[0]](account_transactions, parameters)
 
-            if parameters[0] not in ["list", "clear", "sum", "max", "undo"]:
+            if parameters[0] not in ["list", "clear", "sum", "max", "undo", "help"]:
                 last_operation_number += 1
                 if last_operation_number > number_of_executed_operations:
                     number_of_executed_operations += 1
                 save_last_operation_number(last_operation_number)
                 write_transactions_file(account_transactions, "operation_" + str(last_operation_number) + ".txt")
         except KeyError:
-            print("That command doesn't exist! This is the list of commands: \nadd, insert, remove, replace, list, clear, sum, max, filter")
-            #ui_help()
+            print("That command doesn't exist! This is the list of commands: \nquit, exit, help, add, insert, remove, replace, list, clear, sum, max, filter")
+        except Exception as e:
+            print(e)
 
 
     write_transactions_file(account_transactions, "transactions_file.txt")
