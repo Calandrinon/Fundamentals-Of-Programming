@@ -4,9 +4,9 @@ from tests import *
 
 """
     TODO: Create validation functions.
-    TODO: Add "help" function.
     TODO: Replace obscure element deletion lines in <remove_transaction> and
           <filter_transactions> with the slice syntax for the whole array [:]
+          (code quality)
 """
 
 def run_all_tests():
@@ -62,10 +62,11 @@ def main():
                 save_last_operation_number(last_operation_number)
                 write_transactions_file(account_transactions, "operation_" + str(last_operation_number) + ".txt")
         except KeyError:
-            print("That command doesn't exist! This is the list of commands: \nquit, exit, help, add, insert, remove, replace, list, clear, sum, max, filter")
+            print("That command doesn't exist! Check out the command 'help'")
+        except ValueError:
+            print("Wrong parameter types! Use only positive integers and valid transaction types 'in' and 'out'!\nCheck out the command 'help'")
         except Exception as e:
             print(e)
-
 
     write_transactions_file(account_transactions, "transactions_file.txt")
     delete_operation_files(number_of_executed_operations)

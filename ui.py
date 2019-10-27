@@ -6,114 +6,78 @@ def ui_add(account_transactions, parameters):
     number_of_parameters = len(parameters)
     ### In case the user doesn't enter 3 parameters
     if number_of_parameters != 4:
-        print("Invalid number of parameters!")
-        ui_print_specification_function_add()
-        return
+        message = "Invalid number of parameters! Check out the command 'help'"
+        raise Exception(message)
 
-    try:
-        #validate_add_command_parameters()
-        add_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3])
-    except Exception as e:
-        print(e)
-        ui_print_specification_function_add()
+    add_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3])
 
 def ui_insert(account_transactions, parameters):
     number_of_parameters = len(parameters)
     ### In case the user doesn't enter 4 parameters
     if number_of_parameters != 5:
-        print("Invalid number of parameters!")
-        ui_print_specification_function_insert()
-        return
+        message = "Invalid number of parameters! Check out the command 'help'"
+        raise Exception(message)
 
-    try:
-        #validate_insert_command_parameters()
-        insert_transaction(account_transactions, int(parameters[1]), int(parameters[2]), parameters[3], parameters[4])
-    except Exception as e:
-        print(e)
-        ui_print_specification_function_insert()
+    insert_transaction(account_transactions, int(parameters[1]), int(parameters[2]), parameters[3], parameters[4])
 
 def ui_remove(account_transactions, parameters):
     number_of_parameters = len(parameters)
     ### In case the user doesn't enter 1 parameter or 3 parameters
     if not(number_of_parameters == 2 or number_of_parameters == 4):
-        print("Invalid number of parameters!")
-        ui_print_specification_function_remove()
-        return
+        message = "Invalid number of parameters! Check out the command 'help'"
+        raise Exception(message)
 
-    try:
-        if number_of_parameters == 2:
-            is_parameter_1_int = True
-            try:
-                int(parameters[1])
-            except ValueError:
-                is_parameter_1_int = False
+    if number_of_parameters == 2:
+        is_parameter_1_int = True
+        try:
+            int(parameters[1])
+        except ValueError:
+            is_parameter_1_int = False
 
-            if is_parameter_1_int:
-                remove_transaction(account_transactions, int(parameters[1]), int(parameters[1]), ["in", "out"])
+        if is_parameter_1_int:
+            remove_transaction(account_transactions, int(parameters[1]), int(parameters[1]), ["in", "out"])
+        else:
+            if parameters[1] not in ["in", "out"]:
+                clear_screen()
+                message = "You should enter one of the following values in the 'type' parameter: 'in', 'out'"
+                raise Exception(message)
             else:
-                if parameters[1] not in ["in", "out"]:
-                    clear_screen()
-                    print("You should enter one of the following values in the 'type' parameter: 'in', 'out'")
-                else:
-                    remove_transaction(account_transactions, 1, 31, [parameters[1]])
-        elif number_of_parameters == 4:
-            if parameters[2] != "to":
-                ui_print_specification_function_remove()
-                return
-            remove_transaction(account_transactions, int(parameters[1]), int(parameters[3]), ["in", "out"])
-    except Exception as e:
-        print(e)
+                remove_transaction(account_transactions, 1, 31, [parameters[1]])
+    elif number_of_parameters == 4:
+        if parameters[2] != "to":
+            message = "Wrong usage! Check help"
+            raise Exception(message)
+        remove_transaction(account_transactions, int(parameters[1]), int(parameters[3]), ["in", "out"])
 
 def ui_replace(account_transactions, parameters):
     number_of_parameters = len(parameters)
     ### In case the user doesn't enter exactly 5 parameters
     if number_of_parameters != 6:
-        print("Invalid number of parameters!")
-        ui_print_specification_function_replace()
-        return
+        message = "Invalid number of parameters! Check out the command 'help'"
+        raise Exception(message)
 
     if parameters[4] != "with":
-        print("Wrong usage!")
-        ui_print_specification_function_replace()
-        return
+        message = "Wrong usage! Check help"
+        raise Exception(message)
 
-    try:
-        edit_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
-    except Exception as e:
-        print(e)
-        ui_print_specification_function_replace()
+    edit_transaction(account_transactions, int(parameters[1]), parameters[2], parameters[3], int(parameters[5]))
 
 def ui_list(account_transactions, parameters):
     number_of_parameters = len(parameters)
     clear_screen()
 
     if number_of_parameters == 1:
-        try:
-            list_transaction(account_transactions)
-        except Exception as e:
-            print(e)
+        list_transaction(account_transactions)
     elif number_of_parameters == 2:
-        try:
-            list_transaction_by_type(account_transactions, parameters[1])
-        except Exception as e:
-            print(e)
-            ui_print_specification_function_list()
+        list_transaction_by_type(account_transactions, parameters[1])
     elif number_of_parameters == 3:
         if parameters[1] != "balance":
-            try:
-                list_transaction_by_value_size(account_transactions, parameters[1], int(parameters[2]))
-            except Exception as e:
-                print(e)
-                ui_print_specification_function_list()
+            list_transaction_by_value_size(account_transactions, parameters[1], int(parameters[2]))
         else:
-            try:
-                list_balance(account_transactions, int(parameters[2]))
-            except Exception as e:
-                print(e)
-                ui_print_specification_function_list()
+            list_balance(account_transactions, int(parameters[2]))
     else:
-        print("Wrong number of parameters!")
-        ui_print_specification_function_list()
+        message = "Invalid number of parameters! Check out the command 'help'"
+        raise Exception(message)
 
 def ui_clear(account_transactions, parameters):
     ### The account_transactions parameter is not useful in this function
@@ -123,8 +87,8 @@ def ui_clear(account_transactions, parameters):
     number_of_parameters = len(parameters)
 
     if number_of_parameters > 1:
-        print("The command 'clear' takes no parameters!")
-        return
+        message = "The command 'clear' takes no parameters! Check out the command 'help'"
+        raise Exception(message)
 
     clear_screen()
 
@@ -132,45 +96,32 @@ def ui_sum(account_transactions, parameters):
     number_of_parameters = len(parameters)
     ### In case the user doesn't enter exactly 1 parameter
     if number_of_parameters != 2:
-        print("The command 'sum' takes 1 parameter")
-        ui_print_specification_function_sum()
-        return
+        message = "The command 'sum' takes 1 parameter! Check out the command 'help'"
+        raise Exception(message)
 
-    try:
-        print("The sum of all '{}' transactions of this month is: {}".format(parameters[1], sum_of_transactions_by_type(account_transactions, parameters[1])))
-    except Exception as e:
-        print(e)
-        ui_print_specification_function_sum()
+    print("The sum of all '{}' transactions of this month is: {}".format(parameters[1], sum_of_transactions_by_type(account_transactions, parameters[1])))
 
 def ui_max(account_transactions, parameters):
     number_of_parameters = len(parameters)
     ### In case the user doesn't enter exactly 2 parameters
     if number_of_parameters != 3:
-        print("The command 'max' takes 2 parameters.")
-        ui_print_specification_function_max()
-        return
+        message = "The command 'max' takes 2 parameters. Check out the command 'help'"
+        raise Exception(message)
 
-    try:
-        maximum_transaction = maximum_transferred_value(account_transactions, parameters[1], int(parameters[2]))
-        print("The transaction of type '{}' made on day {} has the maximum value of {}.".format(parameters[1], parameters[2], maximum_transaction.get_value()))
-        maximum_transaction.print()
-    except Exception as e:
-        print(e)
-        ui_print_specification_function_max()
+    maximum_transaction = maximum_transferred_value(account_transactions, parameters[1], int(parameters[2]))
+    print("The transaction of type '{}' made on day {} has the maximum value of {}.".format(parameters[1], parameters[2], maximum_transaction.get_value()))
+    maximum_transaction.print()
 
 def ui_filter(account_transactions, parameters):
     number_of_parameters = len(parameters)
-    try:
-        if number_of_parameters == 2:
-            filter_transactions(account_transactions, parameters[1], 0)
-        elif number_of_parameters == 3:
-            filter_transactions(account_transactions, parameters[1], int(parameters[2]))
-        else:
-            print("Wrong usage!")
-            ui_print_specification_function_filter()
-    except Exception as e:
-        print(e)
-        ui_print_specification_function_filter()
+
+    if number_of_parameters == 2:
+        filter_transactions(account_transactions, parameters[1], 0)
+    elif number_of_parameters == 3:
+        filter_transactions(account_transactions, parameters[1], int(parameters[2]))
+    else:
+        message = "Wrong usage! Check out the command 'help'"
+        raise Exception(message)
 
 def ui_undo(account_transactions, parameters):
     undo_last_operation(account_transactions)
@@ -246,13 +197,17 @@ def ui_print_specification_function_quit():
     usage_warning_message = "\n\nUsage:\nquit\nexit\n\nThis command terminates the program.\n\n"
     print(usage_warning_message)
 
+def ui_print_specification_function_undo():
+    usage_warning_message = "\n\nUsage:\nundo\n\nThis command reverts the effect of the last executed command.\n\n"
+    print(usage_warning_message)
+
 def ui_help(account_transactions, parameters):
     """
         Prints to the user the usage of a specific command.
     """
     number_of_parameters = len(parameters)
     if number_of_parameters == 1:
-        print("This is the list of commands: \nquit, exit, help, add, insert, remove, replace, list, clear, sum, max, filter")
+        print("This is the list of commands: \nquit, exit, help, add, insert, remove, replace, list, clear, sum, max, filter, undo")
     elif number_of_parameters == 2:
         specifications = {"add":ui_print_specification_function_add,
         "insert":ui_print_specification_function_insert,
@@ -265,7 +220,8 @@ def ui_help(account_transactions, parameters):
         "clear":ui_print_specification_function_clear,
         "help":ui_print_specification_function_help,
         "exit":ui_print_specification_function_quit,
-        "quit":ui_print_specification_function_quit}
+        "quit":ui_print_specification_function_quit,
+        "undo":ui_print_specification_function_undo}
 
         try:
             specifications[parameters[1]]()
