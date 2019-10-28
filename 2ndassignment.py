@@ -304,26 +304,26 @@ def test_expression_evaluator():
     ### Test 1
     expression = "1+2i"
     result = expression_evaluator(expression)
-    assert(result.get_real_part(), 1)
-    assert(result.get_imaginary_part(), 2)
+    assert(result.get_real_part() == 1)
+    assert(result.get_imaginary_part() == 2)
 
     ### Test 2
     expression = "1-2i"
     result = expression_evaluator(expression)
-    assert(result.get_real_part(), 1)
-    assert(result.get_imaginary_part(), -2)
+    assert(result.get_real_part() == 1)
+    assert(result.get_imaginary_part() == -2)
 
     ### Test 3
     expression = "-1+2i"
     result = expression_evaluator(expression)
-    assert(result.get_real_part(), -1)
-    assert(result.get_imaginary_part(), 2)
+    assert(result.get_real_part() == -1)
+    assert(result.get_imaginary_part() == 2)
 
     ### Test 4
     expression = "-1-2i"
     result = expression_evaluator(expression)
-    assert(result.get_real_part(), -1)
-    assert(result.get_imaginary_part(), -2)
+    assert(result.get_real_part() == -1)
+    assert(result.get_imaginary_part() == -2)
 
 def test_remove_occurences():
     test_list = ['a', 'b', 'c', 'a', 'c']
