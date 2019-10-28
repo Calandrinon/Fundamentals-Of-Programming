@@ -83,5 +83,9 @@ def get_last_operation_number():
     return int(number)
 
 def delete_operation_files(number_of_files):
+    """
+    Deletes the files that have been used to store each state of the
+    transaction list for the undo feature.
+    """
     for file in range(0, number_of_files + 1):
         os.remove("operation_"+str(file)+".txt")

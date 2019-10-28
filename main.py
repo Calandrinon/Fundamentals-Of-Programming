@@ -7,6 +7,8 @@ from tests import *
     TODO: Replace obscure element deletion lines in <remove_transaction> and
           <filter_transactions> with the slice syntax for the whole array [:]
           (code quality)
+    TODO: In <edit_transaction> check if the transaction that the user wants
+          to edit actually exists.
 """
 
 def run_all_tests():
