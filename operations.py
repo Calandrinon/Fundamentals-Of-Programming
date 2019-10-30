@@ -210,26 +210,16 @@ def remove_transaction(transaction_list, start_day, end_day, types):
         message = "The types of the transactions are 'in' and 'out'."
         raise Exception(message)
 
-    blank_transaction = Transaction(0, 0, "none", "deleted")
-    for transaction_index in range(0, len(transaction_list)):
-        transaction_day = transaction_list[transaction_index].get_date()
-        transaction_type = transaction_list[transaction_index].get_type()
-        if transaction_day >= start_day and transaction_day <= end_day and transaction_type in types:
-            transaction_list[transaction_index] = blank_transaction
+    new_transaction_list = []
 
-    changes_made = True
-    while len(transaction_list) > 0 and changes_made:
-        initial_length_of_list = len(transaction_list)
-        try:
-            transaction_list.remove(blank_transaction)
-        except ValueError:
-            break
-        final_length_of_list = len(transaction_list)
+    for transaction in transaction_list:
+        transaction_day = transaction.get_date()
+        transaction_type = transaction.get_type()
+        if not (transaction_day >= start_day and transaction_day <= end_day and transaction_type in types):
+            new_transaction_list.append(transaction)
 
-        if final_length_of_list < initial_length_of_list:
-            changes_made = True
-        else:
-            changes_made = False
+    transaction_list[:] = new_transaction_list
+
 
 def edit_transaction(transaction_list, day, type, description, value):
     """
@@ -376,28 +366,18 @@ def filter_transactions(transaction_list, type, value):
         message = "There is no '{}' transaction in the transaction list!".format(type)
         raise Exception(message)
 
-    blank_transaction = Transaction(0, 0, "none", "deleted")
-    for transaction_index in range(0, len(transaction_list)):
-        if not isinstance(transaction_list[transaction_index], Transaction):
+    new_transaction_list = []
+
+    for transaction in transaction_list:
+        if not isinstance(transaction, Transaction):
             message = "The list parameter is not a list of Transaction objects!"
             raise Exception(message)
 
-        if transaction_list[transaction_index].get_type() != type or transaction_list[transaction_index].get_value() >= value:
-            transaction_list[transaction_index] = blank_transaction
+        if transaction.get_type() == type and transaction.get_value() < value:
+            new_transaction_list.append(transaction)
 
-    changes_made = True
-    while len(transaction_list) > 0 and changes_made:
-        initial_length_of_list = len(transaction_list)
-        try:
-            transaction_list.remove(blank_transaction)
-        except ValueError:    ### in case the value is not found
-            break
-        final_length_of_list = len(transaction_list)
+    transaction_list[:] = new_transaction_list
 
-        if final_length_of_list < initial_length_of_list:
-            changes_made = True
-        else:
-            changes_made = False
 
 def undo_last_operation(transaction_list):
     last_operation_number = get_last_operation_number()
@@ -408,3 +388,4 @@ def undo_last_operation(transaction_list):
     save_last_operation_number(last_operation_number - 1)
 
     transaction_list[:] = read_transactions_file("operation_" + str(last_operation_number - 1) + ".txt")
+    list_transaction(transaction_list)

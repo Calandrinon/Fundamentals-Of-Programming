@@ -3,10 +3,6 @@ from non_ui import *
 from tests import *
 
 """
-    TODO: Create validation functions.
-    TODO: Replace obscure element deletion lines in <remove_transaction> and
-          <filter_transactions> with the slice syntax for the whole array [:]
-          (code quality)
     TODO: In <edit_transaction> check if the transaction that the user wants
           to edit actually exists.
 """
@@ -74,5 +70,5 @@ def main():
     delete_operation_files(number_of_executed_operations)
 
 clear_screen()
-run_all_tests()
+#run_all_tests()
 main()
