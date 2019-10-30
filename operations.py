@@ -258,9 +258,15 @@ def edit_transaction(transaction_list, day, type, description, value):
         message = "The type parameter should have one of the following values: 'in', 'out'."
         raise Exception(message)
 
+    transaction_exists = False
     for transaction in transaction_list:
         if transaction.get_date() == day and transaction.get_type() == type and transaction.get_description() == description:
             transaction.set_value(value)
+            transaction_exists = True
+
+    if transaction_exists == False:
+        message = "The transaction does not exist!"
+        raise Exception(message)
 
 def sum_of_transactions_by_type(transaction_list, type):
     """
