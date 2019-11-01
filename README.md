@@ -1,2 +1,2 @@
 # Transaction Manager
-A console-based application which manages the transactions made on a bank account in the current month.
+A console-based application which manages transactions made in the current month.
