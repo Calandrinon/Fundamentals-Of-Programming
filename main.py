@@ -4,11 +4,11 @@ from tests import *
 """
     TODO: Add the functions <add>, <list> and <filter>
     TODO: Add data validation
-    TODO: Add <undo>
+    TODO: Add <undo> function
 """
 
 def run_tests():
-    test_add_student_to_list()
+    Tests.test_add_student_to_list()
 
 def main():
     pass
