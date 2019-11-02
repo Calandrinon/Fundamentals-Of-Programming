@@ -13,10 +13,12 @@ def run_tests():
 def main():
     list_of_students = []
     menu_option = [UI.add]
+    UI.clear_screen()
 
     while True:
         option = input("Enter an option: ")
-
+        UI.clear_screen()
+        
         try:
             option = int(option)
 
@@ -29,6 +31,7 @@ def main():
             print("Enter an integer between 0 and 4!")
         except Exception as e:
             print(e)
+
 
 run_tests()
 main()

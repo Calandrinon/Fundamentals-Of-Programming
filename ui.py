@@ -1,6 +1,9 @@
 from services import *
 
 class UI:
+    def clear_screen():
+        print("\n"*200)
+
     def print_options():
         print("0.Exit the program.\n")
         print("1.Add a new student to the list. Student data is read from the console.\n")
