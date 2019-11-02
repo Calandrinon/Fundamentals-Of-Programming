@@ -19,3 +19,9 @@ class Student:
 
     def set_group(self, new_group):
         self.group = new_group
+
+    def print(self):
+        print("Name: {}".format(self.name))
+        print("ID: {}".format(self.id))
+        print("Group: {}".format(self.group))
+        print("\n")

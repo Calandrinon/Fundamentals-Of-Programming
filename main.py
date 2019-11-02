@@ -12,23 +12,26 @@ def run_tests():
 
 def main():
     list_of_students = []
-    menu_option = [UI.add]
+    menu_option = [UI.add, UI.list_students]
     UI.clear_screen()
 
     while True:
         option = input("Enter an option: ")
         UI.clear_screen()
-        
+
         try:
             option = int(option)
+
+            if option < 0:
+                print("You have entered a negative value!\n")
+                continue
 
             if option == 0:
                 return
 
-            if option >= 1 and option <= 4:
-                menu_option[option - 1](list_of_students)
-        except ValueError:
-            print("Enter an integer between 0 and 4!")
+            menu_option[option - 1](list_of_students)
+        except (ValueError, IndexError):
+            print("Enter an integer between 0 and 4!\n")
         except Exception as e:
             print(e)
 

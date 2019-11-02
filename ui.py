@@ -21,7 +21,8 @@ class UI:
             id = int(id)
         except Exception as e:
             print(e)
-            Validation.check_id(id)
+
+        Validation.check_id(id)
 
         name = input("Enter the student's name: ")
 
@@ -31,6 +32,13 @@ class UI:
             group = int(group)
         except Exception as e:
             print(e)
-            Validation.check_group(group)
+
+        Validation.check_group(group)
 
         Services.add_student_to_list(list_of_students, id, name, group)
+
+    def list_students(list_of_students):
+        Validation.check_list_of_students(list_of_students)
+
+        for student in list_of_students:
+            student.print()
