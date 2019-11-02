@@ -27,6 +27,6 @@ class Validation:
         if not isinstance(id, int):
             raise Exception("The student's ID should be an integer!")
 
-    def check_group(group):
-        if not (isinstance(group, int) and group > 0):
+    def check_group(group_number):
+        if not (isinstance(group_number, int) and group_number > 0):
             raise Exception("The student's group number should be a positive integer!")
