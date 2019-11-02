@@ -21,7 +21,4 @@ class Student:
         self.group = new_group
 
     def print(self):
-        print("Name: {}".format(self.name))
-        print("ID: {}".format(self.id))
-        print("Group: {}".format(self.group))
-        print("\n")
+        print("[Name: {}, ID: {}, Group: {}]".format(self.name, self.id, self.group))

@@ -42,3 +42,5 @@ class UI:
 
         for student in list_of_students:
             student.print()
+
+        print("\n")
