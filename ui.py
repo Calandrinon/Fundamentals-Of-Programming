@@ -13,7 +13,7 @@ class UI:
         print("4.Undo the last operation that modified program data. This step can be repeated.\n")
         print("\n\n")
 
-    def add(list_of_students, buffer_filter_operations):
+    def add(list_of_students):
         Validation.check_list_of_students(list_of_students)
 
         id = input("Enter the student's ID: ")
@@ -38,7 +38,7 @@ class UI:
 
         Services.add_student_to_list(list_of_students, id, name, group)
 
-    def list_students(list_of_students, buffer_filter_operations):
+    def list_students(list_of_students):
         Validation.check_list_of_students(list_of_students)
 
         if len(list_of_students) == 0:
@@ -50,7 +50,7 @@ class UI:
 
         print("\n")
 
-    def filter(list_of_students, buffer_filter_operations):
+    def filter(list_of_students):
         Validation.check_list_of_students(list_of_students)
 
         if len(list_of_students) == 0:
@@ -66,4 +66,4 @@ class UI:
 
         Validation.check_group(group)
 
-        Services.filter_student_list(list_of_students, group, buffer_filter_operations)
+        Services.filter_student_list(list_of_students, group)

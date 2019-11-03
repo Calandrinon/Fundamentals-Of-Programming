@@ -19,14 +19,9 @@ class Tests:
         Tests.assert_lists_of_students(list_of_students, [Student(5, "Abc", 917)])
 
     def test_filter_student_list():
-        buffer = []
         some_student = Student(17, "ef", 128)
         removed_student1 = Student(1725, "abcdef", 125)
         removed_student2 = Student(333, "aaaaa", 125)
         list_of_students = [removed_student1, some_student, removed_student2]
-        Services.filter_student_list(list_of_students, 125, buffer)
+        Services.filter_student_list(list_of_students, 125)
         Tests.assert_lists_of_students(list_of_students, [some_student])
-        for buffer_sublist in buffer:
-            for student in buffer_sublist:
-                student[0].print()
-                print(student[1])

@@ -13,7 +13,6 @@ def run_tests():
 
 def main():
     list_of_students = []
-    buffer_filter_operations = []
     menu_option = [UI.add, UI.list_students, UI.filter]
     UI.clear_screen()
 
@@ -32,7 +31,7 @@ def main():
             if option == 0:
                 return
 
-            menu_option[option - 1](list_of_students, buffer_filter_operations)
+            menu_option[option - 1](list_of_students)
         except (ValueError, IndexError):
             print("Enter an integer between 0 and 4!\n")
         except Exception as e:
