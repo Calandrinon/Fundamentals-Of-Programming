@@ -13,7 +13,8 @@ def run_tests():
 
 def main():
     list_of_students = []
-    menu_option = [UI.add, UI.list_students, UI.filter]
+    operation_history = []
+    menu_option = [UI.add, UI.list_students, UI.filter, UI.undo]
     UI.clear_screen()
 
     while True:
@@ -31,12 +32,12 @@ def main():
             if option == 0:
                 return
 
-            menu_option[option - 1](list_of_students)
+            menu_option[option - 1](list_of_students, operation_history)
         except (ValueError, IndexError):
             print("Enter an integer between 0 and 4!\n")
         except Exception as e:
             print(e)
 
 
-run_tests()
+#run_tests()
 main()

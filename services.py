@@ -2,7 +2,7 @@ from domain import Student
 
 class Services:
 
-    def add_student_to_list(list_of_students, id, name, group):
+    def add_student_to_list(list_of_students, id, name, group, operation_history):
         """
         Adds a new student to the list of students with the given parameters
         as information.
@@ -17,8 +17,9 @@ class Services:
 
         new_student = Student(id, name, group)
         list_of_students.append(new_student)
+        operation_history.append(("add", new_student))
 
-    def filter_student_list(list_of_students, group):
+    def filter_student_list(list_of_students, group, operation_history):
         """
         Removes all students from the group "group"
 
@@ -31,12 +32,25 @@ class Services:
         """
 
         new_list_of_students = []
+        new_list_in_history = []
+        student_index = 0
 
         for student in list_of_students:
             if student.get_group() != group:
                 new_list_of_students.append(student)
+            else:
+                new_list_in_history.append((student_index, student))
+            student_index += 1
 
         list_of_students[:] = new_list_of_students
+        operation_history.append(("filter", new_list_in_history))
+
+    def undo_add(list_of_students, operation_history):
+        list_of_students.pop()
+
+    def undo_filter(list_of_students, operation_history):
+        for student in operation_history[-1][1]:
+            list_of_students.insert(student[0], student[1])
 
 class Validation:
 

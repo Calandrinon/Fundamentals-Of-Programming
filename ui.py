@@ -13,7 +13,7 @@ class UI:
         print("4.Undo the last operation that modified program data. This step can be repeated.\n")
         print("\n\n")
 
-    def add(list_of_students):
+    def add(list_of_students, operation_history):
         Validation.check_list_of_students(list_of_students)
 
         id = input("Enter the student's ID: ")
@@ -36,9 +36,9 @@ class UI:
 
         Validation.check_group(group)
 
-        Services.add_student_to_list(list_of_students, id, name, group)
+        Services.add_student_to_list(list_of_students, id, name, group, operation_history)
 
-    def list_students(list_of_students):
+    def list_students(list_of_students, operation_history):
         Validation.check_list_of_students(list_of_students)
 
         if len(list_of_students) == 0:
@@ -50,7 +50,7 @@ class UI:
 
         print("\n")
 
-    def filter(list_of_students):
+    def filter(list_of_students, operation_history):
         Validation.check_list_of_students(list_of_students)
 
         if len(list_of_students) == 0:
@@ -66,4 +66,16 @@ class UI:
 
         Validation.check_group(group)
 
-        Services.filter_student_list(list_of_students, group)
+        Services.filter_student_list(list_of_students, group, operation_history)
+
+    def undo(list_of_students, operation_history):
+        if len(operation_history) == 0:
+            print("You have undone all operations!\n")
+            return
+
+        if operation_history[-1][0] == "add":
+            Services.undo_add(list_of_students, operation_history)
+        else:
+            Services.undo_filter(list_of_students, operation_history)
+
+        operation_history.pop()
