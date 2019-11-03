@@ -16,6 +16,7 @@ def main():
     UI.clear_screen()
 
     while True:
+        UI.print_options()
         option = input("Enter an option: ")
         UI.clear_screen()
 

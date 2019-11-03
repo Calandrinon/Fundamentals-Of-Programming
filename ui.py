@@ -5,6 +5,7 @@ class UI:
         print("\n"*200)
 
     def print_options():
+        print("\n")
         print("0.Exit the program.\n")
         print("1.Add a new student to the list. Student data is read from the console.\n")
         print("2.Show the list of students on the console.\n")
