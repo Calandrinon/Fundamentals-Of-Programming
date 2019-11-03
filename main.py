@@ -9,10 +9,12 @@ from tests import *
 
 def run_tests():
     Tests.test_add_student_to_list()
+    Tests.test_filter_student_list()
 
 def main():
     list_of_students = []
-    menu_option = [UI.add, UI.list_students]
+    buffer_filter_operations = []
+    menu_option = [UI.add, UI.list_students, UI.filter]
     UI.clear_screen()
 
     while True:
@@ -30,7 +32,7 @@ def main():
             if option == 0:
                 return
 
-            menu_option[option - 1](list_of_students)
+            menu_option[option - 1](list_of_students, buffer_filter_operations)
         except (ValueError, IndexError):
             print("Enter an integer between 0 and 4!\n")
         except Exception as e:

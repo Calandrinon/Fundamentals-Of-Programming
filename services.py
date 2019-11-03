@@ -18,6 +18,29 @@ class Services:
         new_student = Student(id, name, group)
         list_of_students.append(new_student)
 
+    def filter_student_list(list_of_students, group, buffer_filter_operations):
+        """
+        Removes all students from the group "group"
+
+        Input:
+            - list_of_students - A list which only contains instances of the
+                                 class Student
+            - group - An integer which represents the number of a group of students
+            - buffer_filter_operations - A list which contains lists of tuples with elements
+            that have been removed and their position before they were removed.
+        """
+
+        new_buffer_element = []
+        new_list_of_students = []
+
+        for student_index in range(0, len(list_of_students)):
+            if list_of_students[student_index].get_group() == group:
+                new_buffer_element.append((list_of_students[student_index], student_index))
+            else:
+                new_list_of_students.append(list_of_students[student_index])
+
+        buffer_filter_operations.append(new_buffer_element)
+        list_of_students[:] = new_list_of_students
 
 class Validation:
 
