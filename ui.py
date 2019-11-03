@@ -41,6 +41,10 @@ class UI:
     def list_students(list_of_students):
         Validation.check_list_of_students(list_of_students)
 
+        if len(list_of_students) == 0:
+            print("The list of students is empty!\n")
+            return
+
         for student in list_of_students:
             student.print()
 
