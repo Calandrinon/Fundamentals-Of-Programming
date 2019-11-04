@@ -1,4 +1,5 @@
 from domain import Student
+from random import randint
 
 class Services:
 
@@ -51,6 +52,20 @@ class Services:
     def undo_filter(list_of_students, operation_history):
         for student in operation_history[-1][1]:
             list_of_students.insert(student[0], student[1])
+
+    def generate_entries(list_of_students, number_of_entries):
+        last_names = ["Smith", "Johnson", "Williams", "Jones", "Brown",
+        "Davis", "Miller", "Wilson", "Moore", "Taylor"]
+
+        first_names = ["Oliver", "George", "Harry", "Noah", "Jack", "Charlie",
+        "Leo", "Jacob", "Freddie", "Alfie", "Olivia", "Amelia", "Isla", "Ava",
+        "Emily", "Sophia", "Grace", "Mia", "Poppy", "Ella"]
+
+        for entry in range(0, number_of_entries):
+            first_name_generated = first_names[randint(0, len(first_names) - 1)]
+            last_name_generated = last_names[randint(0, len(last_names) - 1)]
+            generated_student = Student(randint(1, 100000), first_name_generated + " " + last_name_generated, randint(1, 1000))
+            list_of_students.append(generated_student)
 
 class Validation:
 

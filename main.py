@@ -1,5 +1,6 @@
 from ui import *
 from tests import *
+from services import Services
 
 """
     TODO: Add the functions <add>, <list> and <filter>
@@ -16,6 +17,7 @@ def main():
     operation_history = []
     menu_option = [UI.add, UI.list_students, UI.filter, UI.undo]
     UI.clear_screen()
+    Services.generate_entries(list_of_students, 10)
 
     while True:
         UI.print_options()
@@ -39,5 +41,5 @@ def main():
             print(e)
 
 
-#run_tests()
+run_tests()
 main()

@@ -15,13 +15,15 @@ class Tests:
 
     def test_add_student_to_list():
         list_of_students = []
-        Services.add_student_to_list(list_of_students, 5, "Abc", 917)
+        history = []
+        Services.add_student_to_list(list_of_students, 5, "Abc", 917, history)
         Tests.assert_lists_of_students(list_of_students, [Student(5, "Abc", 917)])
 
     def test_filter_student_list():
+        history = []
         some_student = Student(17, "ef", 128)
         removed_student1 = Student(1725, "abcdef", 125)
         removed_student2 = Student(333, "aaaaa", 125)
         list_of_students = [removed_student1, some_student, removed_student2]
-        Services.filter_student_list(list_of_students, 125)
+        Services.filter_student_list(list_of_students, 125, history)
         Tests.assert_lists_of_students(list_of_students, [some_student])
