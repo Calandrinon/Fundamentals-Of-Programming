@@ -79,3 +79,5 @@ class UI:
             Services.undo_filter(list_of_students, operation_history)
 
         operation_history.pop()
+        UI.clear_screen()
+        UI.list_students(list_of_students, operation_history)
