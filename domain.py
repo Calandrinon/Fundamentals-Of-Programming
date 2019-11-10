@@ -32,7 +32,21 @@ class Movie:
 
 
 class Client:
-    pass
+    def __init__(self, clientID, name):
+        self.__clientID = clientID
+        self.__name = name
+
+    def get_clientID(self):
+        return self.__clientID
+
+    def set_clientID(self, new_clientID):
+        self.__clientID = new_clientID
+
+    def get_name(self):
+        return self.__name
+
+    def set_name(self, new_name):
+        self.__name = new_name
 
 class Rental:
     pass
