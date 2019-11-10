@@ -32,6 +32,7 @@ class Movie:
 
 
 class Client:
+
     def __init__(self, clientID, name):
         self.__clientID = clientID
         self.__name = name
@@ -48,5 +49,49 @@ class Client:
     def set_name(self, new_name):
         self.__name = new_name
 
+
 class Rental:
-    pass
+
+    def __init__(self, rentalID, movieID, clientID, rented_date, due_date, returned_date):
+        self.__rentalID = rentalID
+        self.__movieID = movieID
+        self.__clientID = clientID
+        self.__rented_date = rented_date
+        self.__due_date = due_date
+        self.__returned_date = returned_date
+
+    def get_rentalID(self):
+        return self.__rentalID
+
+    def set_rentalID(self, new_rentalID):
+        self.__rentalID = new_rentalID
+
+    def get_movieID(self):
+        return self.__movieID
+
+    def set_movieID(self, new_movieID):
+        self.__movieID = new_movieID
+
+    def get_clientID(self):
+        return self.__clientID
+
+    def set_clientID(self, new_clientID):
+        self.__clientID = new_clientID
+
+    def get_rented_date(self):
+        return self.__rented_date
+
+    def set_rented_date(self, new_rented_date):
+        self.__rented_date = new_rented_date
+
+    def get_due_date(self):
+        return self.__due_date
+
+    def set_due_date(self, new_due_date):
+        self.__due_date = new_due_date
+
+    def get_returned_date(self):
+        return self.__returned_date
+
+    def set_returned_date(self, new_returned_date):
+        self.__returned_date = new_returned_date
