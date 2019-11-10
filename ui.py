@@ -1,9 +1,11 @@
 from services import *
 
 class UI:
+    @staticmethod
     def clear_screen():
         print("\n"*200)
 
+    @staticmethod
     def print_options():
         print("\n")
         print("0.Exit the program.\n")
@@ -13,6 +15,7 @@ class UI:
         print("4.Undo the last operation that modified program data. This step can be repeated.\n")
         print("\n\n")
 
+    @staticmethod
     def add(list_of_students, operation_history):
         Validation.check_list_of_students(list_of_students)
 
@@ -20,8 +23,8 @@ class UI:
 
         try:
             id = int(id)
-        except Exception as e:
-            print(e)
+        except:
+            pass
 
         Validation.check_id(id)
 
@@ -31,31 +34,25 @@ class UI:
 
         try:
             group = int(group)
-        except Exception as e:
-            print(e)
+        except:
+            pass
 
         Validation.check_group(group)
 
         Services.add_student_to_list(list_of_students, id, name, group, operation_history)
 
+    @staticmethod
     def list_students(list_of_students, operation_history):
         Validation.check_list_of_students(list_of_students)
-
-        if len(list_of_students) == 0:
-            print("The list of students is empty!\n")
-            return
 
         for student in list_of_students:
             student.print()
 
         print("\n")
 
+    @staticmethod
     def filter(list_of_students, operation_history):
         Validation.check_list_of_students(list_of_students)
-
-        if len(list_of_students) == 0:
-            print("The list of students is empty!\n")
-            return
 
         group = input("Choose the student group that will be deleted: ")
 
@@ -68,6 +65,7 @@ class UI:
 
         Services.filter_student_list(list_of_students, group, operation_history)
 
+    @staticmethod
     def undo(list_of_students, operation_history):
         if len(operation_history) == 0:
             print("You have undone all operations!\n")

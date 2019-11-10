@@ -2,15 +2,9 @@ from ui import *
 from tests import *
 from services import Services
 
-"""
-    TODO: Add the functions <add>, <list> and <filter>
-    TODO: Add data validation
-    TODO: Add <undo> function
-"""
-
 def run_tests():
-    Tests.test_add_student_to_list()
-    Tests.test_filter_student_list()
+    Tests.addStudentToList__ValidStudent__IsInTheList()
+    Tests.filterStudentList__Group125__ListWithoutTheStudentsOfGroup125()
 
 def main():
     list_of_students = []
