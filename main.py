@@ -1,12 +1,16 @@
+from tests import *
 from ui import UI
-from service import Service
-from repository import Repository
-from validation import Validator
+from service import *
+from repository import *
+from validation import MovieValidator
 
 def main():
-    validator_instance = Validator()
-    repository_instance = Repository()
-    service_instance = Service(repository_instance, validator_instance)
-    ui_instance = UI(service_instance)
+    tests = Tests()
+    tests.run_tests()
+    movie_validator = MovieValidator()
+    movie_repository = MovieRepository()
+    movie_service = MovieService(movie_repository, movie_validator)
+    ui_instance = UI(movie_service)
+    print("Process killed successfully")
 
 main()
