@@ -51,6 +51,8 @@ class Client:
     def set_name(self, new_name):
         self.__name = new_name
 
+    def print_client(self):
+        print("[", self.__clientID, ",", self.__name, "]")
 
 class Rental:
 

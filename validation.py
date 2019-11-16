@@ -6,7 +6,7 @@ class MovieValidator:
 
     def validate_movie(self, movie):
         """
-        Validates the ID and checks if there is already an equal ID in the list
+        Validates the ID of a movie
         
         Input:
             - movie - an instance of the Movie class
@@ -16,3 +16,21 @@ class MovieValidator:
         ID = movie.get_movieID()
         if not (isinstance(ID, int) and ID >= 0):
             raise MovieError("The movie ID should be a positive integer")
+        
+        
+class ClientValidator:
+    def __init__(self):
+        pass
+
+    def validate_client(self, client):
+        """
+        Validates the ID of a client
+        
+        Input:
+            - client - an instance of the Client class
+            
+        """
+        
+        ID = client.get_clientID()
+        if not (isinstance(ID, int) and ID >= 0):
+            raise ClientError("The client ID should be a positive integer")
