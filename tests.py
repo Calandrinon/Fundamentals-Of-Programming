@@ -23,7 +23,7 @@ class TestMovieService:
         expected_result = [Movie(185, "Shining", "A good movie", "horror")]
         movies = self.repository.get_list_of_movies()
         assert(len(expected_result) == len(movies))
-        self.__assert_movies(expected_result[0], movies[0])
+        self.__assert_movies(expected_result[-1], movies[-1])
     
     
     def __test_remove_by_id__valid_movie__list_without_movie(self):
@@ -37,11 +37,43 @@ class TestMovieService:
         self.service.remove_movies_by_genre("horror")
         assert(len(self.repository.get_list_of_movies()) == 0)
         
+        
+    def __test_update_movie_id__valid_movie__list_with_updated_movie(self):
+        self.service.add_movie(185, "Shining", "A good movie", "horror")
+        self.service.update_movie_id(185, 247)
+        movies = self.repository.get_list_of_movies() 
+        assert(movies[-1].get_movieID() == 247)
+    
+    
+    def __test_update_movie_title__valid_movie__list_with_updated_movie(self):
+        self.service.add_movie(185, "Shining", "A good movie", "horror")
+        self.service.update_movie_title(185, "Cool")
+        movies = self.repository.get_list_of_movies() 
+        assert(movies[-1].get_title() == "Cool")
+    
+    
+    def __test_update_movie_description__valid_movie__list_with_updated_movie(self):
+        self.service.add_movie(185, "Shining", "A good movie", "horror")
+        self.service.update_movie_description(185, "A nice movie")
+        movies = self.repository.get_list_of_movies() 
+        assert(movies[-1].get_description() == "A nice movie")
+        
+        
+    def __test_update_movie_genre__valid_movie__list_with_updated_movie(self):
+        self.service.add_movie(185, "Shining", "A good movie", "horror")
+        self.service.update_movie_genre(185, "Haw roar")
+        movies = self.repository.get_list_of_movies() 
+        assert(movies[-1].get_genre() == "Haw roar")
+        
     
     def run_tests(self):
         self.__test_add_movie__valid_movie__list_with_movie()
         self.__test_remove_by_id__valid_movie__list_without_movie()
         self.__test_remove_by_genre__valid_movies__list_without_movies()
+        self.__test_update_movie_id__valid_movie__list_with_updated_movie()
+        self.__test_update_movie_title__valid_movie__list_with_updated_movie()
+        self.__test_update_movie_description__valid_movie__list_with_updated_movie()
+        self.__test_update_movie_genre__valid_movie__list_with_updated_movie()
         
         
 class Tests:
