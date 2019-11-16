@@ -17,20 +17,20 @@ class TestMovieService:
         assert(movie1.get_genre() == movie2.get_genre())
         
         
-    def __test_add_movie(self):
+    def __test_add_movie__valid_movie__list_with_movie(self):
         self.service.add_movie(185, "Shining", "A good movie", "horror")
         expected_result = [Movie(185, "Shining", "A good movie", "horror")]
         movies = self.repository.get_list_of_movies()
         assert(len(expected_result) == len(movies))
         self.__assert_movies(expected_result[0], movies[0])
-        
+    
     def run_tests(self):
-        self.__test_add_movie()
+        self.__test_add_movie__valid_movie__list_with_movie()
         
 class Tests:
     def __init__(self):
-        self.test1 = TestMovieService()
+        self.test_movie_service = TestMovieService()
         
     
     def run_tests(self):
-        self.test1.run_tests()
+        self.test_movie_service.run_tests()
