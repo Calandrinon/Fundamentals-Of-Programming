@@ -24,6 +24,7 @@ class MovieService:
         self.__validator.validate_movie(movie)
         
         self.__repository.add_to_list(movie)
+    
         
     def get_list_of_movies(self):
         """
@@ -31,3 +32,35 @@ class MovieService:
         """
         
         return self.__repository.get_list_of_movies()
+    
+    
+    def remove_movie_by_id(self, ID):
+        """
+        Removes the movie with the id "ID"
+        """
+        
+        list_of_movies = self.__repository.get_list_of_movies()
+        new_list_of_movies = []
+        
+        for movie in list_of_movies:
+            if movie.get_movieID() != ID:
+                new_list_of_movies.append(movie)
+                
+        self.__repository.set_list_of_movies(new_list_of_movies)
+        
+        
+    def remove_movies_by_genre(self, genre):
+        """
+        Removes all movies of a specific genre
+        """
+        
+        list_of_movies = self.__repository.get_list_of_movies()
+        new_list_of_movies = []
+        
+        for movie in list_of_movies:
+            if movie.get_genre() != genre:
+                new_list_of_movies.append(movie)
+                
+        self.__repository.set_list_of_movies(new_list_of_movies)
+        
+        

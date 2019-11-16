@@ -5,7 +5,7 @@ class MovieValidator:
         pass
 
     def validate_movie(self, movie):
-        """input()
+        """
         Validates the ID and checks if there is already an equal ID in the list
         
         Input:

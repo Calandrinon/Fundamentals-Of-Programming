@@ -30,7 +30,7 @@ class Movie:
     def set_genre(self, new_genre):
         self.__genre = new_genre
 
-    def print(self):
+    def print_movie(self):
         print("[", self.__movieID, ",", self.__title, ",", self.__description, ",", self.__genre, "]")
 
 class Client:

@@ -1,4 +1,5 @@
 from service import MovieService
+from exceptions import MovieError
 
 class UI:
     def __init__(self, movie_service):
@@ -7,13 +8,16 @@ class UI:
 
     def __print_menu(self):
         print("1. Add a movie")
-        print("2. Add a client")
-        print("3. Remove a movie")
+        print("2. List movies")
+        print("3. Remove a movie by ID")
+        print("4. Remove a movie by genre")
+        """
         print("4. Remove a client")
         print("5. Update a movie")
         print("6. Update a client")
         print("7. List movies")
         print("8. List clients")
+        """
         print("\n"*5)
 
 
@@ -25,17 +29,44 @@ class UI:
 
         self.__movie_service.add_movie(id, title, description, genre)
 
+
     def __list_movies(self):
         list_of_movies = self.__movie_service.get_list_of_movies()
         
+        if len(list_of_movies) == 0:
+            print("There are no movies in the list!\n")
+            return
+        
         for movie in list_of_movies:
-            movie.print()
+            movie.print_movie()
             
         print("\n")
 
+
+    def __remove_movie_by_id(self):
+        if len(self.__movie_service.get_list_of_movies()) == 0:
+            print("There are no movies in the list!\n")
+            return
+        
+        id = int(input("Enter the ID: "))
+        
+        self.__movie_service.remove_movie_by_id(id)
+
+
+    def __remove_movies_by_genre(self):
+        if len(self.__movie_service.get_list_of_movies()) == 0:
+            print("There are no movies in the list!\n")
+            return
+        
+        genre = input("Enter the genre: ")
+        
+        self.__movie_service.remove_movies_by_genre(genre) 
+
+
     def main(self):
 
-        functions = [self.__add_movie, self.__list_movies]
+        functions = [self.__add_movie, self.__list_movies, 
+                     self.__remove_movie_by_id, self.__remove_movies_by_genre]
         
         while True:
             self.__print_menu()
@@ -54,6 +85,6 @@ class UI:
             try:
                 functions[option-1]()
             except ValueError as e:
-                print(e)
-            except MovieService as me:
-                print(me)
+                print("ValueError: " + str(e))
+            except MovieError as me:
+                print("MovieError: " + str(me))

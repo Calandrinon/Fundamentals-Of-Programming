@@ -7,3 +7,6 @@ class MovieRepository:
         
     def get_list_of_movies(self):
         return self.__list_of_movies
+    
+    def set_list_of_movies(self, new_list):
+        self.__list_of_movies[:] = new_list 
