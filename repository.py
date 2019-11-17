@@ -1,3 +1,5 @@
+from exceptions import *
+
 class MovieRepository:
     def __init__(self):
         self.__list_of_movies = []
@@ -16,7 +18,7 @@ class MovieRepository:
         try:
             if self.__id_dictionary[id] == 0:
                 return False
-            return True
+            raise MovieError("There is already a movie with that ID!")
         except KeyError:
             return False
         
@@ -52,7 +54,7 @@ class ClientRepository:
         try:
             if self.__id_dictionary[id] == 0:
                 return False
-            return True
+            raise ClientError("There is already a client with that ID!")
         except KeyError:
             return False
     

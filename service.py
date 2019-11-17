@@ -83,7 +83,9 @@ class MovieService:
         
         for movie in list_of_movies:
             if movie.get_movieID() == old_id:
+                self.__repository.delete_id(old_id)
                 movie.set_movieID(new_id)
+                self.__repository.create_id(new_id)
             new_list_of_movies.append(movie)
                 
         self.__repository.set_list_of_movies(new_list_of_movies)
@@ -215,7 +217,9 @@ class ClientService:
         
         for client in list_of_clients:
             if client.get_clientID() == old_id:
+                self.__repository.delete_id(old_id)
                 client.set_clientID(new_id)
+                self.__repository.create_id(new_id)
             new_list_of_clients.append(client)
                 
         self.__repository.set_list_of_clients(new_list_of_clients)
@@ -238,7 +242,7 @@ class ClientService:
         
         
     def generate_entries(self):    
-        number_of_entries = random.randint(5, 20)
+        number_of_entries = random.randint(10, 20)
         last_names = ["Smith", "Johnson", "Williams", "Jones", "Brown",
         "Davis", "Miller", "Wilson", "Moore", "Taylor"]
 

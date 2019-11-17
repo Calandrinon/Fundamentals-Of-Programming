@@ -1,5 +1,5 @@
-from service import MovieService
-from exceptions import MovieError
+from service import *
+from exceptions import *
 
 class UI:
     def __init__(self, movie_service, client_service):
