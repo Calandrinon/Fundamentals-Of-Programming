@@ -3,3 +3,6 @@ class MovieError(Exception):
 
 class ClientError(Exception):
     pass
+
+class RentalError(Exception):
+    pass

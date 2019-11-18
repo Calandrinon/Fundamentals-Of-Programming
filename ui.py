@@ -1,10 +1,12 @@
 from service import *
 from exceptions import *
+from datetime import date 
 
 class UI:
-    def __init__(self, movie_service, client_service):
+    def __init__(self, movie_service, client_service, rental_service):
         self.__movie_service = movie_service
         self.__client_service = client_service
+        self.__rental_service = rental_service
         
 
     def __print_menu(self):
@@ -22,6 +24,9 @@ class UI:
         print("11. Remove a client by ID")
         print("12. Update the ID of a client")
         print("13. Update the name of a client")
+        print("14. Create a rental")
+        print("15. List rentals")
+        print("16. Return a rented movie")
         print("\n"*5)
 
         
@@ -146,6 +151,43 @@ class UI:
     def clear_screen(self):
         print("\n"*100)
         
+        
+    def __create_rental(self):
+        rentalID = len(self.__rental_service.get_list_of_rentals())
+        movieID = int(input("Enter the ID of the movie: "))
+        clientID = int(input("Enter the ID of the client: "))
+        
+        rented_date = date.today()
+        due_day = int(input("Enter the day of the rental's due date: "))
+        due_month = int(input("Enter the month of the rental's due date: "))
+        due_year = int(input("Enter the year of the rental's due date: "))
+        due_date = date(due_year, due_month, due_day)
+        
+        self.__rental_service.create_rental(rentalID, movieID, clientID, 
+                                            rented_date, due_date)
+    
+    
+    def __list_rentals(self):
+        if len(self.__rental_service.get_list_of_rentals()) == 0:
+            print("There are no rentals in the list!")
+            return
+        
+        rentals = self.__rental_service.get_list_of_rentals()
+        
+        for rental in rentals:
+            rental.print_rental()
+
+        print("\n"*5)
+ 
+    
+    def __delete_rental(self):
+        if len(self.__rental_service.get_list_of_rentals()) == 0:
+            print("There are no rentals in the list!")
+            return
+        
+        rentalID = int(input("Enter the ID of the rental that will be deleted: "))
+        self.__rental_service.delete_rental(rentalID)
+     
 
     def main(self):
 
@@ -155,7 +197,8 @@ class UI:
                      self.__update_movie_description, self.__update_movie_genre, 
                      self.__add_client, self.__list_clients, 
                      self.__remove_client_by_id, self.__update_client_id,
-                     self.__update_client_name]
+                     self.__update_client_name, self.__create_rental,
+                     self.__list_rentals, self.__delete_rental]
         
         self.__movie_service.generate_entries(10)
         self.__client_service.generate_entries()
@@ -186,3 +229,7 @@ class UI:
                 print("MovieError: " + str(me))
             except ClientError as ce:
                 print("ClientError: " + str(ce))
+            except RentalError as re:
+                print("RentalError: " + str(re))
+            
+                

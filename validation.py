@@ -34,3 +34,15 @@ class ClientValidator:
         ID = client.get_clientID()
         if not (isinstance(ID, int) and ID >= 0):
             raise ClientError("The client ID should be a positive integer")
+        
+        
+class RentalValidator:
+    def __init__(self):
+        pass
+    
+    def validate_rental(self, rental):
+        ID = rental.get_rentalID()
+        if not (isinstance(ID, int) and ID >= 0):
+            raise RentalError("The rental ID should be a positive integer")
+    
+        

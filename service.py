@@ -3,13 +3,14 @@ from repository import *
 from validation import *
 import random
 import string
+from datetime import date
 
 class MovieService:
 
     def __init__(self, repository, validator):
         self.__repository = repository
         self.__validator = validator
-
+        
     
     def add_movie(self, movieID, title, description, genre):
         """
@@ -27,7 +28,7 @@ class MovieService:
         
         movie = Movie(movieID, title, description, genre)
         self.__validator.validate_movie(movie)
-        
+        self.__repository.rented_id_dictionary[movieID] = 0
         self.__repository.add_to_list(movie)
     
         
@@ -162,7 +163,6 @@ class ClientService:
     def __init__(self, repository, validator):
         self.__repository = repository
         self.__validator = validator
-
     
     def add_client(self, clientID, name):
         """
@@ -178,7 +178,7 @@ class ClientService:
         
         client = Client(clientID, name)
         self.__validator.validate_client(client)
-        
+        self.__repository.can_id_rent[clientID] = True
         self.__repository.add_to_list(client)
     
         
@@ -255,4 +255,76 @@ class ClientService:
             random_client = Client(entry, random_name)
             self.__repository.add_to_list(random_client)
             
-            
+
+class RentalService:
+    
+    def __init__(self, rental_repository, validator, client_repository, movie_repository):
+        self.__repository = rental_repository
+        self.__validator = validator
+        self.__client_repository = client_repository
+        self.__movie_repository = movie_repository
+        
+        
+    def create_rental(self, rentalID, movieID, clientID, rented_date, due_date): 
+        
+        """
+        Adds a new rental to the rental repository.
+        """
+        
+        rental = Rental(rentalID, movieID, clientID, rented_date, due_date, date(1, 1, 1))
+        self.__validator.validate_rental(rental)
+        
+        try:
+            if self.__movie_repository.rented_id_dictionary[movieID] == 1:
+                raise RentalError("The movie has already been rented!")
+        except KeyError:
+            self.__movie_repository.rented_id_dictionary[movieID] = 0
+        
+        can_rent = True
+        client_list = self.__client_repository.get_list_of_clients()
+        for client in client_list:
+            if client.get_clientID() == clientID:
+                try:
+                    can_rent = self.__client_repository.can_id_rent[clientID]
+                except:
+                    self.__client_repository.can_id_rent[clientID] = True
+                break
+        
+        if can_rent == True:
+            self.__repository.add_to_list(rental)
+            self.__movie_repository.rented_id_dictionary[movieID] = 1
+        else:
+            raise RentalError("The client has passed the due date for past rentals!")
+        
+        
+    def delete_rental(self, rentalID):
+        
+        """
+        Deletes the rental with the ID "rentalID" from the rental repository.
+        """
+        
+        rental_list = self.__repository.get_list_of_rentals()
+        new_rental_list = []
+        
+        for rental in rental_list:
+            if rental.get_rentalID() == rentalID:
+                rental.set_returned_date(date.today())
+                d0 = rental.get_due_date()
+                d1 = date.today()
+                
+                if (d0.year < d1.year) or (d0.month < d1.month) or (d0.day < d1.day):
+                    self.__client_repository.can_id_rent[rental.get_clientID()] = False
+            else:
+                new_rental_list.append(rental)
+                
+        self.__repository.set_list_of_rentals(new_rental_list)
+        
+    
+    def get_list_of_rentals(self):
+        """
+        Gets the list of rentals from the repository.
+        """
+        
+        return self.__repository.get_list_of_rentals()
+        
+        

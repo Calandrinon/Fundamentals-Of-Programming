@@ -127,11 +127,59 @@ class TestClientService:
         self.__test_update_client_name__valid_client__list_with_updated_client()
         
         
+class TestRentalService:
+    
+    def __init__(self):
+        self.movie_repository = MovieRepository()
+        self.client_repository = ClientRepository()
+        self.client_repository.add_to_list(Client(5, "John"))
+        self.repository = RentalRepository()
+        self.validator = RentalValidator()
+        self.service = RentalService(self.repository, self.validator, 
+                                     self.client_repository, self.movie_repository)    
+    
+    
+    def __assert_rentals(self, rental1, rental2):
+        assert(rental1.get_rentalID() == rental2.get_rentalID())
+        assert(rental1.get_movieID() == rental2.get_movieID())
+        assert(rental1.get_clientID() == rental2.get_clientID())
+        assert(rental1.get_rented_date() == rental2.get_rented_date())
+        assert(rental1.get_due_date() == rental2.get_due_date())
+        assert(rental1.get_returned_date() == rental2.get_returned_date())
+    
+    
+    def __test_create_rental__valid_rental__list_with_rentals(self):
+        self.service.create_rental(5, 1, 10, date.today(), date(2019, 12, 22))
+        expected_result = [Rental(5, 1, 10, date.today(), date(2019, 12, 22), date(1, 1, 1))]
+        rentals = self.repository.get_list_of_rentals()
+        assert(len(expected_result) == len(rentals))
+        rentals[-1].print_rental()
+        expected_result[-1].print_rental()
+        self.__assert_rentals(expected_result[-1], rentals[-1])
+        
+        
+    def __test_delete_rental__valid_rental__list_with_rentals(self):
+        self.service.delete_rental(5)
+        rentals = self.repository.get_list_of_rentals()
+        assert(len(rentals) == 0)
+    
+    
+    def run_tests(self):
+        self.__test_create_rental__valid_rental__list_with_rentals()
+        self.__test_delete_rental__valid_rental__list_with_rentals()
+        
+        
 class Tests:
+    
     def __init__(self):
         self.test_movie_service = TestMovieService()
         self.test_client_service = TestClientService()
-    
+        self.test_rental_service = TestRentalService()
+        
+        
     def run_tests(self):
         self.test_movie_service.run_tests()
         self.test_client_service.run_tests()
+        self.test_rental_service.run_tests()
+        
+        

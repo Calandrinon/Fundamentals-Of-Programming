@@ -5,7 +5,7 @@ from repository import *
 from validation import MovieValidator
 
 """
-    TODO: Write validation functions for removal and update features.
+    Check whether the client returned the movie before the due date or not.
 """
 
 
@@ -18,7 +18,10 @@ def main():
     client_validator = ClientValidator()
     client_repository = ClientRepository()
     client_service = ClientService(client_repository, client_validator)
-    ui = UI(movie_service, client_service)
+    rental_validator = RentalValidator()
+    rental_repository = RentalRepository()
+    rental_service = RentalService(rental_repository, rental_validator, client_repository, movie_repository)
+    ui = UI(movie_service, client_service, rental_service)
     ui.main()
 
 
