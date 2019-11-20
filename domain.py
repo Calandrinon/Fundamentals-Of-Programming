@@ -40,6 +40,13 @@ class Movie:
         self.__genre = new_genre
 
 
+    def __eq__(self, other_movie):
+        if not isinstance(other_movie, Movie):
+            raise MovieError("Can't compare a Movie instance with an instance of {}", type(other_movie).__name__)
+        
+        return self.get_movieID() == other_movie.get_movieID() and self.get_title() == other_movie.get_title() and self.get_description() == other_movie.get_description() and self.get_genre() == other_movie.get_genre()
+    
+
     def print_movie(self):
         print("[", self.__movieID, ",", self.__title, ",", self.__description, ",", self.__genre, "]")
 
@@ -67,6 +74,13 @@ class Client:
     def set_name(self, new_name):
         self.__name = new_name
 
+
+    def __eq__(self, other_client):
+        if not isinstance(other_client, Client):
+            raise ClientError("Can't compare a Client instance with an instance of {}", type(other_client).__name__)
+        
+        return self.get_clientID() == other_client.get_clientID() and self.get_name() == other_client.get_name()
+    
 
     def print_client(self):
         print("[", self.__clientID, ",", self.__name, "]")
@@ -117,6 +131,13 @@ class Rental:
 
     def set_returned_date(self, new_returned_date):
         self.__returned_date = new_returned_date
+
+    def __eq__(self, other_rental):
+        if not isinstance(other_rental, Rental):
+            raise RentalError("Can't compare a Rental instance with an instance of {}", type(other_rental).__name__)
+        
+        return self.get_rentalID() == other_rental.get_rentalID() and self.get_movieID() == other_rental.get_movieID() and self.get_clientID() == other_rental.get_clientID() and self.get_rented_date() == other_rental.get_rented_date() and self.get_due_date() == other_rental.get_due_date() and self.get_returned_date() == other_rental.get_returned_date()
+        
 
     def print_rental(self):
         print("[", self.__rentalID, ",", self.__movieID, ",", self.__clientID,

@@ -140,6 +140,87 @@ class MovieService:
         self.__repository.set_list_of_movies(new_list_of_movies)
         
         
+    def search_movie_by_id(self, id):
+        """
+        Searches for the movie with the id "id" and returns it.
+        """
+        list_of_movies = self.__repository.get_list_of_movies()
+        
+        for movie in list_of_movies:
+            if movie.get_movieID() == id:
+                return movie
+            
+        raise MovieError("The movie with the ID {} has not been found!".format(id))
+        
+        
+    def search_movie_by_title(self, title):
+        """
+        Searches for the movies with the title pattern "title" and returns them
+        as a list.
+        """
+        
+        list_of_movies = self.__repository.get_list_of_movies()
+        result = []
+        title = str(title)
+        title = title.lower()
+        
+        for movie in list_of_movies:
+            other_title = movie.get_title().lower()
+            
+            if title in other_title:
+                result.append(movie)
+                
+        if len(result) == 0:
+            raise MovieError("The movie with the title {} has not been found!".format(title))
+        
+        return result
+        
+        
+    def search_movie_by_description(self, description):
+        """
+        Searches for the movies with the description pattern "description" and returns them
+        as a list.
+        """
+        list_of_movies = self.__repository.get_list_of_movies()
+        result = []
+        description = str(description)
+        description = description.lower()
+        
+        for movie in list_of_movies:
+            other_description = movie.get_description().lower() 
+            
+            if description in other_description:
+                result.append(movie)
+                   
+        if len(result) == 0:
+            raise MovieError("The movie with the description {} has not been found!".format(description))    
+        
+        return result
+        
+        
+    def search_movie_by_genre(self, genre):
+        """
+        Searches for the movies with the genre pattern "genre" and returns them
+        as a list.
+        """
+
+        list_of_movies = self.__repository.get_list_of_movies()
+        result = []
+        genre = str(genre)
+        genre = genre.lower()
+        
+        for movie in list_of_movies:
+            other_genre = movie.get_genre().lower()
+            
+            if genre in other_genre:
+                result.append(movie)
+                
+        if len(result) == 0:
+            raise MovieError("The movie with the genre {} has not been found!".format(genre))
+        
+        return result
+        
+        
     def generate_entries(self, number_of_entries):
         def generate_string():
             length = random.randint(5, 12)
@@ -239,6 +320,42 @@ class ClientService:
             new_list_of_clients.append(client)
                 
         self.__repository.set_list_of_clients(new_list_of_clients)
+        
+        
+    def search_client_by_name(self, name):
+        """
+        Searches for the clients with the name pattern "name" and returns them
+        as a list.
+        """
+        
+        list_of_clients = self.__repository.get_list_of_clients()
+        result = []
+        name = str(name)
+        name = name.lower()
+        
+        for client in list_of_clients:
+            other_name = client.get_name().lower()
+            
+            if name in other_name:
+                result.append(client)
+                
+        if len(result) == 0:
+            raise ClientError("The client with the name {} has not been found!".format(name))
+        
+        return result
+    
+    
+    def search_client_by_id(self, id):
+        """
+        Searches for the client with the id "id" and returns it.
+        """
+        list_of_clients = self.__repository.get_list_of_clients()
+        
+        for client in list_of_clients:
+            if client.get_clientID() == id:
+                return client
+            
+        raise ClientError("The client with the ID {} has not been found!".format(id))
         
         
     def generate_entries(self):    

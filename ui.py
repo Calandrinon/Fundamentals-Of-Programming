@@ -27,6 +27,12 @@ class UI:
         print("14. Create a rental")
         print("15. List rentals")
         print("16. Return a rented movie")
+        print("17. Search a movie by ID")
+        print("18. Search a movie by title")
+        print("19. Search a movie by description")
+        print("20. Search a movie by genre")
+        print("21. Search a client by ID")
+        print("22. Search a client by name")
         print("\n"*5)
 
         
@@ -187,7 +193,57 @@ class UI:
         
         rentalID = int(input("Enter the ID of the rental that will be deleted: "))
         self.__rental_service.delete_rental(rentalID)
-     
+    
+    
+    def __search_movie_by_id(self):
+        id = int(input("Enter the ID of the movie: "))
+        
+        movie = self.__movie_service.search_movie_by_id(id)
+        movie.print_movie()
+
+
+    def __search_movie_by_title(self):
+        title = input("Enter the title of the movie: ")
+        
+        movies = self.__movie_service.search_movie_by_title(title)
+        
+        for movie in movies:
+            movie.print_movie()
+        
+
+    def __search_movie_by_description(self):
+        description = input("Enter the description of the movie: ")
+        
+        movies = self.__movie_service.search_movie_by_description(description)
+        
+        for movie in movies:
+            movie.print_movie()
+
+
+    def __search_movie_by_genre(self):
+        genre = input("Enter the genre of the movie: ")
+        
+        movies = self.__movie_service.search_movie_by_genre(genre)
+        
+        for movie in movies:
+            movie.print_movie()
+
+
+    def __search_client_by_id(self):
+        id = int(input("Enter the ID of the client: "))
+        
+        client = self.__client_service.search_client_by_id(id)
+        client.print_client()
+
+
+    def __search_client_by_name(self):
+        name = input("Enter the name of the client: ")
+        
+        clients = self.__client_service.search_client_by_name(name)
+        
+        for client in clients:
+            client.print_client()
+
 
     def main(self):
 
@@ -198,7 +254,11 @@ class UI:
                      self.__add_client, self.__list_clients, 
                      self.__remove_client_by_id, self.__update_client_id,
                      self.__update_client_name, self.__create_rental,
-                     self.__list_rentals, self.__delete_rental]
+                     self.__list_rentals, self.__delete_rental,
+                     self.__search_movie_by_id, self.__search_movie_by_title,
+                     self.__search_movie_by_description, 
+                     self.__search_movie_by_genre, self.__search_client_by_id,
+                     self.__search_client_by_name]
         
         self.__movie_service.generate_entries(10)
         self.__client_service.generate_entries()

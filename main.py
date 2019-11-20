@@ -4,11 +4,6 @@ from service import *
 from repository import *
 from validation import MovieValidator
 
-"""
-    Check whether the client returned the movie before the due date or not.
-"""
-
-
 def main():
     tests = Tests()
     tests.run_tests()
