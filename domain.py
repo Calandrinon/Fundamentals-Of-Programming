@@ -46,6 +46,10 @@ class Movie:
         
         return self.get_movieID() == other_movie.get_movieID() and self.get_title() == other_movie.get_title() and self.get_description() == other_movie.get_description() and self.get_genre() == other_movie.get_genre()
     
+    
+    def __str__(self):
+        return self.get_title()
+    
 
     def print_movie(self):
         print("[", self.__movieID, ",", self.__title, ",", self.__description, ",", self.__genre, "]")

@@ -4,6 +4,10 @@ from service import *
 from repository import *
 from validation import MovieValidator
 
+"""
+    TODO: For feature 4.1, print the rental date of each movie
+"""
+
 def main():
     tests = Tests()
     tests.run_tests()

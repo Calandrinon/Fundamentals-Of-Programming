@@ -85,6 +85,7 @@ class ClientRepository:
 class RentalRepository:
     def __init__(self):
         self.__list_of_rentals = []
+        self.__movie_rented_days = {}
     
     
     def add_to_list(self, rental):

@@ -33,6 +33,7 @@ class UI:
         print("20. Search a movie by genre")
         print("21. Search a client by ID")
         print("22. Search a client by name")
+        print("23. Most rented movies")
         print("\n"*5)
 
         
@@ -163,7 +164,11 @@ class UI:
         movieID = int(input("Enter the ID of the movie: "))
         clientID = int(input("Enter the ID of the client: "))
         
-        rented_date = date.today()
+        rented_day = int(input("Enter the day of the rental's date: "))
+        rented_month = int(input("Enter the month of the rental's date: "))
+        rented_year = int(input("Enter the year of the rental's date: "))
+        rented_date = date(rented_year, rented_month, rented_day)
+        
         due_day = int(input("Enter the day of the rental's due date: "))
         due_month = int(input("Enter the month of the rental's due date: "))
         due_year = int(input("Enter the year of the rental's due date: "))
@@ -245,6 +250,13 @@ class UI:
             client.print_client()
 
 
+    def __get_most_rented_movies_statistics(self):
+        statistics = self.__rental_service.create_rented_movies_statistics()
+        
+        for movie in statistics:
+            print(movie[0])
+        
+
     def main(self):
 
         functions = [self.__add_movie, self.__list_movies, 
@@ -258,7 +270,7 @@ class UI:
                      self.__search_movie_by_id, self.__search_movie_by_title,
                      self.__search_movie_by_description, 
                      self.__search_movie_by_genre, self.__search_client_by_id,
-                     self.__search_client_by_name]
+                     self.__search_client_by_name, self.__get_most_rented_movies_statistics]
         
         self.__movie_service.generate_entries(10)
         self.__client_service.generate_entries()

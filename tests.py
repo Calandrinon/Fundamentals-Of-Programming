@@ -192,6 +192,7 @@ class TestRentalService(unittest.TestCase):
     
     def __init__(self):
         self.movie_repository = MovieRepository()
+        self.movie_service = MovieService(self.movie_repository, MovieValidator())
         self.client_repository = ClientRepository()
         self.client_repository.add_to_list(Client(5, "John"))
         self.repository = RentalRepository()
@@ -203,6 +204,7 @@ class TestRentalService(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
         self.movie_repository = MovieRepository()
+        self.movie_service = MovieService(self.movie_repository, MovieValidator())
         self.client_repository = ClientRepository()
         self.client_repository.add_to_list(Client(5, "John"))
         self.repository = RentalRepository()
@@ -221,6 +223,7 @@ class TestRentalService(unittest.TestCase):
         rentals = self.repository.get_list_of_rentals()
         assert(len(expected_result) == len(rentals))
         assert(expected_result[-1] == rentals[-1])
+        self.repository.set_list_of_rentals([])
         
         
     def test_delete_rental__valid_rental__list_with_rental(self):
@@ -229,10 +232,22 @@ class TestRentalService(unittest.TestCase):
         assert(len(rentals) == 0)
     
     
+    def test_create_rented_movies_statistics(self):
+        self.movie_repository.set_list_of_movies([])
+        self.movie_service.add_movie(12, "abc", "def", "ghi")
+        self.movie_service.add_movie(13, "aaa", "bbb", "ccc")
+        self.service.create_rental(15, 12, 1, date(2019, 5, 5), date(2019, 12, 30))
+        self.service.create_rental(13, 13, 2, date(2019, 1, 1), date(2019, 12, 30))
+        statistic = self.service.create_rented_movies_statistics()
+        
+        for movie_index in range(0, len(statistic) - 1):
+            assert(statistic[movie_index][1] > statistic[movie_index+1][1])
+        
+        
     def run_tests(self):
         self.test_create_rental__valid_rental__list_with_rental()
         self.test_delete_rental__valid_rental__list_with_rental()
-        
+        self.test_create_rented_movies_statistics()
         
 class Tests:
     

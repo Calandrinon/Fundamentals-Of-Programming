@@ -380,7 +380,7 @@ class RentalService:
         self.__validator = validator
         self.__client_repository = client_repository
         self.__movie_repository = movie_repository
-        
+        self.__movie_service = MovieService(movie_repository, MovieValidator())
         
     def create_rental(self, rentalID, movieID, clientID, rented_date, due_date): 
         
@@ -443,5 +443,37 @@ class RentalService:
         """
         
         return self.__repository.get_list_of_rentals()
+    
+    
+    def create_rented_movies_statistics(self):
+        """
+        Iterates through the list of rentals, computes the number of days they were rented
+        and returns a list with the movies sorted in descending order of the number of days
+        they were rented.
+        """
         
+        rentals = self.get_list_of_rentals()
+        movie_statistics = {} 
+        result = []
         
+        for rental in rentals:
+            movie_statistics[rental.get_movieID()] = 0
+        
+        for rental in rentals:
+            d0 = rental.get_rented_date()
+            d1 = date.today()
+            days = (d1 - d0).days
+            movie_statistics[rental.get_movieID()] += days  
+            
+        for movie_id in movie_statistics:
+            result.append([movie_id, movie_statistics[movie_id]])
+            
+        result.sort(key=lambda movie: movie[1], reverse = True)
+        
+        movies = []
+        for movie in result:
+            movies.append([self.__movie_service.search_movie_by_id(movie[0]), movie[1]])
+        
+        return movies
+        
+            
