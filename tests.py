@@ -194,6 +194,7 @@ class TestRentalService(unittest.TestCase):
         self.movie_repository = MovieRepository()
         self.movie_service = MovieService(self.movie_repository, MovieValidator())
         self.client_repository = ClientRepository()
+        self.client_service = ClientService(self.client_repository, ClientValidator())
         self.client_repository.add_to_list(Client(5, "John"))
         self.repository = RentalRepository()
         self.validator = RentalValidator()
@@ -206,6 +207,7 @@ class TestRentalService(unittest.TestCase):
         self.movie_repository = MovieRepository()
         self.movie_service = MovieService(self.movie_repository, MovieValidator())
         self.client_repository = ClientRepository()
+        self.client_service = ClientService(self.client_repository, ClientValidator())
         self.client_repository.add_to_list(Client(5, "John"))
         self.repository = RentalRepository()
         self.validator = RentalValidator()
@@ -242,12 +244,53 @@ class TestRentalService(unittest.TestCase):
         
         for movie_index in range(0, len(statistic) - 1):
             assert(statistic[movie_index][1] > statistic[movie_index+1][1])
+    
+    
+    def test_create_active_clients_statistics(self):
+        self.movie_repository.set_list_of_movies([])
+        self.client_repository.set_list_of_clients([])
+        self.repository.set_list_of_rentals([])
+        self.client_service.add_client(20, "client1")
+        self.client_service.add_client(21, "client2")
+        self.movie_service.add_movie(99, "abc", "def", "ghi")
+        self.movie_service.add_movie(100, "aaa", "bbb", "ccc")
+        self.movie_service.add_movie(101, "zzzzz", "zzzzzz", "zzzzzzz")
+        self.service.create_rental(0, 99, 21, date(2019, 5, 5), date(2019, 12, 30))
+        self.service.create_rental(1, 100, 20, date(2019, 1, 1), date(2019, 12, 30))
+        self.service.create_rental(2, 101, 21, date(2019, 3, 3), date(2019, 12, 30))
+        
+        statistic = self.service.create_active_clients_statistics()
+        
+        for client_index in range(0, len(statistic) - 1):
+            assert(statistic[client_index][1] > statistic[client_index+1][1])
+        
+        
+    def test_create_late_rentals_statistics(self):
+        self.movie_repository.set_list_of_movies([])
+        self.client_repository.set_list_of_clients([])
+        self.repository.set_list_of_rentals([])
+        self.client_service.add_client(22, "client1")
+        self.client_service.add_client(23, "client2")
+        self.movie_service.add_movie(102, "abc", "def", "ghi")
+        self.movie_service.add_movie(103, "aaa", "bbb", "ccc")
+        self.movie_service.add_movie(104, "zzzzz", "zzzzzz", "zzzzzzz")
+        self.service.create_rental(55, 102, 22, date(2019, 5, 5), date(2000, 12, 30))
+        self.service.create_rental(56, 103, 23, date(2019, 1, 1), date(2001, 12, 30))
+        self.service.create_rental(57, 104, 22, date(2019, 3, 3), date(2002, 12, 30))
+        
+        statistic = self.service.create_late_rentals_statistics()
+        
+        for movie_index in range(0, len(statistic) - 1):
+            assert(statistic[movie_index][1] > statistic[movie_index+1][1])
         
         
     def run_tests(self):
         self.test_create_rental__valid_rental__list_with_rental()
         self.test_delete_rental__valid_rental__list_with_rental()
         self.test_create_rented_movies_statistics()
+        self.test_create_active_clients_statistics()
+        self.test_create_late_rentals_statistics()
+        
         
 class Tests:
     

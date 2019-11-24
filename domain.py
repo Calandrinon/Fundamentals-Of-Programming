@@ -85,6 +85,9 @@ class Client:
         
         return self.get_clientID() == other_client.get_clientID() and self.get_name() == other_client.get_name()
     
+    
+    def __str__(self):
+        return self.get_name()
 
     def print_client(self):
         print("[", self.__clientID, ",", self.__name, "]")

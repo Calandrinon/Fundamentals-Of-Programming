@@ -34,6 +34,8 @@ class UI:
         print("21. Search a client by ID")
         print("22. Search a client by name")
         print("23. Most rented movies")
+        print("24. Most active clients")
+        print("25. Late rentals")
         print("\n"*5)
 
         
@@ -256,6 +258,29 @@ class UI:
         for movie in statistics:
             print(movie[0])
         
+        if len(statistics) == 0:
+            print("There are no rented movies!")
+    
+    
+    def __get_most_active_clients_statistics(self):
+        statistics = self.__rental_service.create_active_clients_statistics()
+        
+        for client in statistics:
+            print(client[0])
+            
+        if len(statistics) == 0:
+            print("There are no active clients!")
+
+    
+    def __get_late_rentals_statistics(self):
+        statistics = self.__rental_service.create_late_rentals_statistics()
+        
+        for movie in statistics:
+            print(movie[0])
+
+        if len(statistics) == 0:
+            print("There are no rentals that passed the due date!")
+
 
     def main(self):
 
@@ -270,7 +295,9 @@ class UI:
                      self.__search_movie_by_id, self.__search_movie_by_title,
                      self.__search_movie_by_description, 
                      self.__search_movie_by_genre, self.__search_client_by_id,
-                     self.__search_client_by_name, self.__get_most_rented_movies_statistics]
+                     self.__search_client_by_name, self.__get_most_rented_movies_statistics,
+                     self.__get_most_active_clients_statistics,
+                     self.__get_late_rentals_statistics]
         
         self.__movie_service.generate_entries(10)
         self.__client_service.generate_entries()

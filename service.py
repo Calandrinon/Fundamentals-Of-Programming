@@ -379,6 +379,7 @@ class RentalService:
         self.__repository = rental_repository
         self.__validator = validator
         self.__client_repository = client_repository
+        self.__client_service = ClientService(self.__client_repository, ClientValidator())
         self.__movie_repository = movie_repository
         self.__movie_service = MovieService(movie_repository, MovieValidator())
         
@@ -476,4 +477,71 @@ class RentalService:
         
         return movies
         
+    
+    def create_active_clients_statistics(self):
+        """
+        Provides the list of clients, sorted in descending order of the number
+        of movie rental days they have (e.g. having 2 rented movies for 3 days 
+        each counts as 2 x 3 = 6 days).
+        """
+        
+        rentals = self.get_list_of_rentals()
+        client_statistics = {} 
+        result = []
+        
+        for rental in rentals:
+            client_statistics[rental.get_clientID()] = 0
+        
+        for rental in rentals:
+            d0 = rental.get_rented_date()
+            d1 = date.today()
+            days = (d1 - d0).days
+            client_statistics[rental.get_clientID()] += days  
             
+        for client_id in client_statistics:
+            result.append([client_id, client_statistics[client_id]])
+            
+        result.sort(key=lambda client: client[1], reverse = True)
+        
+        clients = []
+        for client in result:
+            clients.append([self.__client_service.search_client_by_id(client[0]), client[1]])
+        
+        return clients
+    
+    
+    def create_late_rentals_statistics(self):
+        """
+        Provides all the movies that are currently rented, for which the due date for return has
+        passed, sorted in descending order of the number of days of delay.
+        """
+        
+        rentals = self.get_list_of_rentals()
+        movie_statistics = {} 
+        result = []
+        
+        for rental in rentals:
+            movie_statistics[rental.get_movieID()] = 0
+        
+        for rental in rentals:
+            d1 = rental.get_due_date()
+            d0 = date.today()
+            days = (d1 - d0).days
+            
+            if days < 0:
+                movie_statistics[rental.get_movieID()] += days  
+            
+            
+        for movie_id in movie_statistics:
+            if movie_statistics[movie_id] != 0:
+                result.append([movie_id, movie_statistics[movie_id]])
+            
+        result.sort(key=lambda movie: movie[1], reverse = True)
+        
+        movies = []
+        for movie in result:
+            movies.append([self.__movie_service.search_movie_by_id(movie[0]), movie[1]])
+        
+        return movies
+    
+    
