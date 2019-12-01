@@ -3,10 +3,11 @@ from exceptions import *
 from datetime import date 
 
 class UI:
-    def __init__(self, movie_service, client_service, rental_service):
+    def __init__(self, movie_service, client_service, rental_service, undo_service):
         self.__movie_service = movie_service
         self.__client_service = client_service
         self.__rental_service = rental_service
+        self.__undo_service = undo_service
         
 
     def __print_menu(self):
@@ -36,6 +37,10 @@ class UI:
         print("23. Most rented movies")
         print("24. Most active clients")
         print("25. Late rentals")
+        print("26. Undo the last operation")
+        print("27. Redo the last operation")
+        print("28. Print the undo stack")
+        print("29. Print the redo stack")
         print("\n"*5)
 
         
@@ -282,6 +287,22 @@ class UI:
             print("There are no rentals that passed the due date!")
 
 
+    def __undo(self):
+        self.__undo_service.undo()
+
+
+    def __redo(self):
+        self.__undo_service.redo()
+    
+
+    def __get_undo_stack(self):
+        self.__undo_service.get_undo_stack()
+
+    
+    def __get_redo_stack(self):
+        self.__undo_service.get_redo_stack()
+    
+
     def main(self):
 
         functions = [self.__add_movie, self.__list_movies, 
@@ -297,7 +318,8 @@ class UI:
                      self.__search_movie_by_genre, self.__search_client_by_id,
                      self.__search_client_by_name, self.__get_most_rented_movies_statistics,
                      self.__get_most_active_clients_statistics,
-                     self.__get_late_rentals_statistics]
+                     self.__get_late_rentals_statistics, self.__undo, self.__redo, 
+                     self.__get_undo_stack, self.__get_redo_stack]
         
         self.__movie_service.generate_entries(10)
         self.__client_service.generate_entries()
@@ -330,5 +352,7 @@ class UI:
                 print("ClientError: " + str(ce))
             except RentalError as re:
                 print("RentalError: " + str(re))
+            except UndoError as ue:
+                print("UndoError: " + str(ue))
             
                 

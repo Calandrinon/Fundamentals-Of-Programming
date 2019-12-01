@@ -150,3 +150,32 @@ class Rental:
         print("[", self.__rentalID, ",", self.__movieID, ",", self.__clientID,
               ",", self.__rented_date, ",", self.__due_date, ",", 
               self.__returned_date, "]")
+        
+        
+class UndoOperation:
+    
+    def __init__(self, operation1, operation2, parameters1, parameters2):
+        self.operation1 = operation1
+        self.operation2 = operation2
+        self.parameters1 = parameters1 
+        self.parameters2 = parameters2
+    
+    
+    def __list_to_string(self, list):
+        result = "["
+        
+        for element in list:
+            result += str(element)
+            result += ","
+            
+        result = result[:-1]
+        result += "]"
+        
+        return result
+    
+    
+    def __str__(self):
+        return self.operation1.__name__ + ": " + self.__list_to_string(self.parameters1) + ";  " + self.operation2.__name__ + ": " + self.__list_to_string(self.parameters2)
+    
+    
+    

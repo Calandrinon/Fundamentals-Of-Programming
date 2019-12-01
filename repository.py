@@ -7,12 +7,12 @@ class MovieRepository:
         self.rented_id_dictionary = {}
         
     
-    def set_as_rented(self, id):    
+    def set_as_rented(self, id):
         self.rented_id_dictionary[id] = 1
-        
-        
+    
+    
     def set_as_available(self, id):    
-        self.rented_id_dictionary[id] = 0    
+        self.rented_id_dictionary[id] = 0
         
         
     def delete_id(self, id):
@@ -99,4 +99,71 @@ class RentalRepository:
     def set_list_of_rentals(self, new_list):
         self.__list_of_rentals[:] = new_list
         
+        
+class UndoRepository:
+    def __init__(self):
+        self.__list_of_operations = []
+        self.__redo_stack = []
+        self.__pointer = 0
+        self.__redo_pointer = 0
+    
+    
+    def get_pointer(self):
+        return self.__pointer
+    
+    
+    def get_redo_pointer(self):
+        return self.__redo_pointer
+    
+    
+    def decrement_pointer(self):
+        self.__pointer -= 1
+    
+    
+    def add_to_list(self, operation):
+        self.__list_of_operations.append(operation)
+        self.__pointer += 1
+        
+    
+    def add_to_redo_stack(self, operation):    
+        self.__redo_stack.append(operation)
+        self.__redo_pointer += 1
+        
+        
+    def get_list(self):
+        return self.__list_of_operations
+    
+    
+    def get_redo_stack(self):
+        return self.__redo_stack
+        
+        
+    def get_last_operation(self):
+        if self.__pointer == 0:
+            raise UndoError("All the operations have been undone!")
+            return None
+            
+        return self.__list_of_operations[self.__pointer - 1]
+        self.__pointer -= 1
+        
+        
+    def get_redo_operation(self):
+        if self.__redo_pointer == 0:
+            raise UndoError("Can't redo!")
+            return None
+            
+        return self.__redo_stack[self.__redo_pointer - 1]
+        self.__redo_pointer -= 1
+        
+
+    def remove_last_operation_from_stack(self):
+        if len(self.__list_of_operations) > 0:
+            del self.__list_of_operations[self.__pointer - 1]
+            self.__pointer -= 1
+            
+    
+    def remove_last_operation_from_redo_stack(self):
+        if len(self.__redo_stack) > 0:
+            del self.__redo_stack[self.__redo_pointer - 1]
+            self.__redo_pointer -= 1
         

@@ -6,3 +6,6 @@ class ClientError(Exception):
 
 class RentalError(Exception):
     pass
+
+class UndoError(Exception):
+    pass

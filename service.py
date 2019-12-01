@@ -4,12 +4,14 @@ from validation import *
 import random
 import string
 from datetime import date
+from posix import remove
 
 class MovieService:
 
-    def __init__(self, repository, validator):
+    def __init__(self, repository, validator, undo_repository):
         self.__repository = repository
         self.__validator = validator
+        self.__undo_repository = undo_repository
         
     
     def add_movie(self, movieID, title, description, genre):
@@ -30,6 +32,9 @@ class MovieService:
         self.__validator.validate_movie(movie)
         self.__repository.rented_id_dictionary[movieID] = 0
         self.__repository.add_to_list(movie)
+        
+        undo_operation = UndoOperation(self.remove_movie_by_id, self.add_movie, [movieID], [movieID, title, description, genre])
+        self.__undo_repository.add_to_list(undo_operation)
     
         
     def get_list_of_movies(self):
@@ -51,9 +56,12 @@ class MovieService:
         for movie in list_of_movies:
             if movie.get_movieID() != ID:
                 new_list_of_movies.append(movie)
-                
+            else:
+                undo_operation = UndoOperation(self.add_movie, self.remove_movie_by_id, [movie.get_movieID(), movie.get_title(), movie.get_description(), movie.get_genre()], [movie.get_movieID()])
+                self.__undo_repository.add_to_list(undo_operation)
+        
         self.__repository.delete_id(ID)
-                
+        
         self.__repository.set_list_of_movies(new_list_of_movies)
         
         
@@ -69,6 +77,8 @@ class MovieService:
             if movie.get_genre() != genre:
                 new_list_of_movies.append(movie)
             else:
+                undo_operation = UndoOperation(self.add_movie, self.remove_movie_by_id, [movie.get_movieID(), movie.get_title(), movie.get_description(), movie.get_genre()], [movie.get_movieID()])
+                self.__undo_repository.add_to_list(undo_operation)
                 self.__repository.delete_id(movie.get_movieID())
                   
         self.__repository.set_list_of_movies(new_list_of_movies)
@@ -84,9 +94,11 @@ class MovieService:
         
         for movie in list_of_movies:
             if movie.get_movieID() == old_id:
+                undo_operation = UndoOperation(self.update_movie_id, self.update_movie_id, [new_id, movie.get_movieID()], [movie.get_movieID(), new_id])
                 self.__repository.delete_id(old_id)
                 movie.set_movieID(new_id)
                 self.__repository.create_id(new_id)
+                self.__undo_repository.add_to_list(undo_operation)
             new_list_of_movies.append(movie)
                 
         self.__repository.set_list_of_movies(new_list_of_movies)
@@ -102,7 +114,9 @@ class MovieService:
         
         for movie in list_of_movies:
             if movie.get_movieID() == id:
+                undo_operation = UndoOperation(self.update_movie_title, self.update_movie_title, [id, movie.get_title()], [id, new_title])
                 movie.set_title(new_title)
+                self.__undo_repository.add_to_list(undo_operation)
             new_list_of_movies.append(movie)
                 
         self.__repository.set_list_of_movies(new_list_of_movies)
@@ -118,7 +132,9 @@ class MovieService:
         
         for movie in list_of_movies:
             if movie.get_movieID() == id:
+                undo_operation = UndoOperation(self.update_movie_description, self.update_movie_description, [id, movie.get_description()], [id, new_description])
                 movie.set_description(new_description)
+                self.__undo_repository.add_to_list(undo_operation)
             new_list_of_movies.append(movie)
                 
         self.__repository.set_list_of_movies(new_list_of_movies)
@@ -134,7 +150,9 @@ class MovieService:
         
         for movie in list_of_movies:
             if movie.get_movieID() == id:
+                undo_operation = UndoOperation(self.update_movie_genre, self.update_movie_genre, [id, movie.get_genre()], [id, new_genre])
                 movie.set_genre(new_genre)
+                self.__undo_repository.add_to_list(undo_operation)
             new_list_of_movies.append(movie)
                 
         self.__repository.set_list_of_movies(new_list_of_movies)
@@ -241,9 +259,11 @@ class MovieService:
             
 class ClientService:
 
-    def __init__(self, repository, validator):
+    def __init__(self, repository, validator, undo_repository):
         self.__repository = repository
         self.__validator = validator
+        self.__undo_repository = undo_repository
+        
     
     def add_client(self, clientID, name):
         """
@@ -261,7 +281,10 @@ class ClientService:
         self.__validator.validate_client(client)
         self.__repository.can_id_rent[clientID] = True
         self.__repository.add_to_list(client)
-    
+        
+        undo_operation = UndoOperation(self.remove_client_by_id, self.add_client, [clientID], [clientID, name])
+        self.__undo_repository.add_to_list(undo_operation)
+        
         
     def get_list_of_clients(self):
         """
@@ -282,10 +305,15 @@ class ClientService:
         for client in list_of_clients:
             if client.get_clientID() != ID:
                 new_list_of_clients.append(client)
+            else:
+                undo_operation = UndoOperation(self.add_client, self.remove_client_by_id, [client.get_clientID(), client.get_name()], [client.get_clientID()])
+                self.__undo_repository.add_to_list(undo_operation)
                 
         self.__repository.delete_id(ID)
                 
         self.__repository.set_list_of_clients(new_list_of_clients)
+        
+        
         
         
     def update_client_id(self, old_id, new_id):
@@ -298,9 +326,11 @@ class ClientService:
         
         for client in list_of_clients:
             if client.get_clientID() == old_id:
+                undo_operation = UndoOperation(self.update_client_id, self.update_client_id, [new_id, client.get_clientID()], [client.get_clientID(), new_id])
                 self.__repository.delete_id(old_id)
                 client.set_clientID(new_id)
                 self.__repository.create_id(new_id)
+                self.__undo_repository.add_to_list(undo_operation)
             new_list_of_clients.append(client)
                 
         self.__repository.set_list_of_clients(new_list_of_clients)
@@ -316,7 +346,9 @@ class ClientService:
         
         for client in list_of_clients:
             if client.get_clientID() == id:
+                undo_operation = UndoOperation(self.update_client_name, self.update_client_name, [id, client.get_name()], [id, new_name])
                 client.set_name(new_name)
+                self.__undo_repository.add_to_list(undo_operation)
             new_list_of_clients.append(client)
                 
         self.__repository.set_list_of_clients(new_list_of_clients)
@@ -375,13 +407,14 @@ class ClientService:
 
 class RentalService:
     
-    def __init__(self, rental_repository, validator, client_repository, movie_repository):
+    def __init__(self, rental_repository, validator, client_repository, movie_repository, undo_repository):
         self.__repository = rental_repository
+        self.__undo_repository = undo_repository
         self.__validator = validator
         self.__client_repository = client_repository
-        self.__client_service = ClientService(self.__client_repository, ClientValidator())
+        self.__client_service = ClientService(self.__client_repository, ClientValidator(), self.__undo_repository)
         self.__movie_repository = movie_repository
-        self.__movie_service = MovieService(movie_repository, MovieValidator())
+        self.__movie_service = MovieService(movie_repository, MovieValidator(), self.__undo_repository)
         
     def create_rental(self, rentalID, movieID, clientID, rented_date, due_date): 
         
@@ -411,6 +444,8 @@ class RentalService:
         if can_rent == True:
             self.__repository.add_to_list(rental)
             self.__movie_repository.rented_id_dictionary[movieID] = 1
+            undo_operation = UndoOperation(self.delete_rental, self.create_rental, [rentalID], [rentalID, movieID, clientID, rented_date, due_date])
+            self.__undo_repository.add_to_list(undo_operation)
         else:
             raise RentalError("The client has passed the due date for past rentals!")
         
@@ -429,9 +464,18 @@ class RentalService:
                 rental.set_returned_date(date.today())
                 d0 = rental.get_due_date()
                 d1 = date.today()
+                self.__movie_repository.rented_id_dictionary[rental.get_movieID()] = 0
                 
-                if (d0.year < d1.year) or (d0.month < d1.month) or (d0.day < d1.day):
+                if (d0.year < d1.year) or (d0.year == d1.year and d0.month < d1.month) or (d0.year == d1.year and d0.month == d1.month and d0.day < d1.day):
                     self.__client_repository.can_id_rent[rental.get_clientID()] = False
+                    
+                rentalID = rental.get_rentalID() 
+                movieID = rental.get_movieID()
+                clientID = rental.get_clientID()
+                rented_date = rental.get_rented_date()
+                due_date = rental.get_due_date()
+                undo_operation = UndoOperation(self.create_rental, self.delete_rental, [rentalID, movieID, clientID, rented_date, due_date], [rentalID])
+                self.__undo_repository.add_to_list(undo_operation)
             else:
                 new_rental_list.append(rental)
                 
@@ -476,7 +520,7 @@ class RentalService:
             movies.append([self.__movie_service.search_movie_by_id(movie[0]), movie[1]])
         
         return movies
-        
+    
     
     def create_active_clients_statistics(self):
         """
@@ -545,3 +589,42 @@ class RentalService:
         return movies
     
     
+class UndoService:
+    
+    def __init__(self, repository):
+        self.__repository = repository
+        
+         
+    def get_undo_stack(self):
+        print(self.__repository.get_pointer())
+        operations = self.__repository.get_list()
+        for op in operations:
+            print(op)
+        
+        
+    def get_redo_stack(self):
+        print(self.__repository.get_redo_pointer())
+        operations = self.__repository.get_redo_stack()
+        for op in operations:
+            print(op)
+        
+        
+    def undo(self):
+        undo_operation = self.__repository.get_last_operation()
+        
+        if undo_operation != None:
+            undo_operation.operation1(*undo_operation.parameters1)
+            self.__repository.add_to_redo_stack(undo_operation)
+            self.__repository.remove_last_operation_from_stack()
+            self.__repository.remove_last_operation_from_stack()
+                
+                
+    def redo(self):
+        redo_operation = self.__repository.get_redo_operation()
+        
+        if redo_operation != None:
+            redo_operation.operation2(*redo_operation.parameters2)
+            self.__repository.remove_last_operation_from_redo_stack()
+            
+        
+            
