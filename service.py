@@ -255,7 +255,7 @@ class MovieService:
             random_genre = generate_string()
             random_movie = Movie(entry, random_title, random_description, random_genre)
             self.__repository.add_to_list(random_movie)
-            
+    
             
 class ClientService:
 

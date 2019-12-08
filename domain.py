@@ -1,3 +1,6 @@
+from datetime import date
+
+
 class Movie:
 
     def __init__(self, movieID, title, description, genre):
@@ -55,6 +58,18 @@ class Movie:
         print("[", self.__movieID, ",", self.__title, ",", self.__description, ",", self.__genre, "]")
 
 
+    @staticmethod
+    def read_movie(movie_string):
+        tokens = movie_string.split(",")
+        movie = Movie(int(tokens[0].strip()), tokens[1].strip(), tokens[2].strip(), tokens[3].strip())
+        return movie
+
+
+    @staticmethod
+    def write_movie(movie):
+        return str(movie.get_movieID()) + "," + str(movie.get_title()) + ", " + str(movie.get_description()) + ", " + str(movie.get_genre())
+
+
 class Client:
 
     def __init__(self, clientID, name):
@@ -91,6 +106,18 @@ class Client:
 
     def print_client(self):
         print("[", self.__clientID, ",", self.__name, "]")
+
+
+    @staticmethod
+    def read_client(client_string):
+        tokens = client_string.split(",")
+        client = Client(int(tokens[0].strip()), tokens[1].strip())
+        return client
+    
+    
+    @staticmethod
+    def write_client(client):
+        return str(client.get_clientID()) + ", " + str(client.get_name())
 
 
 class Rental:
@@ -150,14 +177,38 @@ class Rental:
         print("[", self.__rentalID, ",", self.__movieID, ",", self.__clientID,
               ",", self.__rented_date, ",", self.__due_date, ",", 
               self.__returned_date, "]")
+    
+    
+    @staticmethod
+    def read_rental(rental_string):
+        tokens = rental_string.split(",")
         
+        rented_date = [int(year_month_day) for year_month_day in tokens[3].strip().split("-")]
+        rented_date_object = date(rented_date[0], rented_date[1], rented_date[2])
+        
+        due_date = [int(year_month_day) for year_month_day in tokens[4].strip().split("-")]
+        due_date_object = date(due_date[0], due_date[1], due_date[2])
+        
+        returned_date = [int(year_month_day) for year_month_day in tokens[5].strip().split("-")]
+        returned_date_object = date(returned_date[0], returned_date[1], returned_date[2])
+        
+        
+        rental = Rental(int(tokens[0].strip()), int(tokens[1].strip()),
+                        int(tokens[2].strip()), rented_date_object, due_date_object, returned_date_object)
+        return rental
+    
+    
+    @staticmethod
+    def write_rental(rental):
+        return str(rental.get_rentalID()) + ", " + str(rental.get_movieID()) + ", " + str(rental.get_clientID()) + ", " + str(rental.get_rented_date()) + ", " + str(rental.get_due_date()) + ", " + str(rental.get_returned_date())
+    
         
 class UndoOperation:
     
     def __init__(self, operation1, operation2, parameters1, parameters2):
         self.operation1 = operation1
         self.operation2 = operation2
-        self.parameters1 = parameters1 
+        self.parameters1 = parameters1
         self.parameters2 = parameters2
     
     

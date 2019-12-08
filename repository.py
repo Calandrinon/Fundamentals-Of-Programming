@@ -1,8 +1,11 @@
 from exceptions import *
+import pickle
 
 class MovieRepository:
-    def __init__(self):
-        self.__list_of_movies = []
+    def __init__(self, file_repository):
+        self.__file_repository = file_repository
+        self.__list_of_movies = file_repository.read_from_file()
+        print(self.__list_of_movies)
         self.__id_dictionary = {}
         self.rented_id_dictionary = {}
         
@@ -36,18 +39,22 @@ class MovieRepository:
         self.__list_of_movies.append(movie)
         self.create_id(movie.get_movieID())
         
+        self.__file_repository.write_to_file(self.__list_of_movies)
+        
         
     def get_list_of_movies(self):
         return self.__list_of_movies
     
     
     def set_list_of_movies(self, new_list):
-        self.__list_of_movies[:] = new_list 
+        self.__list_of_movies[:] = new_list
+        self.__file_repository.write_to_file(self.__list_of_movies)
 
         
 class ClientRepository:
-    def __init__(self):
-        self.__list_of_clients = []
+    def __init__(self, file_repository):
+        self.__file_repository = file_repository
+        self.__list_of_clients = file_repository.read_from_file()
         self.__id_dictionary = {}
         self.can_id_rent = {}
     
@@ -72,7 +79,7 @@ class ClientRepository:
     def add_to_list(self, client):
         self.__list_of_clients.append(client)
         self.create_id(client.get_clientID())
-    
+        self.__file_repository.write_to_file(self.__list_of_clients)
         
     def get_list_of_clients(self):
         return self.__list_of_clients
@@ -80,16 +87,20 @@ class ClientRepository:
     
     def set_list_of_clients(self, new_list):
         self.__list_of_clients[:] = new_list 
+        self.__file_repository.write_to_file(self.__list_of_clients)
       
         
 class RentalRepository:
-    def __init__(self):
-        self.__list_of_rentals = []
+    def __init__(self, file_repository):
+        self.__file_repository = file_repository
+        self.__file_repository = file_repository
+        self.__list_of_rentals = file_repository.read_from_file()
         self.__movie_rented_days = {}
     
     
     def add_to_list(self, rental):
         self.__list_of_rentals.append(rental)
+        self.__file_repository.write_to_file(self.__list_of_rentals)
         
         
     def get_list_of_rentals(self):
@@ -98,6 +109,8 @@ class RentalRepository:
     
     def set_list_of_rentals(self, new_list):
         self.__list_of_rentals[:] = new_list
+        self.__file_repository.write_to_file(self.__list_of_rentals)
+        
         
         
 class UndoRepository:
@@ -166,4 +179,61 @@ class UndoRepository:
         if len(self.__redo_stack) > 0:
             del self.__redo_stack[self.__redo_pointer - 1]
             self.__redo_pointer -= 1
+            
+            
+class FileRepository:
+    
+    def __init__(self, filename, reading_function, writing_function, file_option):
+        self.__filename = filename
+        self.__reading_function = reading_function
+        self.__writing_function = writing_function
+        self.__file_option = file_option
+        self.__list = []
+        
+    
+    def read_from_file(self):
+        self.__list = []
+        
+        if self.__file_option == "inmemory":
+            return self.__list
+        
+        if self.__file_option == "binaryfiles":
+            f = open(self.__filename, "rb")
+            
+            try:
+                objects = pickle.load(f)
+            except EOFError:
+                objects = []
+                
+            f.close()    
+            return objects
+            
+        f = open(self.__filename, "r")
+        
+        lines = f.readlines()
+        for line in lines:
+            line = line.strip()
+            if line != "":
+                object = self.__reading_function(line)
+                self.__list.append(object)
+            
+        f.close()    
+        return self.__list
+        
+        
+    def write_to_file(self, list_of_objects):
+        if self.__file_option == "binaryfiles":
+            f = open(self.__filename, "wb")
+            
+            pickle.dump(list_of_objects, f)
+            f.close()
+            return
+        
+        
+        f = open(self.__filename, "w")
+        
+        for object in list_of_objects:
+            line = self.__writing_function(object)
+            f.write(line+"\n")
+        
         

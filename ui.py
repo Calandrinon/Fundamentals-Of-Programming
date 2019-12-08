@@ -321,8 +321,8 @@ class UI:
                      self.__get_late_rentals_statistics, self.__undo, self.__redo, 
                      self.__get_undo_stack, self.__get_redo_stack]
         
-        self.__movie_service.generate_entries(10)
-        self.__client_service.generate_entries()
+        #self.__movie_service.generate_entries(10)
+        #self.__client_service.generate_entries()
         self.clear_screen()
         
         while True:
