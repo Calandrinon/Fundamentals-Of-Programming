@@ -8,32 +8,32 @@ import os.path
 
 def create_file(filename):
     if os.path.exists(filename) == False:
-        f = open(filename, "w")
-        f.close()
-    
+        file_handler = open(filename, "w")
+        file_handler.close()
+
 
 def read_txt_config_file(filename):
-    f = open(filename, "r")
-    lines = f.readlines()
-    
+    file_handler = open(filename, "r")
+    lines = file_handler.readlines()
+
     option = lines[0].split("=")
     option = option[1].strip()
-    
+
     del lines[0]
-    
+
     files = {}
     files[0] = option
-    
+
     for line in lines:
         line = line.split("=")
         line[0] = line[0].strip()
         line[1] = line[1].strip()
         files[line[0]] = line[1]
-        
+
     for file in files:
         print(file)
         create_file(file)
-        
+
     
     return files
 
@@ -43,7 +43,7 @@ def main():
     movies_files = FileRepository(files["movies"], Movie.read_movie, Movie.write_movie, files[0])
     clients_files = FileRepository(files["clients"], Client.read_client, Client.write_client, files[0])
     rentals_files = FileRepository(files["rentals"], Rental.read_rental, Rental.write_rental, files[0])
-    
+
     #tests = Tests()
     #tests.run_tests()
     undo_repository = UndoRepository()
