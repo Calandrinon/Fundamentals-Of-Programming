@@ -61,6 +61,8 @@ class PlaneService:
         
         """
         
+        self.__validator.validate_position_coordinates((x_coordinate, y_coordinate), self.__board.get_size())
+        
         opponent_planes = self.__opponent.get_repository().get_container()
 
         for enemy_plane in opponent_planes:

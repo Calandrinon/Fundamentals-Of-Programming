@@ -12,7 +12,7 @@ class Repository:
         
         self.__list.append(element)
     
-    
+    """
     def delete(self, element):
         if element not in self.__list:
             raise RepoError("The object cannot be deleted because it is not in the list!")
@@ -21,7 +21,7 @@ class Repository:
             if self.__list[index] == element:
                 del self.__list[index]
                 return
-    
+    """
     
     def get_container(self):
         return self.__list

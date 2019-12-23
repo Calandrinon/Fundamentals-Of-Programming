@@ -82,6 +82,8 @@ class UI(object):
                 self.__display_hits_board()
             except ValueError as ve:
                 print(ve)
+            except PlaneError as pe:
+                print(pe)
             
     
 
