@@ -11,8 +11,10 @@ class UI(object):
 
     def __draw_board(self, service):
         board = service.get_board()
+        print("Board with your planes: ")
         print(board)
-
+        print("\n"*2)
+    
     
     def __add_plane(self, service):
         
@@ -46,6 +48,25 @@ class UI(object):
             except ValueError as ve:
                 print(ve)
                 
+        
+    def __display_hits_board(self):        
+        hits_board = self.__player_service.get_hits_board()
+        print("Hits board: ")
+        print(hits_board)
+        print("\n"*2)
+    
+    
+    def __attack_enemy(self, service):
+        
+        if service == self.__player_service:
+            x_coordinate = int(input("Enter the x coordinate of the target point: "))
+            y_coordinate = int(input("Enter the y coordinate of the target point: "))
+        else:
+            x_coordinate = randint(0,9)
+            y_coordinate = randint(0,9)
+            
+        service.attack_opponent(x_coordinate, y_coordinate)
+    
     
     def run(self):
         
@@ -54,10 +75,14 @@ class UI(object):
         self.__place_planes(self.__player_service, 2)
         self.__draw_board(self.__player_service)
         
-        #while True:
-        #    pass
-    
-    
+        while True:
+            try:
+                self.__attack_enemy(self.__player_service)
+                self.__draw_board(self.__player_service)
+                self.__display_hits_board()
+            except ValueError as ve:
+                print(ve)
+            
     
 
 

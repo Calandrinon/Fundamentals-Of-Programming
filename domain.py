@@ -11,6 +11,8 @@ class Plane:
         if orientation == "up":
             for row in range(x_coordinate, x_coordinate + 4):
                 self.__surface_positions.append((row, y_coordinate))
+            
+            self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
         
             self.__surface_positions.append((x_coordinate + 1, y_coordinate - 2))
             self.__surface_positions.append((x_coordinate + 1, y_coordinate - 1))
@@ -23,6 +25,8 @@ class Plane:
             for row in range(x_coordinate, x_coordinate - 4, -1):
                 self.__surface_positions.append((row, y_coordinate))
             
+            self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
+            
             self.__surface_positions.append((x_coordinate - 1, y_coordinate - 2))
             self.__surface_positions.append((x_coordinate - 1, y_coordinate - 1))
             self.__surface_positions.append((x_coordinate - 1, y_coordinate + 1))
@@ -34,6 +38,8 @@ class Plane:
             for column in range(y_coordinate, y_coordinate + 4):
                 self.__surface_positions.append((x_coordinate, column))
             
+            self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
+            
             self.__surface_positions.append((x_coordinate - 1, y_coordinate + 1))
             self.__surface_positions.append((x_coordinate - 2, y_coordinate + 1))
             self.__surface_positions.append((x_coordinate + 1, y_coordinate + 1))
@@ -44,6 +50,8 @@ class Plane:
         elif orientation == "right":
             for column in range(y_coordinate, y_coordinate - 4, -1):
                 self.__surface_positions.append((x_coordinate, column))
+            
+            self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
             
             self.__surface_positions.append((x_coordinate - 1, y_coordinate - 1))
             self.__surface_positions.append((x_coordinate - 2, y_coordinate - 1))
