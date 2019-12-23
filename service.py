@@ -7,7 +7,7 @@ class PlaneService:
         self.__validator = validator
         self.__board = Board()
         self.__hits_board = Board()
-        self.__score = 0
+        self.score = 0
         
         
     def set_opponent(self, opponent):
@@ -73,11 +73,17 @@ class PlaneService:
                     
                     if len(position) > 2:
                         value = "X"
-                        self.__score += 1
-                        
+                        self.score += 1
+                    
+                    if isinstance(self.__opponent, PlayerService):
+                        self.__opponent.get_board().set_value_of_position_x_y(x_coordinate, y_coordinate, value)
+                        return
                     self.__hits_board.set_value_of_position_x_y(x_coordinate, y_coordinate, value)
                     return
                 else:
+                    if isinstance(self.__opponent, PlayerService):
+                        self.__opponent.get_board().set_value_of_position_x_y(x_coordinate, y_coordinate, "?")
+                        continue
                     self.__hits_board.set_value_of_position_x_y(x_coordinate, y_coordinate, "?")
         
 
