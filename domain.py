@@ -1,10 +1,11 @@
 
 class Plane:
     
-    def __init__(self, x_coordinate, y_coordinate, orientation):
+    def __init__(self, x_coordinate, y_coordinate, orientation, board):
         self.__x_coordinate = x_coordinate
         self.__y_coordinate = y_coordinate
         self.__orientation = orientation
+        self.__board = board
         self.__surface_positions = []
         
         if orientation == "up":
@@ -65,6 +66,10 @@ class Plane:
         return self.__orientation
 
 
+    def get_board(self):
+        return self.__board
+
+
     def get_surface_positions(self):
         return self.__surface_positions
 
@@ -73,6 +78,7 @@ class Plane:
 class Board:
     
     def __init__(self, size=10):
+        self.__size = size
         self.__matrix = [['.' for rows in range(0, size)] for columns in range(0, size)]
     
     
@@ -83,6 +89,10 @@ class Board:
     def set_value_of_position_x_y(self, position_x, position_y, value):
         self.__matrix[position_x][position_y] = value
 
+
+    def get_size(self):
+        return self.__size
+    
     
     def __str__(self):
         result = ""

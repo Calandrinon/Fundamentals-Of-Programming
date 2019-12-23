@@ -1,0 +1,2 @@
+./coverage_unittest_script
+python3 main.py

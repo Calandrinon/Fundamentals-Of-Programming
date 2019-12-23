@@ -25,3 +25,7 @@ class Repository:
     
     def get_container(self):
         return self.__list
+    
+    
+    def get_size(self):
+        return len(self.__list)

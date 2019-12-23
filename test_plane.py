@@ -1,8 +1,8 @@
 from domain import *
 
 def test_plane(orientation):
-    some_plane = Plane(3, 3, orientation)
     board = Board()
+    some_plane = Plane(3, 3, orientation, board)
 
     surface_positions = some_plane.get_surface_positions()
 
