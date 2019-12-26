@@ -61,7 +61,7 @@ class Plane:
             self.__surface_positions.append((x_coordinate - 1, y_coordinate - 3))
             self.__surface_positions.append((x_coordinate + 1, y_coordinate - 3))
         
-
+    """
     def get_x_coordinate(self):
         return self.__x_coordinate
 
@@ -72,8 +72,8 @@ class Plane:
 
     def get_orientation(self):
         return self.__orientation
-
-
+    """
+    
     def get_board(self):
         return self.__board
 

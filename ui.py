@@ -1,13 +1,17 @@
 from errors import PlaneError
 from random import randint
 
+
 class UI(object):
     
     def __init__(self, player_service, computer_service):
         self.__player_service = player_service
         self.__computer_service = computer_service
-
-
+        self.__interrupted_program = False
+        self.__errors = []
+        self.__game_over_message = ""
+        
+        
     def __clear_screen(self):
         print(100*"\n")
 
@@ -64,7 +68,7 @@ class UI(object):
             except ValueError as ve:
                 errors.append(ve)
                 
-        
+                
     def __display_hits_board(self):        
         hits_board = self.__player_service.get_hits_board()
         print("Hits board: ")
@@ -84,44 +88,62 @@ class UI(object):
         service.attack_opponent(x_coordinate, y_coordinate)
     
     
-    def run(self):
-        
-        self.__place_planes(self.__computer_service, 2)
-        self.__place_planes(self.__player_service, 2)
-        self.__draw_board(self.__player_service)
-        
-        errors = []
-        game_over_message = ""
-        self.__clear_screen()
-        
+    def __initialize_planes(self):
+        try:
+            self.__place_planes(self.__computer_service, 2)
+            self.__place_planes(self.__player_service, 2)
+            self.__draw_board(self.__player_service)
+        except KeyboardInterrupt:
+            print("\nGood bye!\n")
+            return True
+    
+    
+    def __display_error_list(self):
+        if len(self.__errors) > 0:
+            for error in self.__errors:
+                print(error)
+            del self.__errors[:]
+    
+    
+    def __main_loop(self):
         while True:
             try:
                 self.__clear_screen()
-                
-                if len(errors) > 0:
-                    for error in errors:
-                        print(error)
-                    del errors[:]
-                
+                self.__display_error_list()
                 self.__draw_board(self.__player_service)
                 self.__display_hits_board()
                 self.__attack_enemy(self.__player_service)
                 self.__attack_enemy(self.__computer_service)
                 
                 if self.__player_service.score == 2:
-                    game_over_message = "You won!"
+                    self.__game_over_message = "You won!"
                     break 
                 elif self.__computer_service.score == 2:
-                    game_over_message = "You lost!"
+                    self.__game_over_message = "You lost!"
                     break
                 
             except ValueError as ve:
-                errors.append(ve)
+                self.__errors.append(ve)
             except PlaneError as pe:
-                errors.append(pe)
-            
+                self.__errors.append(pe)
+            except KeyboardInterrupt:
+                self.__interrupted_program = True
+                print("\nGood bye!\n")
+                break
+        
+    
+    def run(self):
+        
+        if self.__initialize_planes():
+            return
+        
         self.__clear_screen()
-        self.__draw_board(self.__player_service)
-        self.__display_hits_board()
-        print(game_over_message)
+    
+        self.__main_loop()    
+            
+        if self.__interrupted_program == False:
+            self.__clear_screen()
+            self.__draw_board(self.__player_service)
+            self.__display_hits_board()
+            print(self.__game_over_message)
 

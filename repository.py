@@ -7,8 +7,10 @@ class Repository:
     
     
     def add(self, element):
+        """
         if element in self.__list:
             raise RepoError("The object is already in the container!")
+        """
         
         self.__list.append(element)
     
