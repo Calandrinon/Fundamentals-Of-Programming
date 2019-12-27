@@ -44,6 +44,13 @@ class PlaneService:
         return self.__board
         
         
+    def reset_service(self):
+        self.__repository.clear()
+        self.__board = Board()
+        self.__hits_board = Board()
+        self.score = 0
+        
+        
     def get_hits_board(self):
         return self.__hits_board
         

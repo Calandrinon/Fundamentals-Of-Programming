@@ -31,3 +31,7 @@ class Repository:
     
     def get_size(self):
         return len(self.__list)
+    
+    
+    def clear(self):
+        self.__list.clear()
