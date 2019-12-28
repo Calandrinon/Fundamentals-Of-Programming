@@ -2,6 +2,7 @@ from errors import PlaneError
 from random import randint
 import pygame
 
+
 class UI(object):
 
     def __init__(self, player_service, computer_service):
@@ -13,9 +14,15 @@ class UI(object):
         self.__active_gui = False
         self.__cell_width = 50
         self.__multiplayer = False
-        self.__menu_options = ["Singleplayer (1)", "Multiplayer (2)", "Quit (0)"]
+        
+        self.__menu_options = ["Singleplayer (0)", "Multiplayer (1)", "Quit (2)"]
         self.__font_size = 40
-
+        
+        self.__plane_selection_row = 0
+        self.__plane_selection_column = 0
+        self.__plane_selection_orientation = 0
+        self.__plane_selection_orientations = ["up", "left", "down", "right"]
+        
 
     def __clear_screen(self):
         if self.__active_gui:
@@ -23,13 +30,53 @@ class UI(object):
             pygame.display.flip()
             return
         print(100*"\n")
+        
+
+    def __add_plane_handle_input(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pass
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    if self.__plane_selection_column > 0:
+                        self.__plane_selection_column -= 1
+                        self.__draw_selected_cell()
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    if self.__plane_selection_row < self.__player_service.get_board().get_size() - 1:
+                        self.__plane_selection_row += 1
+                        self.__draw_selected_cell()
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    if self.__plane_selection_column < self.__player_service.get_board().get_size() - 1:
+                        self.__plane_selection_column += 1
+                        self.__draw_selected_cell()
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    if self.__plane_selection_row > 0:
+                        self.__plane_selection_row -= 1
+                        self.__draw_selected_cell()
+                if event.key == pygame.K_r:
+                    self.__plane_selection_orientation += 1
+                    if self.__plane_selection_orientation > 3:
+                        self.__plane_selection_orientation = 0
+                    self.__draw_selected_cell()
+                if event.key == pygame.K_RETURN:
+                    self.__player_service.add_plane(self.__plane_selection_row, self.__plane_selection_column, self.__plane_selection_orientations[self.__plane_selection_orientation])
+                    return -1
+                self.__update_display()
+                
+                
+                
+    def __draw_selected_cell(self):
+        matrix_cell = pygame.Rect(self.__cell_width + self.__plane_selection_column * self.__cell_width, 
+                                  self.__cell_width + self.__plane_selection_row * self.__cell_width, 
+                                  self.__cell_width, self.__cell_width)
+        pygame.draw.rect(self.__screen, (155, 0, 0), matrix_cell, 10)
 
 
     def __draw_board(self, service):
         board = service.get_board()
 
         if self.__active_gui:
-            matrix_cell = pygame.Rect(0, 0, self.__cell_width, self.__cell_width)
+            matrix_cell = pygame.Rect(self.__cell_width, self.__cell_width, self.__cell_width, self.__cell_width)
             cell_colors_for_various_characters = {'#':((100,100,100),0), ### '#' is a plane surface on the board
                                                   '.':((0,0,0),2), ### '.' is a free surface
                                                   '*':((255,0,0),0), ### '*' is a plane surface that has been hit by the enemy
@@ -37,14 +84,15 @@ class UI(object):
                                                   '?':((0,225,0),0)} ### '?' is a surface that has been unsuccessfully attacked by the enemy
 
             for row_index in range(0, board.get_size()):  # @UnusedVariable
-                matrix_cell.left = 0
+                matrix_cell.left = self.__cell_width
                 for column_index in range(0, board.get_size()):  # @UnusedVariable
                     cell_color, width = cell_colors_for_various_characters[board.get_value_of_position_x_y(row_index, column_index)]
                     pygame.draw.rect(self.__screen, cell_color, matrix_cell, width)
                     matrix_cell.left += self.__cell_width
 
                 matrix_cell.top += self.__cell_width
-
+        
+            self.__draw_selected_cell()
             pygame.display.update()
 
         if service != self.__computer_service:
@@ -52,6 +100,23 @@ class UI(object):
         print(board)
         print("\n"*2)
 
+
+    def __add_plane_display_message(self):
+        comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
+        message = comic_sans_font.render("Use the arrows to select the position of the plane", False, (0, 0, 0))
+        self.__screen.blit(message, (self.__cell_width, self.__cell_width + 10 * self.__cell_width))
+        message = comic_sans_font.render("To rotate the orientation of the plane, press R", False, (0, 0, 0))
+        self.__screen.blit(message, (self.__cell_width, 2 * self.__cell_width + 10 * self.__cell_width))
+        message = comic_sans_font.render("Press Enter to place the plane", False, (0, 0, 0))
+        self.__screen.blit(message, (self.__cell_width, 3 * self.__cell_width + 10 * self.__cell_width))
+        pygame.display.update()
+        
+        
+    def __plane_position_selected(self):
+        if self.__add_plane_handle_input() == -1:
+            return True
+        return False
+        
 
     def __add_plane(self, service):
 
@@ -63,8 +128,12 @@ class UI(object):
             service.add_plane(plane_x_coordinate, plane_y_coordinate, plane_orientation)
             return
 
-        #if self.__active_gui:
-        #   pass
+        if self.__active_gui:
+            self.__add_plane_display_message()
+            while not self.__plane_position_selected():
+                #self.__update_display()
+                pass
+            return
 
         plane_x_coordinate = int(input("Enter the x coordinate of the plane: "))
         plane_y_coordinate = int(input("Enter the y coordinate of the plane: "))
@@ -89,7 +158,7 @@ class UI(object):
                         print(error)
                     del errors[:]
                 self.__draw_board(service)
-
+                
             try:
                 self.__add_plane(service)
                 number_of_planes -= 1
@@ -189,8 +258,8 @@ class UI(object):
             if gui.lower() == 'y':
                 self.__active_gui = True
                 pygame.init()
-                self.__window_width = 800
-                self.__window_height = 600
+                self.__window_width = 1200
+                self.__window_height = 900
                 self.__screen = pygame.display.set_mode((self.__window_width, self.__window_height))
 
         self.__clear_screen()
@@ -271,11 +340,11 @@ class UI(object):
                 events = pygame.event.get()
                 for event in events:
                     if event.type == pygame.KEYDOWN:
-                        if event.key in [pygame.K_1, pygame.K_s]:
+                        if event.key in [pygame.K_0, pygame.K_s]:
                             self.__singleplayer_mode()
-                        if event.key in [pygame.K_2, pygame.K_m]:
+                        if event.key in [pygame.K_1, pygame.K_m]:
                             self.__multiplayer_mode()
-                        if event.key in [pygame.K_ESCAPE, pygame.K_0]:
+                        if event.key in [pygame.K_ESCAPE, pygame.K_2]:
                             return
 
 

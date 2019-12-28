@@ -14,6 +14,15 @@ class PlaneService:
         self.__opponent = opponent
     
     
+    def __create_plane(self, x_coordinate, y_coordinate, orientation, board):
+        plane = Plane(x_coordinate, y_coordinate, orientation, board)
+        
+        self.__validator.validate_plane(plane)
+        self.__repository.add(plane)
+        
+        return plane
+        
+    
     def add_plane(self, x_coordinate, y_coordinate, orientation):
         """
             Adds a plane to the repository of planes and draws it
@@ -25,10 +34,7 @@ class PlaneService:
                 - orientation - ("up", "down", "left" or "right")
         """
         
-        plane = Plane(x_coordinate, y_coordinate, orientation, self.__board)
-        
-        self.__validator.validate_plane(plane)
-        self.__repository.add(plane)
+        plane = self.__create_plane(x_coordinate, y_coordinate, orientation, self.__board)
         
         surface_positions = plane.get_surface_positions()
         
@@ -92,7 +98,8 @@ class PlaneService:
                         self.__opponent.get_board().set_value_of_position_x_y(x_coordinate, y_coordinate, "?")
                         continue
                     self.__hits_board.set_value_of_position_x_y(x_coordinate, y_coordinate, "?")
-        
+    
+
 
 class ComputerService(PlaneService):
     pass
