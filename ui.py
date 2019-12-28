@@ -260,13 +260,6 @@ class UI(object):
         self.__clear_screen()
 
 
-    def __display_menu_option(self, font_size, option_title, option_index):
-        comic_sans_font = pygame.font.SysFont('Comic Sans MS', font_size)
-        option = comic_sans_font.render(option_title, False, (0, 0, 0))
-
-        self.__screen.blit(option, (self.__window_width / font_size, self.__window_height / font_size + option_index * 2 * font_size))
-
-
     def __reset_services(self):
         self.__player_service.reset_service()
         self.__computer_service.reset_service()
@@ -325,11 +318,23 @@ class UI(object):
                     print("Enter an integer between 1 and 3!")
 
 
+    def __display_menu_option(self, font_size, option_title, option_index):
+        comic_sans_font = pygame.font.SysFont('Comic Sans MS', font_size)
+        option = comic_sans_font.render(option_title, False, (0, 0, 0))
+
+        self.__screen.blit(option, (self.__window_width / font_size, self.__window_height / font_size + option_index * 2 * font_size))
+
+
+    def __display_menu(self):
+        self.__clear_screen()
+        for option_index in range(0, len(self.__menu_options)):
+                self.__display_menu_option(self.__font_size, self.__menu_options[option_index], option_index)
+        pygame.display.update()
+
+    
     def __graphical_main_menu(self):
         if self.__active_gui:
-            for option_index in range(0, len(self.__menu_options)):
-                self.__display_menu_option(self.__font_size, self.__menu_options[option_index], option_index)
-            pygame.display.update()
+            self.__display_menu()
 
             while True:
                 events = pygame.event.get()
@@ -341,6 +346,7 @@ class UI(object):
                             self.__multiplayer_mode()
                         if event.key in [pygame.K_ESCAPE, pygame.K_2]:
                             return
+                    self.__display_menu()
 
 
     def __main_menu(self):
