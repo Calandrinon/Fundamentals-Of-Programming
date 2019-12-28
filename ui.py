@@ -40,28 +40,23 @@ class UI(object):
                 if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     if self.__plane_selection_column > 0:
                         self.__plane_selection_column -= 1
-                        self.__draw_selected_cell()
                 if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     if self.__plane_selection_row < self.__player_service.get_board().get_size() - 1:
                         self.__plane_selection_row += 1
-                        self.__draw_selected_cell()
                 if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     if self.__plane_selection_column < self.__player_service.get_board().get_size() - 1:
                         self.__plane_selection_column += 1
-                        self.__draw_selected_cell()
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
                     if self.__plane_selection_row > 0:
                         self.__plane_selection_row -= 1
-                        self.__draw_selected_cell()
                 if event.key == pygame.K_r:
                     self.__plane_selection_orientation += 1
                     if self.__plane_selection_orientation > 3:
                         self.__plane_selection_orientation = 0
-                    self.__draw_selected_cell()
                 if event.key == pygame.K_RETURN:
                     self.__player_service.add_plane(self.__plane_selection_row, self.__plane_selection_column, self.__plane_selection_orientations[self.__plane_selection_orientation])
                     return -1
-                self.__update_display()
+                self.__update_display(plane_selection=True)
                 
                 
                 
@@ -131,7 +126,6 @@ class UI(object):
         if self.__active_gui:
             self.__add_plane_display_message()
             while not self.__plane_position_selected():
-                #self.__update_display()
                 pass
             return
 
@@ -188,13 +182,12 @@ class UI(object):
 
 
     def __initialize_planes(self):
-        self.__draw_board(self.__player_service)
-
+        self.__update_display()
 
         try:
             self.__place_planes(self.__computer_service, 2)
             self.__place_planes(self.__player_service, 2)
-            self.__draw_board(self.__player_service)
+            #self.__draw_board(self.__player_service)
         except KeyboardInterrupt:
             print("\nGood bye!\n")
             return True
@@ -213,9 +206,11 @@ class UI(object):
                 return True
 
 
-    def __update_display(self):
+    def __update_display(self, plane_selection=False):
         self.__clear_screen()
         self.__draw_board(self.__player_service)
+        if plane_selection:
+            self.__draw_selected_cell()
         self.__display_hits_board()
         self.__display_error_list()
         if self.__active_gui:
