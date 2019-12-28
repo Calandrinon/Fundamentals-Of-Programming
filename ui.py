@@ -5,6 +5,8 @@ import pygame
 
 class UI(object):
 
+    cell_width = 40
+
     def __init__(self, player_service, computer_service):
         self.__player_service = player_service
         self.__computer_service = computer_service
@@ -12,7 +14,7 @@ class UI(object):
         self.__errors = []
         self.__game_over_message = ""
         self.__active_gui = False
-        self.__cell_width = 50
+        self.__cell_width = 40
         self.__multiplayer = False
         
         self.__menu_options = ["Singleplayer (0)", "Multiplayer (1)", "Quit (2)"]
@@ -22,6 +24,7 @@ class UI(object):
         self.__plane_selection_column = 0
         self.__plane_selection_orientation = 0
         self.__plane_selection_orientations = ["up", "left", "down", "right"]
+        self.__initialization_finished = False
         
 
     def __clear_screen(self):
@@ -59,19 +62,20 @@ class UI(object):
                 self.__update_display(plane_selection=True)
                 
                 
-                
-    def __draw_selected_cell(self):
-        matrix_cell = pygame.Rect(self.__cell_width + self.__plane_selection_column * self.__cell_width, 
-                                  self.__cell_width + self.__plane_selection_row * self.__cell_width, 
+    def __draw_selected_cell(self, cell_x_coordinate_minimum=cell_width, cell_y_coordinate_minimum=cell_width):
+        matrix_cell = pygame.Rect(cell_x_coordinate_minimum + self.__plane_selection_column * self.__cell_width, 
+                                  cell_y_coordinate_minimum + self.__plane_selection_row * self.__cell_width, 
                                   self.__cell_width, self.__cell_width)
         pygame.draw.rect(self.__screen, (155, 0, 0), matrix_cell, 10)
 
 
-    def __draw_board(self, service):
+    def __draw_board(self, service, board_type="plane_board", position_x=cell_width, position_y=cell_width):
         board = service.get_board()
+        if board_type == "hit_board":
+            board = service.get_hits_board()
 
         if self.__active_gui:
-            matrix_cell = pygame.Rect(self.__cell_width, self.__cell_width, self.__cell_width, self.__cell_width)
+            matrix_cell = pygame.Rect(position_x, position_y, self.__cell_width, self.__cell_width)
             cell_colors_for_various_characters = {'#':((100,100,100),0), ### '#' is a plane surface on the board
                                                   '.':((0,0,0),2), ### '.' is a free surface
                                                   '*':((255,0,0),0), ### '*' is a plane surface that has been hit by the enemy
@@ -87,14 +91,17 @@ class UI(object):
 
                 matrix_cell.top += self.__cell_width
         
-            self.__draw_selected_cell()
+            if board_type == "hit_board" and self.__initialization_finished:
+                self.__draw_selected_cell(cell_y_coordinate_minimum=service.get_board().get_size()*self.__cell_width+2*self.__cell_width)
+            else:
+                self.__draw_selected_cell()
             pygame.display.update()
 
         if service != self.__computer_service:
             print("Board with your planes: ")
         print(board)
         print("\n"*2)
-
+    
 
     def __add_plane_display_message(self):
         comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
@@ -160,9 +167,11 @@ class UI(object):
                 errors.append(pe)
             except ValueError as ve:
                 errors.append(ve)
-
+        
 
     def __display_hits_board(self):
+        if self.__active_gui:
+            self.__draw_board(self.__player_service, "hit_board", position_y=2*self.__cell_width+self.__cell_width*self.__player_service.get_board().get_size())
         hits_board = self.__player_service.get_hits_board()
         print("Hits board: ")
         print(hits_board)
@@ -187,7 +196,7 @@ class UI(object):
         try:
             self.__place_planes(self.__computer_service, 2)
             self.__place_planes(self.__player_service, 2)
-            #self.__draw_board(self.__player_service)
+            self.__initialization_finished = True
         except KeyboardInterrupt:
             print("\nGood bye!\n")
             return True
@@ -202,8 +211,27 @@ class UI(object):
 
     def __pygame_event_handling(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+            if event.type == pygame.QUIT:
                 return True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return True
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    if self.__plane_selection_column > 0:
+                        self.__plane_selection_column -= 1
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    if self.__plane_selection_row < self.__player_service.get_board().get_size() - 1:
+                        self.__plane_selection_row += 1
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    if self.__plane_selection_column < self.__player_service.get_board().get_size() - 1:
+                        self.__plane_selection_column += 1
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    if self.__plane_selection_row > 0:
+                        self.__plane_selection_row -= 1
+                if event.key == pygame.K_RETURN:
+                    pass
+                self.__update_display()
+                
 
 
     def __update_display(self, plane_selection=False):
@@ -247,14 +275,15 @@ class UI(object):
 
     def __ui_selection(self):
         gui = ""
-
+        self.__clear_screen()
+        
         while gui.lower() not in ['y', 'n']:
             gui = input("Do you want to use the GUI? (y/n)")
             if gui.lower() == 'y':
                 self.__active_gui = True
                 pygame.init()
-                self.__window_width = 1200
-                self.__window_height = 900
+                self.__window_width = 1000
+                self.__window_height = 1000
                 self.__screen = pygame.display.set_mode((self.__window_width, self.__window_height))
 
         self.__clear_screen()

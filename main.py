@@ -3,10 +3,7 @@ from service import PlayerService, ComputerService
 from repository import Repository
 from validation import PlaneValidator
 
-"""
-    TODO: Create a console menu.
-    TODO: Create GUI
-"""
+
 
 def main():
     plane_validator = PlaneValidator()
