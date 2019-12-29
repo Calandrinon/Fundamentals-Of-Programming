@@ -69,12 +69,25 @@ class UI(object):
         pygame.draw.rect(self.__screen, (155, 0, 0), matrix_cell, 10)
 
 
+    def __display_player_board_title(self):
+        comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
+        message = comic_sans_font.render("Your board", False, (0, 0, 0))
+        self.__screen.blit(message, (self.__cell_width * 15, self.__cell_width + 5 * self.__cell_width))
+
+
+    def __display_hit_board_title(self):
+        comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
+        message = comic_sans_font.render("Your shots", False, (0, 0, 0))
+        self.__screen.blit(message, (self.__cell_width * 15, self.__cell_width + 15 * self.__cell_width))
+
+
     def __draw_board(self, service, board_type="plane_board", position_x=cell_width, position_y=cell_width):
         board = service.get_board()
         if board_type == "hit_board" and self.__initialization_finished:
             board = service.get_hits_board()
 
         if self.__active_gui:
+            self.__display_player_board_title()
             matrix_cell = pygame.Rect(position_x, position_y, self.__cell_width, self.__cell_width)
             cell_colors_for_various_characters = {'#':((100,100,100),0), ### '#' is a plane surface on the board
                                                   '.':((0,0,0),2), ### '.' is a free surface
@@ -92,6 +105,7 @@ class UI(object):
                 matrix_cell.top += self.__cell_width
         
             if board_type == "hit_board" and self.__initialization_finished:
+                self.__display_hit_board_title()
                 self.__draw_selected_cell(cell_y_coordinate_minimum=service.get_board().get_size()*self.__cell_width+2*self.__cell_width)
             elif not self.__initialization_finished:
                 self.__draw_selected_cell()
@@ -261,6 +275,12 @@ class UI(object):
                 if self.__active_gui and self.__pygame_event_handling():
                     break
                 
+                if not self.__active_gui:
+                    self.__update_display()
+                    self.__attack_enemy(self.__player_service)
+                    self.__attack_enemy(self.__computer_service)
+                    
+                
                 if self.__player_service.score == 2:
                     self.__game_over_message = "You won!"
                     return
@@ -402,7 +422,7 @@ class UI(object):
         self.__ui_selection()
         self.__main_menu()
 
-        if self.__interrupted_program == False:
+        if self.__interrupted_program == False and not self.__active_gui:
             self.__clear_screen()
             self.__draw_board(self.__player_service)
             self.__display_hits_board()
