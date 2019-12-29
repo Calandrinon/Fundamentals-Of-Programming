@@ -298,6 +298,39 @@ class UI(object):
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     return
+    
+    
+    def __attacking_stage(self):
+        if self.__active_gui and self.__pygame_event_handling():
+            return -1
+                
+        if not self.__active_gui:
+            self.__update_display()
+            self.__attack_enemy(self.__player_service)
+            self.__attack_enemy(self.__computer_service)
+                    
+        if self.__player_service.score == 2:
+            self.__game_over_message = "You won!"
+            self.__waiting_mode()
+            return -1
+        elif self.__computer_service.score == 2:
+            self.__game_over_message = "You lost!"
+            self.__waiting_mode()
+            return -1
+    
+
+    def __catch_input_exceptions(self):
+        try:
+            if self.__attacking_stage() == -1:
+                return -1
+        except ValueError as ve:
+            self.__errors.append(ve)
+        except PlaneError as pe:
+            self.__errors.append(pe)
+        except KeyboardInterrupt:
+            self.__interrupted_program = True
+            print("\nGood bye!\n")
+            return -1
 
 
     def __main_loop(self):
@@ -306,33 +339,8 @@ class UI(object):
         self.__update_display()
         
         while True:
-            try:
-                if self.__active_gui and self.__pygame_event_handling():
-                    break
-                
-                if not self.__active_gui:
-                    self.__update_display()
-                    self.__attack_enemy(self.__player_service)
-                    self.__attack_enemy(self.__computer_service)
-                    
-                
-                if self.__player_service.score == 2:
-                    self.__game_over_message = "You won!"
-                    self.__waiting_mode()
-                    return
-                elif self.__computer_service.score == 2:
-                    self.__game_over_message = "You lost!"
-                    self.__waiting_mode()
-                    return
-
-            except ValueError as ve:
-                self.__errors.append(ve)
-            except PlaneError as pe:
-                self.__errors.append(pe)
-            except KeyboardInterrupt:
-                self.__interrupted_program = True
-                print("\nGood bye!\n")
-                break
+            if self.__catch_input_exceptions() == -1:
+                return
 
 
     def __ui_selection(self):
