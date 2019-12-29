@@ -93,7 +93,7 @@ class UI(object):
         
             if board_type == "hit_board" and self.__initialization_finished:
                 self.__draw_selected_cell(cell_y_coordinate_minimum=service.get_board().get_size()*self.__cell_width+2*self.__cell_width)
-            else:
+            elif not self.__initialization_finished:
                 self.__draw_selected_cell()
             pygame.display.update()
 
