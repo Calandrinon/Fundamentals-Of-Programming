@@ -179,10 +179,15 @@ class UI(object):
 
 
     def __attack_enemy(self, service):
-
+        
         if service == self.__player_service:
-            x_coordinate = int(input("Enter the x coordinate of the target point: "))
-            y_coordinate = int(input("Enter the y coordinate of the target point: "))
+            if self.__active_gui:
+                x_coordinate = self.__plane_selection_row
+                y_coordinate = self.__plane_selection_column
+            else:
+                x_coordinate = int(input("Enter the x coordinate of the target point: "))
+                y_coordinate = int(input("Enter the y coordinate of the target point: "))
+            
         else:
             x_coordinate = randint(0,9)
             y_coordinate = randint(0,9)
@@ -229,7 +234,8 @@ class UI(object):
                     if self.__plane_selection_row > 0:
                         self.__plane_selection_row -= 1
                 if event.key == pygame.K_RETURN:
-                    pass
+                    self.__attack_enemy(self.__player_service)
+                    self.__attack_enemy(self.__computer_service)
                 self.__update_display()
                 
 
@@ -246,16 +252,14 @@ class UI(object):
 
 
     def __main_loop(self):
+        self.__plane_selection_row = 0
+        self.__plane_selection_column = 0
+        
         while True:
             try:
                 if self.__active_gui and self.__pygame_event_handling():
                     break
-
-                self.__update_display()
-
-                self.__attack_enemy(self.__player_service)
-                self.__attack_enemy(self.__computer_service)
-
+                
                 if self.__player_service.score == 2:
                     self.__game_over_message = "You won!"
                     return
@@ -294,8 +298,16 @@ class UI(object):
         self.__computer_service.reset_service()
 
 
-    def __singleplayer_mode(self):
+    def __reset_game(self):
         self.__reset_services()
+        self.__plane_selection_row = 0
+        self.__plane_selection_column = 0
+        self.__plane_selection_orientation = 0
+        self.__initialization_finished = False
+        
+
+    def __singleplayer_mode(self):
+        self.__reset_game()
         if self.__initialize_planes():
             return
         self.__clear_screen()
@@ -367,6 +379,8 @@ class UI(object):
 
             while True:
                 events = pygame.event.get()
+                
+                
                 for event in events:
                     if event.type == pygame.KEYDOWN:
                         if event.key in [pygame.K_0, pygame.K_s]:
