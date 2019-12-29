@@ -4,7 +4,6 @@ from repository import Repository
 from validation import PlaneValidator
 
 
-
 def main():
     plane_validator = PlaneValidator()
     

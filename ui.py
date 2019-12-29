@@ -71,7 +71,7 @@ class UI(object):
 
     def __draw_board(self, service, board_type="plane_board", position_x=cell_width, position_y=cell_width):
         board = service.get_board()
-        if board_type == "hit_board":
+        if board_type == "hit_board" and self.__initialization_finished:
             board = service.get_hits_board()
 
         if self.__active_gui:
@@ -170,7 +170,7 @@ class UI(object):
         
 
     def __display_hits_board(self):
-        if self.__active_gui:
+        if self.__active_gui and self.__initialization_finished:
             self.__draw_board(self.__player_service, "hit_board", position_y=2*self.__cell_width+self.__cell_width*self.__player_service.get_board().get_size())
         hits_board = self.__player_service.get_hits_board()
         print("Hits board: ")
