@@ -18,7 +18,7 @@ class UI(object):
         self.__multiplayer = False
         
         self.__menu_options = ["Singleplayer (0)", "Multiplayer (1)", "Quit (2)"]
-        self.__font_size = 40
+        self.__font_size = 30
         
         self.__plane_selection_row = 0
         self.__plane_selection_column = 0
@@ -72,13 +72,13 @@ class UI(object):
     def __display_player_board_title(self):
         comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
         message = comic_sans_font.render("Your board", False, (0, 0, 0))
-        self.__screen.blit(message, (self.__cell_width * 15, self.__cell_width + 5 * self.__cell_width))
+        self.__screen.blit(message, (self.__cell_width * 12, self.__cell_width + 5 * self.__cell_width))
 
 
     def __display_hit_board_title(self):
         comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
         message = comic_sans_font.render("Your shots", False, (0, 0, 0))
-        self.__screen.blit(message, (self.__cell_width * 15, self.__cell_width + 15 * self.__cell_width))
+        self.__screen.blit(message, (self.__cell_width * 12, self.__cell_width + 15 * self.__cell_width))
 
 
     def __draw_board(self, service, board_type="plane_board", position_x=cell_width, position_y=cell_width):
@@ -264,6 +264,26 @@ class UI(object):
             pygame.display.flip()
 
 
+    def __display_game_over_message(self):
+        comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
+        message = comic_sans_font.render(self.__game_over_message, False, (0, 0, 0))
+        self.__screen.blit(message, (self.__cell_width * 12, self.__cell_width + self.__cell_width))
+        message = comic_sans_font.render("Press ESC to exit to main menu", False, (0, 0, 0))
+        self.__screen.blit(message, (self.__cell_width * 12, self.__cell_width + 3 * self.__cell_width))
+        pygame.display.update()
+        
+
+    def __waiting_mode(self):
+        if not self.__active_gui:
+            return
+        self.__display_game_over_message()
+        
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    return
+
+
     def __main_loop(self):
         self.__plane_selection_row = 0
         self.__plane_selection_column = 0
@@ -282,9 +302,11 @@ class UI(object):
                 
                 if self.__player_service.score == 2:
                     self.__game_over_message = "You won!"
+                    self.__waiting_mode()
                     return
                 elif self.__computer_service.score == 2:
                     self.__game_over_message = "You lost!"
+                    self.__waiting_mode()
                     return
 
             except ValueError as ve:
@@ -334,8 +356,8 @@ class UI(object):
         self.__main_loop()
         self.__clear_screen()
         self.__draw_board(self.__player_service)
-        self.__display_hits_board()
         print(self.__game_over_message)
+        self.__display_hits_board()
 
 
     def __multiplayer_mode(self):
@@ -346,8 +368,8 @@ class UI(object):
         self.__main_loop()
         self.__clear_screen()
         self.__draw_board(self.__player_service)
-        self.__display_hits_board()
         print(self.__game_over_message)
+        self.__display_hits_board()
 
 
     def __print_options(self):
