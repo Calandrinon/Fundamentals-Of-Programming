@@ -1,6 +1,66 @@
 
 class Plane:
     
+    def __set_surface_positions_orientation_up(self, x_coordinate, y_coordinate):
+        for row in range(x_coordinate, x_coordinate + 4):
+            self.__surface_positions.append((row, y_coordinate))
+            
+        self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
+        
+        self.__surface_positions.append((x_coordinate + 1, y_coordinate - 2))
+        self.__surface_positions.append((x_coordinate + 1, y_coordinate - 1))
+        self.__surface_positions.append((x_coordinate + 1, y_coordinate + 1))
+        self.__surface_positions.append((x_coordinate + 1, y_coordinate + 2))
+            
+        self.__surface_positions.append((x_coordinate + 3, y_coordinate - 1))
+        self.__surface_positions.append((x_coordinate + 3, y_coordinate + 1))
+    
+    
+    def __set_surface_positions_orientation_left(self, x_coordinate, y_coordinate):
+        for column in range(y_coordinate, y_coordinate + 4):
+            self.__surface_positions.append((x_coordinate, column))
+            
+        self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
+            
+        self.__surface_positions.append((x_coordinate - 1, y_coordinate + 1))
+        self.__surface_positions.append((x_coordinate - 2, y_coordinate + 1))
+        self.__surface_positions.append((x_coordinate + 1, y_coordinate + 1))
+        self.__surface_positions.append((x_coordinate + 2, y_coordinate + 1))
+            
+        self.__surface_positions.append((x_coordinate - 1, y_coordinate + 3))
+        self.__surface_positions.append((x_coordinate + 1, y_coordinate + 3))
+    
+    
+    def __set_surface_positions_orientation_down(self, x_coordinate, y_coordinate):
+        for row in range(x_coordinate, x_coordinate - 4, -1):
+            self.__surface_positions.append((row, y_coordinate))
+            
+        self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
+            
+        self.__surface_positions.append((x_coordinate - 1, y_coordinate - 2))
+        self.__surface_positions.append((x_coordinate - 1, y_coordinate - 1))
+        self.__surface_positions.append((x_coordinate - 1, y_coordinate + 1))
+        self.__surface_positions.append((x_coordinate - 1, y_coordinate + 2))
+            
+        self.__surface_positions.append((x_coordinate - 3, y_coordinate - 1))
+        self.__surface_positions.append((x_coordinate - 3, y_coordinate + 1))
+    
+    
+    def __set_surface_positions_orientation_right(self, x_coordinate, y_coordinate):
+        for column in range(y_coordinate, y_coordinate - 4, -1):
+            self.__surface_positions.append((x_coordinate, column))
+            
+        self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
+            
+        self.__surface_positions.append((x_coordinate - 1, y_coordinate - 1))
+        self.__surface_positions.append((x_coordinate - 2, y_coordinate - 1))
+        self.__surface_positions.append((x_coordinate + 1, y_coordinate - 1))
+        self.__surface_positions.append((x_coordinate + 2, y_coordinate - 1))
+            
+        self.__surface_positions.append((x_coordinate - 1, y_coordinate - 3))
+        self.__surface_positions.append((x_coordinate + 1, y_coordinate - 3))
+    
+    
     def __init__(self, x_coordinate, y_coordinate, orientation, board):
         self.__x_coordinate = x_coordinate
         self.__y_coordinate = y_coordinate
@@ -9,57 +69,13 @@ class Plane:
         self.__surface_positions = []
         
         if orientation == "up":
-            for row in range(x_coordinate, x_coordinate + 4):
-                self.__surface_positions.append((row, y_coordinate))
-            
-            self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
-        
-            self.__surface_positions.append((x_coordinate + 1, y_coordinate - 2))
-            self.__surface_positions.append((x_coordinate + 1, y_coordinate - 1))
-            self.__surface_positions.append((x_coordinate + 1, y_coordinate + 1))
-            self.__surface_positions.append((x_coordinate + 1, y_coordinate + 2))
-            
-            self.__surface_positions.append((x_coordinate + 3, y_coordinate - 1))
-            self.__surface_positions.append((x_coordinate + 3, y_coordinate + 1))
+            self.__set_surface_positions_orientation_up(x_coordinate, y_coordinate)
         elif orientation == "down":
-            for row in range(x_coordinate, x_coordinate - 4, -1):
-                self.__surface_positions.append((row, y_coordinate))
-            
-            self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
-            
-            self.__surface_positions.append((x_coordinate - 1, y_coordinate - 2))
-            self.__surface_positions.append((x_coordinate - 1, y_coordinate - 1))
-            self.__surface_positions.append((x_coordinate - 1, y_coordinate + 1))
-            self.__surface_positions.append((x_coordinate - 1, y_coordinate + 2))
-            
-            self.__surface_positions.append((x_coordinate - 3, y_coordinate - 1))
-            self.__surface_positions.append((x_coordinate - 3, y_coordinate + 1))
+            self.__set_surface_positions_orientation_down(x_coordinate, y_coordinate)
         elif orientation == "left":
-            for column in range(y_coordinate, y_coordinate + 4):
-                self.__surface_positions.append((x_coordinate, column))
-            
-            self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
-            
-            self.__surface_positions.append((x_coordinate - 1, y_coordinate + 1))
-            self.__surface_positions.append((x_coordinate - 2, y_coordinate + 1))
-            self.__surface_positions.append((x_coordinate + 1, y_coordinate + 1))
-            self.__surface_positions.append((x_coordinate + 2, y_coordinate + 1))
-            
-            self.__surface_positions.append((x_coordinate - 1, y_coordinate + 3))
-            self.__surface_positions.append((x_coordinate + 1, y_coordinate + 3))
+            self.__set_surface_positions_orientation_left(x_coordinate, y_coordinate)
         elif orientation == "right":
-            for column in range(y_coordinate, y_coordinate - 4, -1):
-                self.__surface_positions.append((x_coordinate, column))
-            
-            self.__surface_positions[0] = (x_coordinate, y_coordinate, 1)
-            
-            self.__surface_positions.append((x_coordinate - 1, y_coordinate - 1))
-            self.__surface_positions.append((x_coordinate - 2, y_coordinate - 1))
-            self.__surface_positions.append((x_coordinate + 1, y_coordinate - 1))
-            self.__surface_positions.append((x_coordinate + 2, y_coordinate - 1))
-            
-            self.__surface_positions.append((x_coordinate - 1, y_coordinate - 3))
-            self.__surface_positions.append((x_coordinate + 1, y_coordinate - 3))
+            self.__set_surface_positions_orientation_right(x_coordinate, y_coordinate)
         
     """
     def get_x_coordinate(self):
