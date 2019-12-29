@@ -254,6 +254,7 @@ class UI(object):
     def __main_loop(self):
         self.__plane_selection_row = 0
         self.__plane_selection_column = 0
+        self.__update_display()
         
         while True:
             try:
@@ -319,7 +320,7 @@ class UI(object):
 
 
     def __multiplayer_mode(self):
-        self.__reset_services()
+        self.__reset_game()
         if self.__initialize_planes():
             return
         self.__clear_screen()
@@ -379,7 +380,6 @@ class UI(object):
 
             while True:
                 events = pygame.event.get()
-                
                 
                 for event in events:
                     if event.type == pygame.KEYDOWN:
