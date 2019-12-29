@@ -103,12 +103,24 @@ class Board:
     
     
     def __str__(self):
-        result = ""
+        result = "  "
+        row_index = 0
+        spaces = 2
+        
+        for column in range(0, self.__size):
+            result += str(column+1) + "  "
+        result += "\n\n"
         
         for row in self.__matrix:
+            row_index += 1
+            
+            if row_index > 9:
+                 spaces = 1
+            result += str(row_index) + spaces * " "
+            
             for column in row:
-                result += column + " "
-            result += "\n"
+                result += column + "  "
+            result += "\n\n"
             
         return result
     

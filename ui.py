@@ -150,9 +150,8 @@ class UI(object):
                 pass
             return
 
-        plane_x_coordinate = int(input("Enter the x coordinate of the plane: "))
-        plane_y_coordinate = int(input("Enter the y coordinate of the plane: "))
-
+        plane_x_coordinate = int(input("Enter the x coordinate of the plane: ")) - 1
+        plane_y_coordinate = int(input("Enter the y coordinate of the plane: ")) - 1
         plane_orientation = 0
 
         while plane_orientation not in ["up", "down", "left", "right"]:
@@ -199,9 +198,9 @@ class UI(object):
                 x_coordinate = self.__plane_selection_row
                 y_coordinate = self.__plane_selection_column
             else:
-                x_coordinate = int(input("Enter the x coordinate of the target point: "))
-                y_coordinate = int(input("Enter the y coordinate of the target point: "))
-            
+                x_coordinate = int(input("Enter the x coordinate of the target point: ")) - 1
+                y_coordinate = int(input("Enter the y coordinate of the target point: ")) - 1
+                
         else:
             x_coordinate = randint(0,9)
             y_coordinate = randint(0,9)
