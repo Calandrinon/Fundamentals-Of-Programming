@@ -2,7 +2,7 @@ from errors import PlaneError
 from random import randint
 import pygame
 from pygame.locals import *
-FLAGS = FULLSCREEN | DOUBLEBUF
+
 
 class UI(object):
 
@@ -32,7 +32,7 @@ class UI(object):
     def __clear_screen(self):
         if self.__active_gui:
             self.__screen.fill((255,255,255))
-            pygame.display.flip()
+            ### pygame.display.flip() - unnecessary
             return
         print(100*"\n")
         
@@ -358,7 +358,7 @@ class UI(object):
                 pygame.init()
                 self.__window_width = 1000
                 self.__window_height = 1000
-                self.__screen = pygame.display.set_mode((self.__window_width, self.__window_height), FLAGS)
+                self.__screen = pygame.display.set_mode((self.__window_width, self.__window_height), FULLSCREEN | DOUBLEBUF)
                 self.__screen.set_alpha(None)
                 pygame.event.set_allowed([QUIT, KEYDOWN, KEYUP])
                 
