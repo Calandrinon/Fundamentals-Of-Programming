@@ -1,7 +1,8 @@
 from errors import PlaneError
 from random import randint
 import pygame
-
+from pygame.locals import *
+FLAGS = FULLSCREEN | DOUBLEBUF
 
 class UI(object):
 
@@ -19,6 +20,7 @@ class UI(object):
         
         self.__menu_options = ["Singleplayer (0)", "Multiplayer (1)", "Quit (2)"]
         self.__font_size = 30
+        self.__font_title = "Times New Roman"
         
         self.__plane_selection_row = 0
         self.__plane_selection_column = 0
@@ -95,14 +97,14 @@ class UI(object):
 
 
     def __display_player_board_title(self):
-        comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
-        message = comic_sans_font.render("Your board", False, (0, 0, 0))
+        text_font = pygame.font.SysFont(self.__font_title, self.__font_size)
+        message = text_font.render("Your board", False, (0, 0, 0))
         self.__screen.blit(message, (self.__cell_width * 12, self.__cell_width + 5 * self.__cell_width))
 
 
     def __display_hit_board_title(self):
-        comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
-        message = comic_sans_font.render("Your shots", False, (0, 0, 0))
+        text_font = pygame.font.SysFont(self.__font_title, self.__font_size)
+        message = text_font.render("Your shots", False, (0, 0, 0))
         self.__screen.blit(message, (self.__cell_width * 12, self.__cell_width + 15 * self.__cell_width))
 
 
@@ -135,6 +137,7 @@ class UI(object):
 
         if self.__active_gui:
             self.__draw_graphical_board(board, board_type, service, position_x, position_y)
+            return
 
         if service != self.__computer_service:
             print("Board with your planes: ")
@@ -143,12 +146,12 @@ class UI(object):
     
 
     def __add_plane_display_message(self):
-        comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
-        message = comic_sans_font.render("Use the arrows to select the position of the plane", False, (0, 0, 0))
+        text_font = pygame.font.SysFont(self.__font_title, self.__font_size)
+        message = text_font.render("Use the arrows to select the position of the plane", False, (0, 0, 0))
         self.__screen.blit(message, (self.__cell_width, self.__cell_width + 10 * self.__cell_width))
-        message = comic_sans_font.render("To rotate the orientation of the plane, press R", False, (0, 0, 0))
+        message = text_font.render("To rotate the orientation of the plane, press R", False, (0, 0, 0))
         self.__screen.blit(message, (self.__cell_width, 2 * self.__cell_width + 10 * self.__cell_width))
-        message = comic_sans_font.render("Press Enter to place the plane", False, (0, 0, 0))
+        message = text_font.render("Press Enter to place the plane", False, (0, 0, 0))
         self.__screen.blit(message, (self.__cell_width, 3 * self.__cell_width + 10 * self.__cell_width))
         pygame.display.update()
         
@@ -210,6 +213,7 @@ class UI(object):
     def __display_hits_board(self):
         if self.__active_gui and self.__initialization_finished:
             self.__draw_board(self.__player_service, "hit_board", position_y=2*self.__cell_width+self.__cell_width*self.__player_service.get_board().get_size())
+            return
         hits_board = self.__player_service.get_hits_board()
         print("Hits board: ")
         print(hits_board)
@@ -281,10 +285,10 @@ class UI(object):
 
 
     def __display_game_over_message(self):
-        comic_sans_font = pygame.font.SysFont('Comic Sans MS', self.__font_size)
-        message = comic_sans_font.render(self.__game_over_message, False, (0, 0, 0))
+        text_font = pygame.font.SysFont(self.__font_title, self.__font_size)
+        message = text_font.render(self.__game_over_message, False, (0, 0, 0))
         self.__screen.blit(message, (self.__cell_width * 12, self.__cell_width + self.__cell_width))
-        message = comic_sans_font.render("Press ESC to exit to main menu", False, (0, 0, 0))
+        message = text_font.render("Press ESC to exit to main menu", False, (0, 0, 0))
         self.__screen.blit(message, (self.__cell_width * 12, self.__cell_width + 3 * self.__cell_width))
         pygame.display.update()
         
@@ -354,8 +358,10 @@ class UI(object):
                 pygame.init()
                 self.__window_width = 1000
                 self.__window_height = 1000
-                self.__screen = pygame.display.set_mode((self.__window_width, self.__window_height))
-
+                self.__screen = pygame.display.set_mode((self.__window_width, self.__window_height), FLAGS)
+                self.__screen.set_alpha(None)
+                pygame.event.set_allowed([QUIT, KEYDOWN, KEYUP])
+                
         self.__clear_screen()
 
 
@@ -426,8 +432,8 @@ class UI(object):
 
 
     def __display_menu_option(self, font_size, option_title, option_index):
-        comic_sans_font = pygame.font.SysFont('Comic Sans MS', font_size)
-        option = comic_sans_font.render(option_title, False, (0, 0, 0))
+        text_font = pygame.font.SysFont(self.__font_title, font_size)
+        option = text_font.render(option_title, False, (0, 0, 0))
 
         self.__screen.blit(option, (self.__window_width / font_size, self.__window_height / font_size + option_index * 2 * font_size))
 
@@ -471,4 +477,5 @@ class UI(object):
             self.__clear_screen()
             self.__draw_board(self.__player_service)
             self.__display_hits_board()
-            print(self.__game_over_message)
+            if not self.__active_gui:
+                print(self.__game_over_message)

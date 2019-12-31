@@ -3,6 +3,12 @@ from service import PlayerService, ComputerService
 from repository import Repository
 from validation import PlaneValidator
 
+"""
+	TODO: Give the cell selector a plane shape at plane placement time.
+	TODO: Add multiplayer feature.
+	TODO: Optimize pygame graphics.
+	TODO: Memory/GPU test
+"""
 
 def main():
     plane_validator = PlaneValidator()
