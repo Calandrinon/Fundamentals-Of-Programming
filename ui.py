@@ -27,6 +27,7 @@ class UI(object):
         self.__plane_selection_orientation = 0
         self.__plane_selection_orientations = ["up", "left", "down", "right"]
         self.__initialization_finished = False
+        #self.clock = pygame.time.Clock()
         
 
     def __clear_screen(self):
@@ -127,7 +128,7 @@ class UI(object):
             self.__draw_selected_cell(cell_y_coordinate_minimum=service.get_board().get_size()*self.__cell_width+2*self.__cell_width)
         elif not self.__initialization_finished:
             self.__draw_selected_cell()
-        pygame.display.update()
+        #pygame.display.update() - unnecessary
 
 
     def __draw_board(self, service, board_type="plane_board", position_x=cell_width, position_y=cell_width):
@@ -358,7 +359,7 @@ class UI(object):
                 pygame.init()
                 self.__window_width = 1000
                 self.__window_height = 1000
-                self.__screen = pygame.display.set_mode((self.__window_width, self.__window_height), FULLSCREEN | DOUBLEBUF)
+                self.__screen = pygame.display.set_mode((self.__window_width, self.__window_height))#, FULLSCREEN | DOUBLEBUF)
                 self.__screen.set_alpha(None)
                 pygame.event.set_allowed([QUIT, KEYDOWN, KEYUP])
                 
