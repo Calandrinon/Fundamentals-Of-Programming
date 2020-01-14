@@ -51,5 +51,8 @@ def generate_option_alternatives_iteratively(solution_length, index=0, number_of
 
 
 
+print("Recursive:")
 generate_option_alternatives_recursively(4)
-#generate_option_alternatives_iteratively(4)
+
+print("\n\nIterative:")
+generate_option_alternatives_iteratively(4)
