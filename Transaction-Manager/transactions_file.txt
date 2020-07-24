@@ -1,0 +1,4 @@
+[12, 77, in, from_parents]
+[24, 9, out, croissants]
+[24, 10, out, milk]
+[21, 4, out, bake_rolls]
