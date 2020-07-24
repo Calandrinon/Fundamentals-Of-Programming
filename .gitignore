@@ -1,0 +1,7 @@
+*.pyc
+.coverage
+.gitignore
+.project
+.pydevproject
+__pycache__/
+htmlcov/
